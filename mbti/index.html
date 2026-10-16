@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F2F4F6">
+<meta name="robots" content="noindex">
+<title>나는 어떻게 일하는 사람일까</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#F2F4F6;--paper:#FFFFFF;--ink:#14212B;--sub:#56636E;--muted:#8A96A0;--line:#DCE2E7;
+  --navy:#1D3557;--navy-soft:#E3E9F1;--on-navy:#FFFFFF;
+  --c-ei:#B07800;--c-sn:#1F8A76;--c-tf:#4F52C9;--c-jp:#C93D62;
+  --t-ei:#FBF1D9;--t-sn:#DDF2EC;--t-tf:#E6E6FA;--t-jp:#FBE3EA;
+  --danger:#B42318;--ok:#1F8A76;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0F1720;--paper:#17212B;--ink:#E8EDF1;--sub:#A7B3BD;--muted:#71808C;--line:#2A3846;
+  --navy:#8FB3E8;--navy-soft:#1E2E44;--on-navy:#0F1720;
+  --c-ei:#F0B93A;--c-sn:#4CC4A9;--c-tf:#9C9EF5;--c-jp:#F07999;
+  --t-ei:#3A2D0A;--t-sn:#0E3229;--t-tf:#25264E;--t-jp:#3F1724;--danger:#F97066;--ok:#4CC4A9;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all}
+.wrap{max-width:520px;margin:0 auto;padding:28px max(20px,env(safe-area-inset-right)) calc(36px + env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
+.hide{display:none!important}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;cursor:pointer}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+
+.mark{display:flex;gap:6px;margin-bottom:26px}
+.mark i{width:28px;height:6px;border-radius:3px}
+h1{font-size:30px;line-height:1.3;font-weight:800;letter-spacing:-.02em;margin:0 0 14px}
+.lead{color:var(--sub);margin:0 0 20px}
+.facts{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 26px;padding:0;list-style:none}
+.facts li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--sub)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.field input{width:100%;height:52px;padding:0 16px;font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:12px}
+.field input:focus{outline:none;border-color:var(--navy)}
+.err{color:var(--danger);font-size:14px;min-height:22px;margin:2px 0 4px}
+.primary{display:block;width:100%;height:56px;border:0;border-radius:14px;background:var(--navy);color:var(--on-navy);font-size:17px;font-weight:700}
+.privacy{font-size:13px;color:var(--muted);margin-top:16px;line-height:1.55}
+
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;min-height:40px}
+.back{border:0;background:none;color:var(--sub);font-size:15px;padding:8px 0}
+.count{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.count b{color:var(--ink);font-weight:700}
+.segs{display:grid;grid-template-columns:repeat(32,1fr);gap:3px;margin-bottom:28px}
+.segs i{height:4px;border-radius:2px;background:var(--line)}
+.segs i.done{background:var(--navy)}
+.segs i.now{background:var(--navy);opacity:.45}
+.stage{transition:opacity .18s,transform .18s}
+.stage.out{opacity:0;transform:translateX(-14px)}
+.scene{font-size:19px;line-height:1.55;font-weight:700;letter-spacing:-.01em;margin:0 0 20px;min-height:88px}
+.half{font-size:13px;color:var(--ok);font-weight:600;margin:-14px 0 12px;min-height:20px}
+.stmt{display:flex;gap:12px;align-items:flex-start;background:var(--navy-soft);border-radius:14px;padding:14px 16px;font-size:16px;font-weight:600;line-height:1.5}
+.stmt .k{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--navy);color:var(--on-navy)}
+.choices{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.ch{display:flex;align-items:center;gap:14px;width:100%;min-height:48px;text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:8px 16px;font-size:15px}
+.ch .mk{flex:none;width:24px;display:grid;place-items:center}
+.ch .mk::after{content:"";border-radius:50%;border:2px solid var(--muted)}
+.ch[data-v="1"] .mk::after,.ch[data-v="5"] .mk::after{width:20px;height:20px}
+.ch[data-v="2"] .mk::after,.ch[data-v="4"] .mk::after{width:15px;height:15px}
+.ch[data-v="3"] .mk::after{width:11px;height:11px}
+.ch:active{transform:scale(.99)}
+.ch.on{border-color:var(--navy);background:var(--navy-soft);font-weight:600}
+.ch.on .mk::after{border-color:var(--navy);background:var(--navy)}
+
+.inter{text-align:left;padding-top:40px}
+.inter h2{font-size:24px;line-height:1.35;margin:0 0 12px;font-weight:800}
+.inter p{color:var(--sub);margin:0 0 26px}
+.xq{font-size:19px;font-weight:700;line-height:1.5;margin:0 0 22px;min-height:58px}
+.pick{display:flex;flex-direction:column;gap:10px}
+.pick button{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1.5px solid var(--line);background:var(--paper);border-radius:14px;padding:16px;font-size:16px;line-height:1.5}
+.pick button .k{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--navy-soft);color:var(--navy)}
+.pick button.on{border-color:var(--navy);background:var(--navy-soft);font-weight:600}
+.pick button.on .k{background:var(--navy);color:var(--on-navy)}
+
+.who{font-size:15px;color:var(--sub);margin:4px 0 4px}
+.code{display:flex;gap:4px;margin:0}
+.code span{font-size:64px;line-height:1.05;font-weight:900;letter-spacing:-.02em;opacity:0;transform:translateY(10px);animation:pop .45s cubic-bezier(.2,.8,.2,1) forwards}
+.code span:nth-child(2){animation-delay:.12s}.code span:nth-child(3){animation-delay:.24s}.code span:nth-child(4){animation-delay:.36s}
+@keyframes pop{to{opacity:1;transform:none}}
+.nick{font-size:21px;font-weight:800;margin:8px 0 6px}
+.sum{font-size:16px;margin:0 0 22px}
+.dims{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:4px 18px;margin-bottom:24px}
+.drow{padding:14px 0;border-bottom:1px solid var(--line)}
+.drow:last-child{border-bottom:0}
+.dh{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:8px}
+.dh .nm{color:var(--sub)}
+.dh .lv{font-size:12px;padding:2px 8px;border-radius:6px}
+.meter{display:flex;align-items:center;gap:10px;font-size:14px}
+.meter .l,.meter .r{width:62px;font-variant-numeric:tabular-nums;color:var(--sub);line-height:1.35}
+.meter .r{text-align:right}
+.meter .win{color:var(--ink);font-weight:700}
+.track{flex:1;height:10px;border-radius:5px;background:var(--line);position:relative;overflow:hidden}
+.track i{position:absolute;top:0;bottom:0;border-radius:5px}
+.track::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--paper)}
+.sec{margin:0 0 20px}
+.sec h3{font-size:16px;font-weight:800;margin:0 0 8px}
+.sec ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.roles{display:flex;flex-wrap:wrap;gap:6px}
+.roles span{background:var(--navy-soft);border-radius:8px;padding:4px 10px;font-size:14px}
+.fit{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;margin:6px 0 18px}
+.fit p{margin:0 0 12px;font-weight:700}
+.fit .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fit .opts button{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 4px;font-size:15px}
+.fit .opts button.on{border-color:var(--navy);background:var(--navy);color:var(--on-navy);font-weight:700}
+.fit .thanks{font-size:14px;color:var(--ok);margin:10px 0 0;font-weight:400;min-height:20px}
+.status{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--sub)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.status.ok i{background:var(--ok)}.status.bad i{background:var(--danger)}
+.fine{font-size:13px;color:var(--muted);margin-top:18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.code span{opacity:1;transform:none}}
+@media (max-width:360px){h1{font-size:26px}.scene{font-size:17px}.code span{font-size:54px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<section id="s-start">
+  <div class="mark" aria-hidden="true"><i style="background:var(--c-ei)"></i><i style="background:var(--c-sn)"></i><i style="background:var(--c-tf)"></i><i style="background:var(--c-jp)"></i></div>
+  <h1>나는 어떻게<br>일하는 사람일까</h1>
+  <p class="lead">회사와 일상의 32가지 상황에서 나에게 더 가까운 쪽을 고르면, 나의 성격유형과 네 가지 성향의 기울기를 알려드립니다.</p>
+  <ul class="facts"><li>32문항</li><li>약 6분</li><li>정답 없음</li><li>인사평가와 무관</li></ul>
+  <div class="field"><label for="name">이름</label><input id="name" autocomplete="name" maxlength="40" enterkeyhint="next"></div>
+  <div class="field"><label for="dept">부서</label><input id="dept" maxlength="40" enterkeyhint="go"></div>
+  <div class="err" id="e-start" role="alert"></div>
+  <button class="primary" id="go">검사 시작하기</button>
+  <p class="privacy">회사에서 해야 하는 행동보다 평소 내가 편하게 느끼는 쪽을 골라 주세요. 이름, 부서, 응답과 결과는 사내 테스트 목적으로만 저장되며 대표이사만 열람합니다. 인사평가와는 관련이 없습니다.</p>
+</section>
+
+<section id="s-q" class="hide">
+  <div class="top"><button class="back" id="back">이전 문항</button><span class="count" id="count"></span></div>
+  <div class="segs" id="segs" aria-hidden="true"></div>
+  <div class="stage" id="stage">
+    <p class="half" id="half"></p>
+    <p class="scene" id="qt"></p>
+    <div class="stmt"><span class="k">A</span><span id="qa"></span></div>
+    <div class="choices" id="choices" role="radiogroup" aria-label="A와 B 중 나에게 더 가까운 정도"></div>
+    <div class="stmt"><span class="k">B</span><span id="qb"></span></div>
+  </div>
+</section>
+
+<section id="s-inter" class="hide inter">
+  <h2>정확한 결과를 위해<br>몇 가지만 더 확인할게요</h2>
+  <p id="inter-n"></p>
+  <button class="primary" id="xgo">이어서 하기</button>
+</section>
+
+<section id="s-x" class="hide">
+  <div class="top"><button class="back" id="xback">이전</button><span class="count" id="xcount"></span></div>
+  <div class="stage" id="xstage">
+    <p class="xq" id="xq"></p>
+    <div class="pick" id="xpick">
+      <button type="button" data-p="0"><span class="k">A</span><span id="xa"></span></button>
+      <button type="button" data-p="1"><span class="k">B</span><span id="xb"></span></button>
+    </div>
+  </div>
+</section>
+
+<section id="s-res" class="hide">
+  <p class="who" id="rname"></p>
+  <div class="code" id="rcode" aria-live="polite"></div>
+  <p class="nick" id="rnick"></p>
+  <p class="sum" id="rsum"></p>
+  <div class="dims" id="rdims"></div>
+  <div id="rmore"></div>
+  <div class="fit">
+    <p>이 결과가 나와 잘 맞나요?</p>
+    <div class="opts" id="fit"><button type="button" data-f="맞다">맞다</button><button type="button" data-f="대체로 맞다">대체로 맞다</button><button type="button" data-f="다르다">다르다</button></div>
+    <p class="thanks" id="fit-msg"></p>
+  </div>
+  <div class="status" id="rsave"><i></i><span>결과를 저장하고 있습니다</span></div>
+  <p class="fine">이 검사는 Open Extended Jungian Type Scales 1.2(openpsychometrics.org, CC BY-NC-SA 4.0) 문항을 상황형으로 다시 쓴 것으로, 정식 MBTI 검사가 아닙니다. 50%에 가까운 성향은 다시 검사하면 바뀔 수 있습니다.</p>
+</section>
+
+</main>
+<script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwV2xdcPddFUa1CnCC-4wyErnk0qY2O4Hu_XzJ6rYEsajD2Hk0MVuCz3ONPhtL9-m2esw/exec';
+const GROUP=new URLSearchParams(location.search).get('g')||'TF 테스트';
+
+const Q=[
+["월요일 아침, 이번 주에 처리할 업무가 보고서 작성, 거래처 회신, 회의 준비 등 7~8건 쌓여 있습니다.","메모나 앱에 목록을 만들어 하나씩 지워가며 처리한다","따로 적지 않고 머릿속으로 기억하며 처리한다"],
+["동료가 \"요즘 이 방법을 쓰면 업무 효율이 두 배가 된다더라\"며 새 방식을 소개합니다. 주변에 실제로 써본 사람은 아직 없습니다.","정말 효과가 있는지 근거나 사례부터 확인하고 싶다","그럴 수도 있겠다 싶어 일단 긍정적으로 받아들인다"],
+["바쁜 한 주를 보낸 뒤 맞은 주말, 아무 약속 없이 하루 종일 혼자 있게 됐습니다.","오후쯤 되면 심심해져서 누군가에게 연락하고 싶어진다","혼자 보내는 시간 덕분에 에너지가 다시 채워진다"],
+["새 부서에 온 지 몇 달이 지났습니다. 업무 절차가 다소 번거롭지만 지금까지 큰 문제 없이 운영돼 왔습니다.","문제없이 돌아가고 있으니 기존 방식을 따르는 게 맞다","더 나은 방법이 있을 것 같아 바꾸고 싶은 부분이 자꾸 눈에 들어온다"],
+["정리 방식은 사람마다 다릅니다. 평소 내 책상이나 컴퓨터 바탕화면이 어떤 모습인지 떠올려 보세요.","자주 쓰는 것은 정해진 자리에 두고, 끝난 일은 바로 정리한다","여기저기 놓여 있지만 나만의 방식으로 무엇이 어디 있는지 안다"],
+["회의에서 한 동료가 \"그 의견은 감정은 빼고 숫자와 논리로만 판단한 것 같다\"는 평가를 받았습니다. 내가 같은 평가를 받는다면 어떻게 느낄지 생각해 보세요.","사람에 대한 배려가 부족했다는 말로 들려 신경 쓰인다","객관적으로 판단했다는 말로 들려 오히려 괜찮다"],
+["처음 만난 사람이 나를 하루 동안 지켜본 뒤 내 인상을 한마디로 표현한다면","에너지가 넘치고 활동적인 사람","차분하고 조용한 사람"],
+["사내 교육 평가를 앞두고 문제 형식을 직접 고를 수 있다면","정답이 분명한 객관식 문제","내 생각과 논리를 풀어 쓰는 서술형 문제"],
+["동료가 한 달 동안 내가 일하는 모습을 지켜봤다면 어떻게 표현할 것 같나요?","상황에 맞춰 유연하게 움직이며 일을 해낸다","순서와 계획을 세워 차근차근 일을 해낸다"],
+["열심히 준비한 보고서를 두고 상사가 여러 사람 앞에서 날카롭게 지적했습니다.","그날 하루 종일 마음에 남고 쉽게 털어지지 않는다","지적은 지적일 뿐, 고칠 부분만 정리하고 넘어간다"],
+["다음 주까지 중요한 기획안을 완성해야 하고, 일하는 방식은 자유롭게 고를 수 있습니다.","동료들과 모여 아이디어를 주고받으며 함께 만든다","혼자 조용히 집중해서 초안을 만든다"],
+["출퇴근길이나 샤워할 때처럼 혼자 있을 때 주로 떠올리는 생각은","오늘 해야 할 일, 지금 처리 중인 현실적인 문제","앞으로 어떻게 될지, 새로 해보고 싶은 일과 가능성"],
+["석 달 뒤 가족 여행(또는 중요한 출장)이 잡혔습니다.","미리 일정, 숙소, 동선까지 계획을 세워 둔다","날짜가 다가오면 그때 상황을 보고 계획한다"],
+["연말에 동료들이 나에 대해 한마디씩 적어준다면, 더 듣고 싶은 말은","\"일 잘하고 믿을 수 있는 사람\"","\"따뜻하고 함께 있으면 좋은 사람\""],
+["동료 30명 정도가 모인 회사 행사가 저녁 늦게 끝났습니다.","즐거웠더라도 기운이 빠져서 빨리 집에 가서 쉬고 싶다","기분이 좋아져서 몇몇과 자리를 옮겨 이야기를 더 나누고 싶다"],
+["새로운 부서나 모임에 처음 들어간 첫 달, 나의 모습은","분위기를 살피며 자연스럽게 녹아든다","내 생각과 스타일이 드러나 금방 눈에 띈다"],
+["새 업무 도구를 도입해야 하는데 후보가 세 가지입니다. 결정 시한은 넉넉합니다.","더 좋은 대안이 나올 수 있으니 결정을 최대한 열어둔다","비교가 끝나면 빨리 결정하고 확정 짓는다"],
+["회사에서 맡을 역할을 고를 수 있다면 더 끌리는 쪽은","고장 난 시스템이나 비효율적인 업무 절차를 고치는 역할","힘들어하는 직원을 돕고 다시 일어서게 하는 역할"],
+["점심시간에 동료 4~5명과 식사하며 이야기를 나눕니다.","주로 내가 이야기를 꺼내고 말하는 편이다","주로 다른 사람 이야기를 듣는 편이다"],
+["거래처와의 회의 결과를, 회의에 없던 상사에게 전달합니다.","누가 무슨 말을 했고 무엇이 정해졌는지 사실 순서대로 전한다","이 회의가 우리에게 어떤 의미인지, 상대의 의도가 무엇인지부터 전한다"],
+["마감이 2주 남은 보고서 업무를 받았습니다. 다른 급한 일은 없습니다.","받은 날 바로 시작해 일정에 맞춰 조금씩 진행한다","생각을 충분히 해둔 뒤 마감이 가까워졌을 때 집중해서 한 번에 끝낸다"],
+["가족과 함께 살 집을 고르고 있습니다. 한 곳은 가격·거리·크기 조건이 더 좋고, 다른 한 곳은 조건은 조금 못하지만 처음 봤을 때부터 마음이 끌립니다.","마음이 끌리는 집을 고른다","조건을 따져 더 합리적인 집을 고른다"],
+["오랜만에 아무 일정 없는 금요일 저녁입니다.","집에서 편하게 쉬는 게 가장 좋다","밖에 나가 사람을 만나거나 놀러 가고 싶다"],
+["상사가 새 프로젝트를 맡기며 설명을 시작합니다. 가장 먼저 듣고 싶은 것은","이 프로젝트를 왜 하는지, 전체 방향과 목표","구체적으로 무엇을, 언제까지, 어떤 방식으로 해야 하는지"],
+["친한 친구의 결혼식 피로연에서 짧은 축하 인사를 부탁받을 것 같다는 이야기를 미리 들었습니다.","그 자리 분위기를 보고 떠오르는 대로 이야기한다","미리 할 말을 정리해 두고 몇 번 연습한다"],
+["팀 동료가 가족 일로 경황이 없어 회사 규정을 어겼고, 팀원들이 처리 방향에 의견을 내게 되었습니다.","사정은 안타깝지만 다른 사람과 똑같은 기준으로 처리해야 한다","사정을 충분히 고려해 너그럽게 처리해야 한다"],
+["넓은 주차장 반대편에 있는 동료를 불러야 하는데 휴대폰이 없습니다.","큰 소리로 부르는 게 어색해서 직접 걸어간다","자연스럽게 큰 소리로 이름을 부른다"],
+["처음 접하는 금융상품이나 제도를 이해해야 합니다.","구조와 원리부터 이해한 뒤 사례를 본다","실제 사례나 직접 해본 경험으로 감을 잡는다"],
+["휴가 일정이 잡힌 주에 급하지 않은 추가 업무가 생겼습니다.","마음이 편하도록 일을 먼저 끝내 놓고 휴가를 간다","휴가는 예정대로 쉬고 다녀와서 처리한다"],
+["점심을 먹다가 친한 동료가 갑자기 눈물을 보이며 힘든 개인 사정을 이야기하기 시작했습니다.","어떻게 반응해야 할지 몰라 당황스럽고, 해결 방법부터 찾아주고 싶다","우선 이야기를 충분히 들어주고 마음을 받아주는 게 먼저라고 생각한다"],
+["전 직원 행사에서 사회를 볼 사람이 필요합니다.","내가 하겠다고 나서거나, 맡게 되면 즐긴다","가능하면 다른 사람이 맡았으면 좋겠다"],
+["회사에서 갑자기 조직 개편이 발표됐습니다. 가장 먼저 궁금한 것은","누가 어디로 가고, 언제부터 무엇이 바뀌는지","왜 지금 이런 개편을 하는지, 배경과 의도"]];
+
+/* 경계선 확인 문항: [질문, A, B, A가 오른쪽 성향(E·N·T·P)이면 1] */
+const X={
+ei:[["새로운 사람들과 처음 만나는 자리에서 나는","먼저 말을 걸고 분위기를 이끄는 편이다","누가 말을 걸어올 때까지 지켜보는 편이다",1],
+    ["고민이 생겼을 때 나는","혼자 충분히 생각한 뒤에 정리한다","누군가와 이야기하면서 정리한다",0],
+    ["하루 종일 회의가 이어진 날 저녁, 나를 회복시키는 것은","혼자 조용히 보내는 시간","친구를 만나 수다를 떠는 시간",0],
+    ["팀 회의에서 생각이 떠올랐을 때 나는","바로 말하면서 생각을 정리한다","생각을 다 정리한 뒤에 말한다",1]],
+sn:[["새 기계나 프로그램 사용법을 익힐 때 나는","설명서 순서대로 차근차근 따라 한다","대충 훑어보고 전체 구조를 파악한 뒤 내 방식대로 해본다",0],
+    ["나에게 더 와닿는 말은","아직 아무도 안 해본 방법이 궁금하다","검증된 방법이 가장 안전하다",1],
+    ["동료가 나를 칭찬한다면 더 듣고 싶은 말은","꼼꼼하고 정확하다","아이디어가 남다르다",0],
+    ["여행지에서 오래 기억에 남는 것은","그곳에서 느낀 분위기와 떠올랐던 생각","먹었던 음식, 봤던 풍경 같은 구체적인 장면",1]],
+tf:[["동료가 실수로 곤란해할 때 내가 먼저 하는 것은","무엇이 잘못됐는지 같이 따져 해결책을 찾는다","먼저 마음을 다독여 준다",1],
+    ["의견이 엇갈리는 회의에서 내가 더 중요하게 보는 것은","모두가 받아들일 수 있는 결론인지","어느 쪽 근거가 더 맞는지",0],
+    ["더 듣기 좋은 칭찬은","판단이 정확하다","배려심이 깊다",1],
+    ["친구가 사업 계획을 들려주며 의견을 묻는다면 나는","좋은 점을 먼저 이야기하고 응원한다","문제점부터 솔직하게 짚어 준다",0]],
+jp:[["주말을 보내는 방식은","그날 기분에 따라 정한다","하고 싶은 일을 미리 정해 둔다",1],
+    ["일할 때 더 편한 상태는","할 일과 순서가 정해져 있을 때","상황에 따라 바꿀 여지가 있을 때",0],
+    ["식당에서 메뉴를 고를 때 나는","끝까지 고민하다 마지막에 정한다","빨리 정하고 바꾸지 않는다",1],
+    ["갑자기 일정이 바뀌었을 때 나는","계획이 흐트러져 불편하다","새로운 상황이라 오히려 괜찮다",0]]};
+
+const T={
+ISTJ:{n:"원칙을 지키는 관리자",s:"정해진 절차와 확인된 사실을 바탕으로 맡은 일을 끝까지 책임지는 유형입니다. 말보다 결과로 신뢰를 쌓습니다.",g:["일정과 약속을 정확하게 지킵니다","숫자와 서류에서 오류를 잘 찾아냅니다","검증된 방식으로 안정적인 결과를 냅니다"],c:["갑작스러운 계획 변경에 스트레스를 받기 쉽습니다","새로운 방식을 받아들이는 데 시간이 걸립니다"],t:["기한과 기준을 처음부터 분명하게 알려주세요","변경 사항은 이유와 함께 미리 알려주세요"],r:["리스크관리","회계·결산","내부통제","운영관리"]},
+ISFJ:{n:"세심한 지원자",s:"주변 사람의 필요를 먼저 알아채고 맡은 역할을 묵묵히 해내는 유형입니다. 팀이 안정적으로 돌아가도록 뒤에서 받쳐줍니다.",g:["고객과 동료가 필요한 것을 먼저 챙깁니다","꼼꼼하고 성실하게 일을 마무리합니다","팀 분위기를 편안하게 만듭니다"],c:["거절을 어려워해 일을 떠안는 경우가 있습니다","자기 의견을 늦게 꺼내는 편입니다"],t:["기여한 부분을 구체적으로 인정해 주세요","회의에서 의견을 먼저 물어봐 주세요"],r:["고객관리","인사·총무","사후관리","영업지원"]},
+INFJ:{n:"통찰력 있는 조언자",s:"사람과 조직이 더 나은 방향으로 바뀌는 데 관심이 많은 유형입니다. 겉으로 드러나지 않는 마음과 흐름을 잘 읽습니다.",g:["사람들의 속마음과 갈등 조짐을 일찍 알아챕니다","장기적인 방향과 가치를 제시합니다","1:1 대화에서 깊이 있게 소통합니다"],c:["스스로 기대치가 높아 쉽게 지칠 수 있습니다","갈등을 드러내지 않고 혼자 삭이는 편입니다"],t:["일의 목적과 의미를 함께 나눠 주세요","조용히 생각할 시간을 주세요"],r:["조직문화","교육·코칭","전략기획","고객경험 개선"]},
+INTJ:{n:"전략을 설계하는 기획자",s:"큰 그림을 먼저 그리고 그 안에서 구조와 순서를 짜는 유형입니다. 독립적으로 생각하고 스스로 높은 기준을 세웁니다.",g:["장기 전략과 실행 구조를 설계합니다","복잡한 문제를 체계적으로 정리합니다","혼자서도 끝까지 밀고 나갑니다"],c:["결론에 이른 과정을 충분히 설명하지 않아 독단적으로 보일 수 있습니다","비효율에 대한 참을성이 적습니다"],t:["근거와 논리를 갖춰 이야기해 주세요","방법을 정할 재량을 주세요"],r:["경영전략","상품기획","리스크 분석","프로젝트 설계"]},
+ISTP:{n:"침착한 해결사",s:"문제가 생기면 원인을 빠르게 찾아 실용적인 해결책을 내는 유형입니다. 급한 상황에서도 차분합니다.",g:["문제의 원인을 빠르게 분석합니다","위기 상황에서 침착하게 대응합니다","시스템과 도구를 잘 다룹니다"],c:["장기 계획과 문서 정리에 흥미가 적습니다","감정 표현이 적어 무관심해 보일 수 있습니다"],t:["결과만 정해 주고 방식은 맡겨 주세요","짧고 분명하게 이야기해 주세요"],r:["IT·시스템 운영","채권회수 현장","담보물 관리","문제 해결 TF"]},
+ISFP:{n:"따뜻한 실천가",s:"온화하고 유연하게 지금 눈앞의 일과 사람에 집중하는 유형입니다. 주변을 편안하게 해주는 힘이 있습니다.",g:["사람들을 편안하게 대합니다","바뀐 상황에 유연하게 맞춥니다","보기 좋고 쓰기 편한 결과물을 만듭니다"],c:["날카로운 비판에 상처받기 쉽습니다","갈등을 피하다 보니 문제가 늦게 드러날 수 있습니다"],t:["피드백은 부드럽고 구체적으로 주세요","일하는 방식에 자율을 주세요"],r:["고객상담","홍보물·디자인","현장 지원","사내 행사"]},
+INFP:{n:"가치를 지키는 이상가",s:"스스로 중요하게 여기는 가치에 따라 움직이는 유형입니다. 공감 능력이 높고 사람의 성장에 관심이 많습니다.",g:["진심으로 공감하고 신뢰를 얻습니다","생각을 글로 잘 풀어냅니다","동료의 성장을 돕습니다"],c:["가치에 맞지 않는 일에는 의욕이 떨어집니다","세부 일정 관리가 약해질 수 있습니다"],t:["이 일이 왜 중요한지 설명해 주세요","피드백은 1:1로 전해 주세요"],r:["교육","사내 커뮤니케이션","고객경험","인재개발"]},
+INTP:{n:"원리를 파고드는 분석가",s:"논리와 원리를 끝까지 파고들어 더 나은 방법을 찾는 유형입니다. 당연하게 여겨지는 것에도 질문을 던집니다.",g:["논리적으로 분석해 개선점을 찾습니다","새로운 아이디어를 잘 냅니다","복잡한 구조를 빠르게 이해합니다"],c:["분석이 길어져 결정이 늦어질 수 있습니다","반복 업무와 마무리 작업에 흥미가 적습니다"],t:["충분한 정보와 생각할 시간을 주세요","마감과 결정 시점을 분명히 정해 주세요"],r:["데이터 분석","상품·프로세스 설계","IT 기획","리스크 분석"]},
+ESTP:{n:"현장의 실행가",s:"빠르게 판단하고 바로 움직이는 유형입니다. 현장에서 상황을 읽고 결과를 만들어 냅니다.",g:["판단과 행동이 빠릅니다","협상과 설득에 강합니다","예상 밖의 상황에 잘 대응합니다"],c:["장기 계획과 문서 작업을 소홀히 하기 쉽습니다","결과를 서두르다 절차를 놓칠 수 있습니다"],t:["목표를 분명히 하고 피드백은 바로 주세요","지켜야 할 규정의 범위를 미리 알려주세요"],r:["영업","딜러 네트워크 관리","채권회수","신규 시장 개척"]},
+ESFP:{n:"분위기를 만드는 활동가",s:"밝은 에너지로 사람들 사이를 잇는 유형입니다. 함께 일할 때 가장 힘이 납니다.",g:["처음 만난 사람과도 금방 친해집니다","팀에 활기를 불어넣습니다","현장에서 고객을 잘 응대합니다"],c:["장기 계획보다 당장의 일에 집중하는 편입니다","반복적인 서류 작업에서 실수가 생기기 쉽습니다"],t:["팀 단위로 일할 기회를 주세요","마무리 단계는 체크리스트로 함께 챙겨 주세요"],r:["영업","고객 응대","사내 행사","대외 홍보"]},
+ENFP:{n:"가능성을 여는 기획자",s:"아이디어가 풍부하고 사람들에게 열정을 전하는 유형입니다. 새로운 가능성을 찾고 시도하는 것을 즐깁니다.",g:["아이디어를 많이 냅니다","사람들을 끌어들이는 열정이 있습니다","변화를 반기고 적응이 빠릅니다"],c:["시작한 일을 마무리하는 힘이 약할 수 있습니다","관심이 쉽게 다른 곳으로 옮겨갑니다"],t:["아이디어를 들어준 뒤 우선순위를 함께 정해 주세요","마무리를 챙기는 동료와 짝을 지어 주세요"],r:["마케팅","신사업","교육","대외협력"]},
+ENTP:{n:"도전하는 토론가",s:"여러 관점에서 문제를 보고 기존 방식에 질문을 던지는 유형입니다. 토론 속에서 새로운 해법을 찾습니다.",g:["다양한 관점에서 문제를 봅니다","기존 방식의 허점을 잘 찾습니다","새로운 것을 빠르게 배웁니다"],c:["반대 의견이 공격적으로 들릴 수 있습니다","세부 실행을 소홀히 하기 쉽습니다"],t:["반론을 아이디어로 받아 주세요","실행을 꼼꼼히 챙기는 동료와 함께 일하게 해 주세요"],r:["신사업","전략","협상","제도 개선"]},
+ESTJ:{n:"체계를 세우는 운영자",s:"기준과 규칙을 세워 조직을 효율적으로 굴러가게 하는 유형입니다. 결정이 빠르고 실행력이 강합니다.",g:["조직과 일정을 체계적으로 관리합니다","결정과 실행이 빠릅니다","업무 기준과 규칙을 분명히 세웁니다"],c:["다른 방식에 대한 유연성이 부족할 수 있습니다","직설적인 표현이 강하게 느껴질 수 있습니다"],t:["보고는 명확하게, 약속은 정확하게 지켜 주세요","변화를 제안할 때는 근거와 계획을 함께 보여 주세요"],r:["지점 운영","프로젝트 관리","내부통제","영업관리"]},
+ESFJ:{n:"팀을 챙기는 조율자",s:"협력과 화합을 중시하고 주변 사람을 잘 챙기는 유형입니다. 팀이 함께 움직이도록 분위기를 만듭니다.",g:["협력하는 분위기를 만듭니다","동료와 고객의 필요를 세심하게 챙깁니다","관계와 약속을 꾸준히 관리합니다"],c:["비판과 갈등에 민감합니다","다른 사람에게 맞추다 결정이 늦어질 수 있습니다"],t:["고마운 점을 자주 표현해 주세요","갈등은 사람 문제와 일 문제를 나눠서 이야기해 주세요"],r:["고객관리","인사","지점 운영","교육"]},
+ENFJ:{n:"사람을 이끄는 촉진자",s:"사람들의 잠재력을 끌어내고 같은 목표로 이끄는 유형입니다. 말과 행동으로 동기를 불어넣습니다.",g:["비전을 공유하고 동기를 부여합니다","다양한 사람과 원활하게 소통합니다","동료의 강점을 잘 발견합니다"],c:["남의 문제까지 떠안아 지치기 쉽습니다","갈등 상황에서 객관성이 흔들릴 수 있습니다"],t:["의견을 존중하고 팀에 미친 영향을 인정해 주세요","충분히 쉬도록 챙겨 주세요"],r:["팀 리더","교육·코칭","조직문화","대외협력"]},
+ENTJ:{n:"목표를 끌고 가는 지휘관",s:"목표를 세우고 사람과 자원을 조직해 결과를 만들어 내는 유형입니다. 전략적 판단과 추진력이 강합니다.",g:["목표를 정하고 끝까지 추진합니다","전략적으로 판단합니다","사람과 자원을 효율적으로 배치합니다"],c:["속도를 중시하다 사람을 놓칠 수 있습니다","반대 의견에 조급해질 수 있습니다"],t:["결론부터 보고해 주세요","반론은 근거와 함께 분명하게 말해 주세요"],r:["경영관리","사업총괄","PMI·구조개편","전략 프로젝트"]}};
+
+const DIMS=['ei','sn','tf','jp'];
+const $=id=>document.getElementById(id);
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const A=new Array(32).fill(0);
+const RID=Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+let cur=0,user={},busy=false,xlist=[],xans=[],xcur=0,base=null;
+
+/* 채점 */
+function score32(a){const q=n=>a[n-1];
+  const s=[30-q(3)-q(7)-q(11)+q(15)-q(19)+q(23)+q(27)-q(31),12+q(4)+q(8)+q(12)+q(16)+q(20)-q(24)-q(28)+q(32),
+           30-q(2)+q(6)+q(10)-q(14)-q(18)+q(22)-q(26)-q(30),18+q(1)+q(5)-q(9)+q(13)-q(17)+q(21)-q(25)+q(29)];
+  return {s,p:s.map(v=>Math.round((v-8)/32*100))};}
+const LET=[['I','E'],['S','N'],['F','T'],['J','P']];
+function typeOf(p){return p.map((v,i)=>LET[i][v>50?1:0]).join('');}
+function finalPct(p,votes){return p.map((v,i)=>{const d=DIMS[i];if(!(d in votes))return v;
+  const k=votes[d],adj=v+(k-2)*5;
+  if(k>=3)return Math.min(100,Math.max(adj,51));if(k<=1)return Math.max(0,Math.min(adj,49));return v;});}
+
+/* 32문항 */
+$('segs').innerHTML='<i></i>'.repeat(32);
+const box=$('choices');
+['A에 매우 가깝다','A에 조금 가깝다','둘 다 비슷하다','B에 조금 가깝다','B에 매우 가깝다'].forEach((l,k)=>{const b=document.createElement('button');b.type='button';b.className='ch';b.dataset.v=k+1;b.setAttribute('role','radio');b.innerHTML='<span class="mk"></span><span>'+l+'</span>';box.appendChild(b);});
+box.addEventListener('click',e=>{const b=e.target.closest('.ch');if(!b||busy)return;A[cur]=+b.dataset.v;paint();busy=true;
+  setTimeout(()=>{if(cur<31)go(cur+1);else{busy=false;after32();}},RM?120:240);});
+function go(n){const st=$('stage');if(RM){cur=n;show();busy=false;return;}
+  st.classList.add('out');setTimeout(()=>{cur=n;show();st.classList.remove('out');busy=false;},170);}
+function paint(){box.querySelectorAll('.ch').forEach(b=>{const on=+b.dataset.v===A[cur];b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});}
+function show(){const q=Q[cur];$('count').innerHTML='<b>'+(cur+1)+'</b> / 32';
+  [...$('segs').children].forEach((s,i)=>s.className=i<cur?'done':(i===cur?'now':''));
+  $('half').textContent=cur===16?'절반 왔습니다. 조금만 더 힘내세요':'';
+  $('qt').textContent=q[0];$('qa').textContent=q[1];$('qb').textContent=q[2];$('back').style.visibility=cur?'visible':'hidden';paint();window.scrollTo(0,0);}
+$('back').onclick=()=>{if(cur>0&&!busy){busy=true;go(cur-1);}};
+
+$('go').onclick=start;
+$('dept').addEventListener('keydown',e=>{if(e.key==='Enter')start();});
+$('name').addEventListener('keydown',e=>{if(e.key==='Enter')$('dept').focus();});
+['name','dept'].forEach(id=>$(id).addEventListener('input',()=>$('e-start').textContent=''));
+function start(){const n=$('name').value.trim(),d=$('dept').value.trim();
+  if(!n){$('e-start').textContent='이름을 입력해 주세요.';$('name').focus();return;}
+  if(!d){$('e-start').textContent='부서를 입력해 주세요.';$('dept').focus();return;}
+  user={name:n,dept:d};swap('s-start','s-q');show();}
+function swap(a,b){$(a).classList.add('hide');$(b).classList.remove('hide');window.scrollTo(0,0);}
+
+/* 경계선 확인 */
+function after32(){base=score32(A);
+  const bd=DIMS.filter((d,i)=>base.p[i]>=40&&base.p[i]<=60);
+  if(!bd.length){finish({});return;}
+  xlist=[];bd.forEach(d=>X[d].forEach((x,k)=>xlist.push({d,k,x})));
+  for(let i=xlist.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[xlist[i],xlist[j]]=[xlist[j],xlist[i]];}
+  xans=new Array(xlist.length).fill(null);xcur=0;
+  $('inter-n').textContent='둘 중 나에게 더 가까운 쪽을 고르는 짧은 질문 '+xlist.length+'개입니다. 1분이면 끝납니다.';
+  swap('s-q','s-inter');}
+$('xgo').onclick=()=>{swap('s-inter','s-x');xshow();};
+function xshow(){const it=xlist[xcur];$('xcount').innerHTML='추가 확인 <b>'+(xcur+1)+'</b> / '+xlist.length;
+  $('xq').textContent=it.x[0];$('xa').textContent=it.x[1];$('xb').textContent=it.x[2];
+  $('xback').style.visibility=xcur?'visible':'hidden';
+  $('xpick').querySelectorAll('button').forEach(b=>b.classList.toggle('on',xans[xcur]===+b.dataset.p));window.scrollTo(0,0);}
+$('xpick').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||busy)return;xans[xcur]=+b.dataset.p;
+  $('xpick').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));busy=true;
+  setTimeout(()=>{busy=false;if(xcur<xlist.length-1){xcur++;xshow();}else xdone();},RM?100:220);});
+$('xback').onclick=()=>{if(xcur>0){xcur--;xshow();}};
+function xdone(){const votes={},raw={};
+  xlist.forEach((it,i)=>{const right=(xans[i]===0)===(it.x[3]===1);votes[it.d]=(votes[it.d]||0)+(right?1:0);
+    raw[it.d]=raw[it.d]||[0,0,0,0];raw[it.d][it.k]=xans[i]===0?'A':'B';});
+  finish(votes,raw);}
+
+/* 결과 */
+function finish(votes,raw){base=base||score32(A);
+  const fp=finalPct(base.p,votes),t=typeOf(fp),d=T[t];
+  ['s-q','s-x','s-inter'].forEach(id=>$(id).classList.add('hide'));$('s-res').classList.remove('hide');window.scrollTo(0,0);
+  $('rname').textContent=user.name+' 님의 성격유형';
+  $('rcode').innerHTML=t.split('').map((c,i)=>'<span style="color:var(--c-'+DIMS[i]+')">'+c+'</span>').join('');
+  $('rnick').textContent=d.n;$('rsum').textContent=d.s;
+  const nm=[['에너지 방향','I 내향','E 외향'],['정보 인식','S 감각','N 직관'],['판단 기준','F 감정','T 사고'],['생활 방식','J 판단','P 인식']];
+  $('rdims').innerHTML=nm.map((x,i)=>{const r=fp[i],l=100-r,rw=r>50,m=Math.abs(r-50),c=DIMS[i];
+    const lv=m<=10?'경계선':(m<25?'약간 뚜렷':'뚜렷');const bar=rw?'left:50%;width:'+(r-50)+'%':'right:50%;width:'+(l-50)+'%';
+    return '<div class="drow"><div class="dh"><span class="nm">'+x[0]+'</span><span class="lv" style="background:var(--t-'+c+');color:var(--c-'+c+')">'+lv+'</span></div><div class="meter"><span class="l'+(rw?'':' win')+'">'+x[1]+'<br>'+l+'%</span><div class="track"><i style="'+bar+';background:var(--c-'+c+')"></i></div><span class="r'+(rw?' win':'')+'">'+x[2]+'<br>'+r+'%</span></div></div>';}).join('');
+  const li=a=>'<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  $('rmore').innerHTML='<div class="sec"><h3>일할 때의 강점</h3>'+li(d.g)+'</div><div class="sec"><h3>조심하면 좋은 점</h3>'+li(d.c)+'</div><div class="sec"><h3>이 유형과 함께 일할 때</h3>'+li(d.t)+'</div><div class="sec"><h3>잘 맞는 업무</h3><div class="roles">'+d.r.map(x=>'<span>'+x+'</span>').join('')+'</div></div>';
+  post({action:'save',id:RID,group:GROUP,name:user.name,dept:user.dept,answers:A,extra:raw||{}},true);}
+
+$('fit').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  $('fit').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  $('fit-msg').textContent='응답해 주셔서 감사합니다';post({action:'fit',id:RID,fit:b.dataset.f},false);});
+
+async function post(body,show){const st=$('rsave'),msg=st.querySelector('span');
+  try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+    if(show){st.className='status ok';msg.textContent='결과가 저장되었습니다';}}
+  catch(e){if(show){st.className='status bad';msg.textContent='저장하지 못했습니다. 인터넷 연결을 확인한 뒤 새로고침해 주세요';}}}
+</script>
+</body>
+</html>
