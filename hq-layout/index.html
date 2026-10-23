@@ -106,6 +106,8 @@ ul.zones li b{font-family:var(--font-mono);font-weight:500;font-variant-numeric:
 .zone{stroke-width:45}
 .zone.room{stroke-width:90}
 .zone.dash{stroke-dasharray:240 160}
+.zone.openz{stroke-width:28;stroke-dasharray:80 120;fill-opacity:.55}
+.zone.walled{stroke:var(--wall);stroke-width:110}
 .d-fill{fill:var(--sheet)}
 .s-head{stroke-width:70}
 .s-corr{fill:var(--corr);stroke:none}
@@ -141,7 +143,7 @@ html{scroll-behavior:smooth}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.9</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.10</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.8월 운영팀 배치도(Opsi 1) 인원, 2026.10월 조직도. 지점 소속 CMO는 본사 상주 인원에서 제외함. 1인당 면적은 한국 사무실 기준을 적용함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
@@ -183,6 +185,7 @@ html{scroll-behavior:smooth}
     <div><span class="cap">개인실 · 직급별 차등</span><span class="big">18 / 15 / 10~12㎡</span><span class="cap">CEO 약 18㎡, 이사(CFO·운영·영업) 약 15㎡, GM 5명과 Risk Expert 약 10~12㎡</span></div>
   </div>
   <p><b>부서장석.</b> 부서장은 팀 구역 앞쪽에 팀원을 바라보는 방향으로 앉고, 팀원석보다 큰 책상과 뒤쪽 여유 공간을 둠.</p>
+  <p><b>실과 오픈 좌석 구분.</b> 벽으로 막힌 실은 개인실(주재원·이사·GM), 회의실, 창고·문서고, 기사 대기실뿐임. 부서별 팀 구역은 벽이나 칸막이 없는 오픈 좌석이며, 도면의 점선은 부서 경계만 나타냄.</p>
   <p><b>수용 한계.</b> 주 통로를 확보하고 1인당 7㎡ 이상을 지키면 건물 전체에 현 인원 91명이 들어가며 예비석은 없음. 2027년 증원은 1인당 7㎡까지 밀도를 올릴 경우 약 <b id="cap7"></b>석을 더 둘 수 있음. 그 이상은 5층 좌측 구역 사용이나 사옥 이전 시기 검토가 필요함.</p>
 </section>
 
@@ -320,7 +323,7 @@ function drawFloor(f){
     if(l){const tx=el("text",{x:x+w/2,y:y+h/2+110,"text-anchor":"middle",class:"s-txt"},svg,l);if(w<1500&&h>w){tx.setAttribute("transform",`rotate(-90 ${x+w/2} ${y+h/2})`)}}}
   for(const z of f.zones){const [x,y,w,h,cat,label,n,type,o={}]=z;
     if(type==="corr"){el("rect",{x,y,width:w,height:h,class:"s-corr"},svg);const vt=h>w*1.6;const t=el("text",{x:x+w/2,y:y+h/2+100,"text-anchor":"middle",class:"s-corrtxt"},svg,label);if(vt)t.setAttribute("transform",`rotate(-90 ${x+w/2} ${y+h/2})`);continue}
-    const cls=`zone z-${cat}`+(type==="room"?" room":"")+(o.reserve||type==="hot"?" dash":"");
+    const cls=`zone z-${cat}`+(type==="open"?" openz":" walled")+(o.reserve?" dash":"");
     el("rect",{x,y,width:w,height:h,class:cls,style:type==="text"?"opacity:.55":""},svg);
     if(type==="open"||type==="multi"){const {slots,cap}=type==="multi"?foldSlots(x,y,w,h,n):seatSlots(x,y,w,h,n,o.head);if(cap<n)console.warn("over",f.id,label,n,cap);
       const light=o.reserve||type==="multi";
@@ -349,7 +352,7 @@ function floorAvg(f){let a=0,n=0;for(const z of f.zones){const o=z[8]||{};if(z[7
 const sb=document.getElementById("sumBody");let tot=0,res=0;
 const nav=document.getElementById("nav");const host=document.getElementById("floors");
 const lg=document.getElementById("legend");for(const k in CATS){lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="background:var(--${k}-bg);border-color:var(--${k})"></i>${CATS[k]}</span>`)}
-lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span>`);
+lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:1.5px dashed var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
 for(const f of FLOORS){tot+=f.resident;res+=f.reserve;
   sb.insertAdjacentHTML("beforeend",`<tr><td><a href="#floor-${f.id}" style="color:inherit">${f.name}</a></td><td>${f.desc}</td><td class="num">${f.resident}</td><td class="num">${f.reserve||"–"}</td><td class="num">${floorAvg(f)}</td><td>${f.sub}</td></tr>`);
   nav.insertAdjacentHTML("beforeend",`<a href="#floor-${f.id}">${f.name}</a>`);
