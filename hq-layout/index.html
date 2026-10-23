@@ -106,7 +106,7 @@ ul.zones li b{font-family:var(--font-mono);font-weight:500;font-variant-numeric:
 .zone{stroke-width:45}
 .zone.room{stroke-width:90}
 .zone.dash{stroke-dasharray:240 160}
-.zone.openz{stroke-width:28;stroke-dasharray:80 120;fill-opacity:.55}
+.zone.openz{stroke-width:70;stroke-dasharray:1 170;stroke-linecap:round;fill-opacity:.55}
 .zone.walled{stroke:var(--wall);stroke-width:110}
 .d-fill{fill:var(--sheet)}
 .s-head{stroke-width:70}
@@ -247,7 +247,7 @@ const FLOORS=[
  zones:[[0,2720,8385,1080,"corr","엘리베이터 홀",0,"corr"],[0,3800,14665,1300,"corr","주 통로",0,"corr"],[0,12400,12500,1200,"corr","주 통로(계단·화장실)",0,"corr"],
    [8385,0,3115,3800,"ctrl","심사 GM실",1,"room"],[11500,0,3165,3800,"comm","소회의실",4,"meet"],
    [0,5100,6850,7300,"ctrl","심사",7,"open",{head:1}],
-   [6850,5100,2930,7300,"fin","기획·사업개발 (CFO 라인)",3,"open",{head:1}],
+   [6850,5100,2930,7300,"fin","기획·사업개발",3,"open",{head:1}],
    [9780,5100,2930,7300,"ctrl","법무",3,"open",{head:1}],
    [12710,5100,1955,7300,"ctrl","Corsec",2,"open"]],
  resident:16,reserve:0,
@@ -352,7 +352,7 @@ function floorAvg(f){let a=0,n=0;for(const z of f.zones){const o=z[8]||{};if(z[7
 const sb=document.getElementById("sumBody");let tot=0,res=0;
 const nav=document.getElementById("nav");const host=document.getElementById("floors");
 const lg=document.getElementById("legend");for(const k in CATS){lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="background:var(--${k}-bg);border-color:var(--${k})"></i>${CATS[k]}</span>`)}
-lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:1.5px dashed var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
+lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
 for(const f of FLOORS){tot+=f.resident;res+=f.reserve;
   sb.insertAdjacentHTML("beforeend",`<tr><td><a href="#floor-${f.id}" style="color:inherit">${f.name}</a></td><td>${f.desc}</td><td class="num">${f.resident}</td><td class="num">${f.reserve||"–"}</td><td class="num">${floorAvg(f)}</td><td>${f.sub}</td></tr>`);
   nav.insertAdjacentHTML("beforeend",`<a href="#floor-${f.id}">${f.name}</a>`);
