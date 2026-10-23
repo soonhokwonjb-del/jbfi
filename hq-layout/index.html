@@ -233,14 +233,14 @@ const FLOORS=[
  fixed:[["v",0,2720,2595,13930,"외부"],["c",1000,0,2345,2720,"기존 실"],["c",3345,0,2840,2720,"E/V"],["c",6185,0,1350,2720,"전기"],
    ["v",2595,4780,4405,6520,"G층 홀 상부(오픈)"],["c",2595,12600,4305,4050,"계단"],["c",15195,10500,2300,6150,"화장실·탕비실"],["v",18700,8800,2475,7850,"외부"]],
  zones:[[2595,2720,16105,1300,"corr","주 통로",0,"corr"],[2595,11300,12600,1300,"corr","주 통로",0,"corr"],
-   [7535,0,3765,2720,"coll","채권관리 GM실",1,"room"],[11300,0,3200,2720,"comm","소회의실",4,"meet"],[14500,0,4200,2720,"comm","통합 문서고",0,"text"],
-   [7000,4020,6000,5200,"exec","이사회 회의실(확장)",14,"meet"],[7000,9220,6000,2080,"comm","회의 준비·복합기",0,"text"],
+   [7535,0,3765,2720,"coll","채권관리 GM실",1,"room"],[11300,0,3200,2720,"comm","소회의실",4,"meet"],[14500,0,4200,2720,"comm","통합 문서고·복합기",0,"text"],
+   [7000,4020,6000,7280,"exec","이사회 회의실(확장)",18,"meet"],
    [13000,4020,5700,6480,"coll","채권관리 ①",5,"open",{head:1}],
    [7000,12600,8195,4050,"coll","채권관리 ②",4,"open"],
    [18700,0,2475,8800,"ops","GA",2,"open"]],
  resident:12,reserve:0,
- desc:"이사회 회의실(확장), 채권관리(GM실 포함), GA, 소회의실, 통합 문서고",
- notes:["운영이사 담당 부서 가운데 채권관리와 GA를 둠. 운영이사실과 운영본부는 바로 아래 G층에 있음.","엘리베이터 앞 상단 주 통로와 계단·화장실을 잇는 하단 주 통로를 둠. 채권관리 ①은 상단, 채권관리 ②는 하단 통로에서 들어감.","이사회 회의실은 통로를 확보하면서 약 31㎡, 14석으로 넓힘(기존 약 29㎡).","3·4층 문서고는 1층 상단 실로 모음. 1층 상주는 AP 추가, LED 매입, 기존 프레임 철거로 천고·네트워크 문제를 보완하는 것을 전제로 함."]},
+ desc:"이사회 회의실(확장, 18석), 채권관리(GM실 포함), GA, 소회의실, 통합 문서고·복합기",
+ notes:["운영이사 담당 부서 가운데 채권관리와 GA를 둠. 운영이사실과 운영본부는 바로 아래 G층에 있음.","엘리베이터 앞 상단 주 통로와 계단·화장실을 잇는 하단 주 통로를 둠. 채권관리 ①은 상단, 채권관리 ②는 하단 통로에서 들어감.","이사회 회의실은 아래 남는 공간까지 합쳐 약 44㎡, 18석으로 넓힘(기존 약 29㎡). 복합기는 통합 문서고에 둠.","3·4층 문서고는 1층 상단 실로 모음. 1층 상주는 AP 추가, LED 매입, 기존 프레임 철거로 천고·네트워크 문제를 보완하는 것을 전제로 함."]},
 {id:"2",name:"2층",sub:"CEO 직할 · 심사·법무·Corsec + 기획·사업개발",W:16040,H:16650,line:"CEO",
  fixed:[["c",1010,0,2540,2720,"E/V"],["c",3550,0,1700,2720,"전기"],["c",5250,0,3135,2720,"서버실"],
    ["c",750,13900,6050,2750,"계단"],["c",6800,13600,2580,3050,"금고(BPKB)"],["c",9380,13600,3120,3050,"창고"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
@@ -331,9 +331,13 @@ function drawFloor(f){
         el("circle",{cx:s.cx,cy:s.cy,r:s.head?260:220,class:`s-chair t-${cat}`,style:light?"opacity:.45":""},svg);
         if(s.head)el("text",{x:s.x+s.w/2,y:s.y+s.h/2+105,"text-anchor":"middle",class:"s-headtxt"},svg,"부서장")}}
     if(type==="room"){const dx=x+w/2-800,dy=y+h/2;el("rect",{x:dx,y:dy,width:1600,height:700,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx:dx+800,cy:dy+950,r:220,class:`t-${cat}`},svg)}
-    if(type==="meet"){const tw=Math.min(w*0.55,Math.max(1800,n*420)),th=Math.min(h*0.35,1400);const tx=x+(w-tw)/2,ty=y+(h-th)/2+250;
-      el("rect",{x:tx,y:ty,width:tw,height:th,rx:th/2,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);
-      const per=Math.ceil(n/2);for(let i=0;i<n;i++){const top=i<per;const k=top?i:i-per;const cnt=top?per:n-per;const cx=tx+tw*(k+1)/(cnt+1);el("circle",{cx,cy:top?ty-280:ty+th+280,r:190,class:`t-${cat}`,style:"opacity:.7"},svg)}}
+    if(type==="meet"){const vert=h>w*1.1;const per=Math.ceil(n/2);
+      if(vert){const th=Math.min(h*0.78,Math.max(1800,per*700)),tw=Math.min(w*0.32,n>12?2000:1400);const tx=x+(w-tw)/2,ty=y+(h-th)/2+250;
+        el("rect",{x:tx,y:ty,width:tw,height:th,rx:tw/2,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);
+        for(let i=0;i<n;i++){const left=i<per;const k=left?i:i-per;const cnt=left?per:n-per;const cy=ty+th*(k+1)/(cnt+1);el("circle",{cx:left?tx-300:tx+tw+300,cy,r:200,class:`t-${cat}`,style:"opacity:.7"},svg)}}
+      else{const tw=Math.min(w*0.62,Math.max(1800,per*700)),th=Math.min(h*0.35,1400);const tx=x+(w-tw)/2,ty=y+(h-th)/2+250;
+        el("rect",{x:tx,y:ty,width:tw,height:th,rx:th/2,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);
+        for(let i=0;i<n;i++){const top=i<per;const k=top?i:i-per;const cnt=top?per:n-per;const cx=tx+tw*(k+1)/(cnt+1);el("circle",{cx,cy:top?ty-280:ty+th+280,r:190,class:`t-${cat}`,style:"opacity:.7"},svg)}}}
     if(label){const t=el("text",{x:x+180,y:y+470,class:`s-ztxt t-${cat}`},svg);
       const fs=w<3600?300:360;t.setAttribute("style",`font-size:${fs}px`);t.textContent=label;
       if(n&&type!=="text"){el("tspan",{class:"s-ztxt2",dx:180},t,`${n}${type==="meet"||type==="multi"?"인":"석"}`)}}
