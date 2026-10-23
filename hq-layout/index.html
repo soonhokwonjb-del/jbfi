@@ -143,7 +143,7 @@ html{scroll-behavior:smooth}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.10</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.11</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.8월 운영팀 배치도(Opsi 1) 인원, 2026.10월 조직도. 지점 소속 CMO는 본사 상주 인원에서 제외함. 1인당 면적은 한국 사무실 기준을 적용함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
@@ -181,10 +181,10 @@ html{scroll-behavior:smooth}
   <div class="std">
     <div><span class="cap">정부청사 기준 · 일반직원</span><span class="big">7㎡/인</span><span class="cap">정부청사관리규정 시행규칙 별표 1. 과장급은 10~17㎡</span></div>
     <div><span class="cap">본 안 결과 · 팀 구역</span><span class="big" id="avgBig">7.9㎡/인</span><span class="cap">구역별 7.1~11.7㎡(로비 겸용 비서석 제외). 주 통로·회의실·화장실 제외, 구역 안 통로 포함</span></div>
-    <div><span class="cap">책상 규격</span><span class="big">1,600×800</span><span class="cap">팀원석. 마주 보는 책상 줄 사이 1,800mm. 부서장석 1,800×900</span></div>
+    <div><span class="cap">책상 규격</span><span class="big">1,600×800</span><span class="cap">팀원석. 마주 보는 책상 줄 사이 1,800mm. 부서장석 1,800×900, 팀원 책상 줄 끝에 T자로 배치</span></div>
     <div><span class="cap">개인실 · 직급별 차등</span><span class="big">18 / 15 / 10~12㎡</span><span class="cap">CEO 약 18㎡, 이사(CFO·운영·영업) 약 15㎡, GM 5명과 Risk Expert 약 10~12㎡</span></div>
   </div>
-  <p><b>부서장석.</b> 부서장은 팀 구역 앞쪽에 팀원을 바라보는 방향으로 앉고, 팀원석보다 큰 책상과 뒤쪽 여유 공간을 둠.</p>
+  <p><b>부서장석(T자 배치).</b> 부서장 책상(1,800×900)을 팀원 책상 줄의 끝에 직각으로 붙여 T자로 배치함. 팀원 전체를 한 섬으로 묶어 관리하고, 별도 좌석 띠를 두지 않아 면적을 아낌. 폭이 좁은 구역(기획·사업개발, 법무)은 부서장 책상 아래로 팀원 책상을 세로로 붙임. 부서장 면담과 민감한 통화는 각 층 소회의실을 씀.</p>
   <p><b>실과 오픈 좌석 구분.</b> 벽으로 막힌 실은 개인실(주재원·이사·GM), 회의실, 창고·문서고, 기사 대기실뿐임. 부서별 팀 구역은 벽이나 칸막이 없는 오픈 좌석이며, 도면의 점선은 부서 경계만 나타냄.</p>
   <p><b>수용 한계.</b> 주 통로를 확보하고 1인당 7㎡ 이상을 지키면 건물 전체에 현 인원 91명이 들어가며 예비석은 없음. 2027년 증원은 1인당 7㎡까지 밀도를 올릴 경우 약 <b id="cap7"></b>석을 더 둘 수 있음. 그 이상은 5층 좌측 구역 사용이나 사옥 이전 시기 검토가 필요함.</p>
 </section>
@@ -293,20 +293,37 @@ const FLOORS=[
 const NS="http://www.w3.org/2000/svg";
 function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
 
-// desk module: staff 1,600×800 (column pitch 1,700), back-to-back pairs, 1,800 between desk edges; head 1,800×900 facing the team
+// desk module: staff 1,600×800 (column pitch 1,700), back-to-back pairs, 1,800 between desk rows.
+// Department head: T-shape — head desk (1,800×900) set perpendicular at the end of the team's desk island.
 function seatSlots(x,y,w,h,n,head){
-  const pad=220,lab=450;let ax=x+pad,ay=y+pad+lab,aw=w-2*pad,ah=h-2*pad-lab;const out=[];let m=n;
-  if(head&&n>1&&n<=4&&1800+(n-1)*1800<=aw&&ah>=1400){ // single row: head first
-    let cx=ax;for(let k=0;k<n;k++){const hw=k===0?1800:1600,hh=k===0?900:800;out.push({x:cx,y:ay,w:hw,h:hh,cx:cx+hw/2,cy:ay+hh+300,head:k===0});cx+=hw+200}
-    return {slots:out,cap:n};
+  const pad=220,lab=450;const ax=x+pad,ay=y+pad+lab,aw=w-2*pad,ah=h-2*pad-lab;const out=[];
+  const rowsFor=(H)=>{let r=0;while(r<30){const p=Math.floor(r/2);const need=p*3400+(r%2?3200:1600);if(need<=H)r++;else break}return r};
+  if(!head){
+    const cols=Math.max(1,Math.floor((aw+100)/1700));let rows=rowsFor(ah);if(rows===0&&ah>=700)rows=1;
+    const c=Math.min(cols,Math.max(1,n));const ox=ax+(aw-(c*1700-100))/2;
+    for(let k=0;k<Math.min(n,cols*rows);k++){const r=Math.floor(k/c),col=k%c,p=Math.floor(r/2),odd=r%2;const dy=ay+p*3400+(odd?1600:800);
+      out.push({x:ox+col*1700,y:dy,w:1600,h:800,cx:ox+col*1700+800,cy:odd?dy+800+330:dy-330})}
+    return {slots:out,cap:cols*rows};
   }
-  if(head){out.push({x:ax+aw/2-900,y:ay+500,w:1800,h:900,cx:ax+aw/2,cy:ay+230,head:true});ay+=2200;ah-=2200;m=n-1}
-  const cols=Math.max(1,Math.floor((aw+100)/1700));let rows=0;
-  while(rows<30){const i=rows,p=Math.floor(i/2);const need=p*3400+(i%2?3200:1600);if(need<=ah)rows++;else break}
-  if(rows===0&&ah>=700)rows=1;
-  const cap=cols*rows+(head?1:0);const c=Math.min(cols,Math.max(1,m));const gw=c*1700-100;const ox=ax+(aw-gw)/2;
-  for(let k=0;k<Math.min(m,cols*rows);k++){const r=Math.floor(k/c),col=k%c,p=Math.floor(r/2),odd=r%2;
-    const dy=ay+p*3400+(odd?1600:800);out.push({x:ox+col*1700,y:dy,w:1600,h:800,cx:ox+col*1700+800,cy:odd?dy+800+330:dy-330,head:false})}
+  const m=n-1;const HC=1350; // head column: chair 450 + desk 900
+  // horizontal T: island of back-to-back rows, head desk across the left end
+  const colsH=Math.floor((aw-HC+100)/1700);const rowsH=rowsFor(ah);
+  if(colsH>=1&&rowsH>=1&&colsH*rowsH>=m){
+    const r0=Math.min(rowsH,Math.max(1,Math.ceil(m/colsH)));const c=Math.min(colsH,Math.ceil(m/r0));
+    const iw=HC+c*1700-100;const ox=ax+(aw-iw)/2;const tx=ox+HC;const dy0=ay+800;
+    const pairH=r0>=2?1600:800;
+    out.push({x:ox+450,y:dy0+pairH/2-900,w:900,h:1800,cx:ox+225,cy:dy0+pairH/2,head:true,vert:true});
+    for(let k=0;k<m;k++){const r=Math.floor(k/c),col=k%c,p=Math.floor(r/2),odd=r%2;const dy=ay+p*3400+(odd?1600:800);
+      out.push({x:tx+col*1700,y:dy,w:1600,h:800,cx:tx+col*1700+800,cy:odd?dy+800+330:dy-330})}
+    return {slots:out,cap:colsH*rowsH+1};
+  }
+  // vertical T: head desk across the top, team desks stacked below (one or two columns)
+  const two=aw>=2950&&m>1;const per=Math.max(1,Math.floor((ah-900-500+100)/1700));
+  const cap=(two?2:1)*per+1;const cx0=ax+aw/2;
+  out.push({x:cx0-900,y:ay+450,w:1800,h:900,cx:cx0,cy:ay+150,head:true});
+  for(let k=0;k<m;k++){const col=two?k%2:0,r=two?Math.floor(k/2):k;const dy=ay+1350+r*1700;
+    const dx=two?(col===0?cx0-800:cx0):cx0-400;
+    out.push({x:dx,y:dy,w:800,h:1600,cx:two?(col===0?dx-330:dx+800+330):dx+800+330,cy:dy+800})}
   return {slots:out,cap};
 }
 // compact folding tables for multipurpose rooms
@@ -329,7 +346,7 @@ function drawFloor(f){
       const light=o.reserve||type==="multi";
       for(const s of slots){el("rect",{x:s.x,y:s.y,width:s.w,height:s.h,rx:60,class:`s-desk z-${cat}`+(s.head?" s-head":""),style:light?"fill:none;stroke-dasharray:120 90":(s.head?"":"fill:var(--sheet)")},svg);
         el("circle",{cx:s.cx,cy:s.cy,r:s.head?260:220,class:`s-chair t-${cat}`,style:light?"opacity:.45":""},svg);
-        if(s.head)el("text",{x:s.x+s.w/2,y:s.y+s.h/2+105,"text-anchor":"middle",class:"s-headtxt"},svg,"부서장")}}
+        if(s.head){const ht=el("text",{x:s.x+s.w/2,y:s.y+s.h/2+105,"text-anchor":"middle",class:"s-headtxt"},svg,"부서장");if(s.vert)ht.setAttribute("transform",`rotate(-90 ${s.x+s.w/2} ${s.y+s.h/2})`)}}}
     if(type==="room"){const dx=x+w/2-800,dy=y+h/2;el("rect",{x:dx,y:dy,width:1600,height:700,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx:dx+800,cy:dy+950,r:220,class:`t-${cat}`},svg)}
     if(type==="meet"){const vert=h>w*1.1;const per=Math.ceil(n/2);
       if(vert){const th=Math.min(h*0.78,Math.max(1800,per*700)),tw=Math.min(w*0.32,n>12?2000:1400);const tx=x+(w-tw)/2,ty=y+(h-th)/2+250;
@@ -356,7 +373,7 @@ function floorAvg(f){let a=0,n=0;for(const z of f.zones){const o=z[8]||{};if(z[7
 const sb=document.getElementById("sumBody");let tot=0,res=0;
 const nav=document.getElementById("nav");const host=document.getElementById("floors");
 const lg=document.getElementById("legend");for(const k in CATS){lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="background:var(--${k}-bg);border-color:var(--${k})"></i>${CATS[k]}</span>`)}
-lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
+lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900, T자)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
 for(const f of FLOORS){tot+=f.resident;res+=f.reserve;
   sb.insertAdjacentHTML("beforeend",`<tr><td><a href="#floor-${f.id}" style="color:inherit">${f.name}</a></td><td>${f.desc}</td><td class="num">${f.resident}</td><td class="num">${f.reserve||"–"}</td><td class="num">${floorAvg(f)}</td><td>${f.sub}</td></tr>`);
   nav.insertAdjacentHTML("beforeend",`<a href="#floor-${f.id}">${f.name}</a>`);
