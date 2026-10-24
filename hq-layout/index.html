@@ -112,6 +112,7 @@ ul.zones li b{font-family:var(--font-mono);font-weight:500;font-variant-numeric:
 .s-head{stroke-width:70}
 .s-corr{fill:var(--corr);stroke:none}
 .s-path{stroke:#c9a227;stroke-width:80;stroke-dasharray:260 200;stroke-linecap:round}
+.s-pathband{fill:var(--corr);stroke:#c9a227;stroke-width:60;stroke-dasharray:240 160}
 .s-pathtxt{font-family:var(--font-body);font-size:230px;fill:#a3831a;font-weight:600}
 .s-corrtxt{font-family:var(--font-body);font-size:280px;fill:var(--muted);letter-spacing:40px}
 .s-headtxt{font-family:var(--font-body);font-size:280px;font-weight:700;fill:var(--ink)}
@@ -145,7 +146,7 @@ html{scroll-behavior:smooth}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.20</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.21</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.8월 운영팀 배치도(Opsi 1) 인원, 2026.10월 조직도. 지점 소속 CMO는 본사 상주 인원에서 제외함. 1인당 면적은 한국 사무실 기준을 적용함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
@@ -188,7 +189,7 @@ html{scroll-behavior:smooth}
   </div>
   <p><b>책상 배치 원칙(전 층 공통).</b> 팀원 책상은 세로로 두 줄을 마주 보게 붙여 한 줄 덩어리(의자 포함 폭 약 2.5m)로 놓고, 부서장 책상(1,800×900)은 그 덩어리 아래쪽 끝에 바로 붙여 T자로 둠. 부서장 자리는 팀 덩어리와 같은 폭(약 2.5m)을 차지하며 팀 전체를 정면으로 바라봄. 같은 층 부서장들은 모두 같은 높이의 한 줄에 나란히 앉아 같은 방향을 보고, 다른 부서장의 뒷모습을 마주 보지 않음. 한 줄 덩어리에는 팀원 6명까지 앉고, 7명 이상인 팀(운영, 채권관리, 리테일)은 바로 옆에 짧은 덩어리를 하나 더 둠. 팀 구역 안 남는 자리에는 1인당 6㎡ 기준 안에서 빈 책상(예비석)을 넣음. 구역 깊이가 얕은 1층 AMU와 3층 비서석만 한 줄로 같은 방향을 보고 앉음.</p>
   <p><b>실과 오픈 좌석 구분.</b> 벽으로 막힌 실은 개인실(주재원·이사·GM), SKAI실, 인사실, GA·통합 문서고, 회의실, 창고, 기사 대기실뿐임. 부서별 팀 구역은 벽이나 칸막이 없는 오픈 좌석이며, 도면의 점선은 부서 경계만 나타냄.</p>
-  <p><b>통행로.</b> 2~4층은 엘리베이터 쪽 주 통로와 계단·화장실 쪽 주 통로 사이에 별도 통로를 내지 않고, 현재 건물처럼 팀 구역 사이를 지나다님. 도면의 노란 점선이 지정 통행로이며 2층 약 1.4m, 3층 약 1.5m, 4층 약 3.1m를 확보함. 이 자리에는 캐비닛·박스를 두지 않음.</p>
+  <p><b>통행로.</b> 2~4층은 엘리베이터 쪽 주 통로와 계단·화장실 쪽 주 통로 사이에 별도 통로를 내지 않고, 현재 건물처럼 팀 구역 사이를 지나다님. 도면의 노란 띠(점선 테두리)가 지정 통행로이며 2층 약 1.4m, 3층 약 1.5m, 4층 약 3.1m를 확보함. 이 자리에는 캐비닛·박스를 두지 않음.</p>
   <p><b>수용 한계.</b> 1인당 6㎡ 기준으로 현 인원 91명이 모두 들어가고, 팀 구역 안에 빈 책상(예비석) <b id="spareTot"></b>석을 더 둠. 예비석은 해당 부서 증원에 먼저 씀. 그 이상은 5층 좌측 구역 사용이나 사옥 이전 시기 검토가 필요함.</p>
 </section>
 
@@ -203,7 +204,7 @@ html{scroll-behavior:smooth}
     <li>1층 상주(채권관리·GA)에 대한 업체 의견 확인 필요. 업체는 낮은 천고와 네트워크 미비를 지적했으므로 AP·LED·프레임 철거로 보완 가능한지 확인해야 함.</li>
     <li>IT가 G층, 서버실이 2층에 있어 서버실 출입 동선과 보안 기준을 IT 담당과 확인 필요.</li>
     <li>G층 우측 회색 구역(KB Bank 대여금고 구역으로 추정)과 5층 좌측 구역의 범위·용도 확인 필요. 사용 가능하면 증원 여력이 생김.</li>
-    <li>1층 이사회 회의실은 채권관리를 한 구역에 모으기 위해 하단 실로 옮겨 약 33㎡, 14석이 됨(기존 약 29㎡). 이사회 참석 인원에 통역·발표자를 더해 14석으로 충분한지 확인 필요.</li>
+    <li>1층 이사회 회의실은 기존 자리에서 약 44㎡, 18석으로 넓힘. 채권관리 구역으로 가는 길이 이사회 회의실 앞 상단 주 통로를 지나므로, 회의 중 소음 차단(문·흡음)을 시공 시 반영해야 함.</li>
     <li>인사·Corsec 분리 후 인원(인사 3, Corsec 2로 반영)과 부서장 지정은 조직 확정 시 조정 필요. SKAI는 3명으로 반영함(G층 SKAI실 1인당 약 7.4㎡). 실제 인원 확인 필요.</li>
     <li>부서별 인원은 9/11 조직정보와 8월 배치도 기준 추정치임. 업체 송부 전 인사팀 명부로 대사 필요.</li>
     <li>주 통로 폭(1.2~1.3m)과 피난 동선은 현지 건축·소방 기준으로 업체가 확인해야 함.</li>
@@ -242,17 +243,19 @@ const FLOORS=[
  resident:20,reserve:0,
  desc:"운영이사실, 운영 GM실, 운영, IT, Sisdur, SKAI실, 기사 대기실",
  notes:["운영이사와 운영본부(운영 GM 산하 운영·IT·Sisdur)를 한 층에 둠. 채권관리·AMU·GA는 바로 위 1층, 인사는 5층에 있음.","SKAI(내부감사부)는 하단 독립실(약 22㎡, 1인당 약 7.4㎡)에 둠. 다른 부서와 벽으로 분리되고 출입구에서 가까움.","가장 넓은 층이어서 인원이 많은 운영본부를 둠. 출입구 쪽 로비와 상단 주 통로에서 각 구역으로 들어감.","IT는 서버실(2층)과 한 층 떨어져 있으므로, 서버실 출입 동선을 IT 담당과 확인해야 함.","카운터 철거와 기사 대기실 신설은 업체 제안을 반영함."]},
-{id:"1",name:"1층",sub:"운영이사 라인 · 채권관리·AMU·GA + 이사회 회의실",W:21175,H:16650,line:"운영이사",
+{id:"1",name:"1층",sub:"운영이사 라인 · 이사회 회의실 + 채권관리·AMU·GA",W:21175,H:16650,line:"운영이사",
  fixed:[["v",0,2720,2595,13930,"외부"],["c",1000,0,2345,2720,"기존 실"],["c",3345,0,2840,2720,"E/V"],["c",6185,0,1350,2720,"전기"],
    ["v",2595,4780,4405,6520,"G층 홀 상부(오픈)"],["c",2595,12600,4305,4050,"계단"],["c",15195,10500,2300,6150,"화장실·탕비실"],["v",18700,8800,2475,7850,"외부"]],
- zones:[[2595,2720,16105,1300,"corr","주 통로",0,"corr"],[2595,11300,12600,1300,"corr","주 통로",0,"corr"],
-   [7535,0,3765,2720,"coll","채권관리 GM실",1,"room"],[11300,0,7400,2720,"ops","AMU",2,"open",{head:1}],
-   [7000,4020,11700,6480,"coll","채권관리",9,"open",{head:1}],
-   [7000,12600,8195,4050,"exec","이사회 회의실",14,"meet"],
-   [18700,0,2475,8800,"ops","GA·통합 문서고",2,"open",{walled:1}]],
+ zones:[[2595,2720,10405,1300,"corr","주 통로",0,"corr"],[2595,11300,12600,1300,"corr","주 통로",0,"corr"],
+   [7535,0,3765,2720,"coll","채권관리 GM실",1,"room"],[11300,0,1700,2720,"comm","복합기·수납",0,"text"],
+   [13000,0,5700,10500,"coll","채권관리",9,"open",{head:1}],
+   [7000,4020,6000,7280,"exec","이사회 회의실(확장)",18,"meet"],
+   [7000,12600,4000,4050,"ops","AMU",2,"open",{head:1}],
+   [11000,12600,4195,4050,"ops","GA",2,"open"],
+   [18700,0,2475,8800,"comm","통합 문서고",0,"text"]],
  resident:14,reserve:0,
- desc:"채권관리(GM실 포함), AMU, GA·통합 문서고, 이사회 회의실(14석)",
- notes:["운영이사 담당 부서 가운데 채권관리와 GA를 둠. 운영이사실과 운영본부는 바로 아래 G층에 있음.","채권관리 9명을 나누지 않고 한 구역에 모음(1인당 약 8.4㎡). 이를 위해 이사회 회의실을 하단 실로 옮김.","이사회 회의실은 약 33㎡, 14석으로 기존(약 29㎡)보다 조금 넓음. 18석 이상이 필요하면 별도 검토 필요.","AMU(담보자산 관리)를 채권관리 GM실 바로 옆 상단 구역(약 20㎡)에 두어 채권관리와 연체·회수 업무를 붙여 처리함.","통합 문서고는 GA실 안쪽에 두어 GA가 원본 보관을 함께 관리함. 복합기는 층별로 둠. 1층 소회의실은 없어지고 이사회 회의실을 함께 씀.","1층 상주는 AP 추가, LED 매입, 기존 프레임 철거로 천고·네트워크 문제를 보완하는 것을 전제로 함."]},
+ desc:"이사회 회의실(확장, 18석), 채권관리(GM실 포함), AMU, GA, 통합 문서고",
+ notes:["이사회 회의실은 기존 주 회의실 자리(층 가운데)를 그대로 쓰면서 아래 남는 공간까지 넓혀 약 44㎡, 18석으로 함.","채권관리 9명은 층 오른쪽 구역(약 5.7m×10.5m, 약 60㎡)에 한 덩어리로 앉힘. 이를 위해 상단 주 통로를 이사회 회의실 오른쪽 끝까지만 내고, 그 오른쪽 상단 공간을 채권관리 구역에 합침. 부서장은 구역 아래쪽 끝에서 팀을 바라봄.","AMU와 GA는 하단 실(기존 DPS 회의실·이사실 자리)에 나란히 둠.","통합 문서고는 오른쪽 끝 좁고 긴 실에 두고 GA가 관리함. 복합기는 채권관리 GM실 옆 작은 공간에 둠.","1층 상주는 AP 추가, LED 매입, 기존 프레임 철거로 천고·네트워크 문제를 보완하는 것을 전제로 함."]},
 {id:"2",name:"2층",sub:"CFO 라인 · 회계·자금·기획·사업개발 + 법무·Corsec",W:16040,H:16650,line:"CFO·CEO",
  fixed:[["c",1010,0,2540,2720,"E/V"],["c",3550,0,1700,2720,"전기"],["c",5250,0,3135,2720,"서버실"],
    ["c",750,13900,6050,2750,"계단"],["c",6800,13600,2580,3050,"금고(BPKB)"],["c",9380,13600,3120,3050,"창고"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
@@ -382,7 +385,7 @@ function drawFloor(f){
       const fs=w<3600?300:360;t.setAttribute("style",`font-size:${fs}px`);t.textContent=label;
       if(n&&type!=="text"){el("tspan",{class:"s-ztxt2",dx:180},t,`${n}${type==="meet"||type==="multi"?"인":"석"}`)}}
   }
-  for(const [px,py1,py2,pl] of (f.paths||[])){el("line",{x1:px,y1:py1+150,x2:px,y2:py2-150,class:"s-path"},svg);const pt=el("text",{x:px,y:(py1+py2)/2-90,"text-anchor":"middle",class:"s-pathtxt"},svg,pl);pt.setAttribute("transform",`rotate(-90 ${px} ${(py1+py2)/2})`)}
+  for(const [px,py1,py2,pl] of (f.paths||[])){el("rect",{x:px-550,y:py1+650,width:1100,height:py2-py1-650,class:"s-pathband"},svg);const pt=el("text",{x:px,y:(py1+py2)/2+425,"text-anchor":"middle",class:"s-corrtxt"},svg,pl);pt.setAttribute("transform",`rotate(-90 ${px} ${(py1+py2)/2+325})`)}
   el("rect",{x:0,y:0,width:f.W,height:f.H,class:"s-wall"},svg);
   // scale bar 5m
   const sy=f.H+650;el("line",{x1:0,y1:sy,x2:5000,y2:sy,style:"stroke:var(--ink);stroke-width:60"},svg);
@@ -399,7 +402,7 @@ for(const f of FLOORS){let s=0;for(const z of f.zones){const [x,y,w,h,c,l,n,t,o=
 const sb=document.getElementById("sumBody");let tot=0,res=0;
 const nav=document.getElementById("nav");const host=document.getElementById("floors");
 const lg=document.getElementById("legend");for(const k in CATS){lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="background:var(--${k}-bg);border-color:var(--${k})"></i>${CATS[k]}</span>`)}
-lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>빈 책상(예비석)·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900, T자)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:2px dashed #c9a227"></i>팀 구역 사이 통행로</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
+lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>빈 책상(예비석)·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900, T자)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="background:var(--corr);border:2px dashed #c9a227"></i>팀 구역 사이 통행로(폭 1.1m 표시)</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
 for(const f of FLOORS){tot+=f.resident;res+=f.reserve;
   sb.insertAdjacentHTML("beforeend",`<tr><td><a href="#floor-${f.id}" style="color:inherit">${f.name}</a></td><td>${f.desc}</td><td class="num">${f.resident}</td><td class="num">${f.reserve||"–"}</td><td class="num">${floorAvg(f)}</td><td>${f.sub}</td></tr>`);
   nav.insertAdjacentHTML("beforeend",`<a href="#floor-${f.id}">${f.name}</a>`);
