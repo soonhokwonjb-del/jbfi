@@ -145,7 +145,7 @@ html{scroll-behavior:smooth}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.16</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.17</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.8월 운영팀 배치도(Opsi 1) 인원, 2026.10월 조직도. 지점 소속 CMO는 본사 상주 인원에서 제외함. 1인당 면적은 한국 사무실 기준을 적용함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
@@ -183,10 +183,10 @@ html{scroll-behavior:smooth}
   <div class="std">
     <div><span class="cap">정부청사 기준 · 일반직원</span><span class="big">7㎡/인</span><span class="cap">정부청사관리규정 시행규칙 별표 1. 과장급은 10~17㎡</span></div>
     <div><span class="cap">본 안 결과 · 팀 구역</span><span class="big" id="avgBig">7.9㎡/인</span><span class="cap">구역별 7.1~11.7㎡(로비 겸용 비서석 제외). 주 통로·회의실·화장실 제외, 구역 안 통로 포함</span></div>
-    <div><span class="cap">책상 규격</span><span class="big">1,600×800</span><span class="cap">팀원석. 마주 보는 책상 줄 사이 1,800mm. 부서장석 1,800×900, 팀원 책상 줄 끝에 T자로 배치</span></div>
+    <div><span class="cap">책상 규격</span><span class="big">1,600×800</span><span class="cap">팀원석. 마주 보는 책상 줄 사이 1,800mm. 부서장석 1,800×900, 모든 팀 책상 줄의 왼쪽 끝에 T자로 배치</span></div>
     <div><span class="cap">개인실 · 직급별 차등</span><span class="big">17 / 15 / 10~12㎡</span><span class="cap">CEO 약 17㎡, 이사(CFO·운영·영업) 약 15㎡, GM 5명과 Risk Expert 약 10~12㎡</span></div>
   </div>
-  <p><b>부서장석(T자 배치).</b> 부서장 책상(1,800×900)을 팀원 책상 줄의 끝에 직각으로 붙여 T자로 배치함. 팀원 전체를 한 섬으로 묶어 관리하고, 별도 좌석 띠를 두지 않아 면적을 아낌. 폭이 좁은 구역(기획·사업개발, 법무)은 부서장 책상 아래로 팀원 책상을 세로로 붙임. 부서장 면담과 민감한 통화는 각 층 소회의실을 씀.</p>
+  <p><b>책상 배치 원칙(전 층 공통).</b> 모든 팀은 마주 보는 책상 줄을 가로 방향(창과 나란히)으로 놓아 한 덩어리로 앉힘. 부서장 책상(1,800×900)은 항상 팀 책상 줄의 왼쪽 끝에 직각으로 붙여 T자로 두고, 팀 구역도 왼쪽 위부터 채움. 인원이 많아 한 줄에 다 들어가지 않으면 같은 모양의 책상 줄을 아래에 한 번 더 둠. 구역 깊이가 얕아 마주 보는 줄을 둘 수 없는 곳(G층 SKAI실, 1층 AMU, 3층 비서석)만 한 줄로 앉힘. 부서장 면담과 민감한 통화는 각 층 회의실을 씀.</p>
   <p><b>실과 오픈 좌석 구분.</b> 벽으로 막힌 실은 개인실(주재원·이사·GM), SKAI실, 인사실, GA·통합 문서고, 회의실, 창고, 기사 대기실뿐임. 부서별 팀 구역은 벽이나 칸막이 없는 오픈 좌석이며, 도면의 점선은 부서 경계만 나타냄.</p>
   <p><b>통행로.</b> 2~4층은 엘리베이터 쪽 주 통로와 계단·화장실 쪽 주 통로 사이에 별도 통로를 내지 않고, 현재 건물처럼 팀 구역 사이를 지나다님. 도면의 노란 점선이 지정 통행로이며 2층 약 1.6m, 3층 약 2.0m, 4층 약 1.3m를 확보함. 이 자리에는 캐비닛·박스를 두지 않음.</p>
   <p><b>수용 한계.</b> 주 통로를 확보하고 1인당 7㎡ 이상을 지키면 건물 전체에 현 인원 91명이 들어감. 부서 구역 안에서 7㎡ 기준을 지키며 실제로 더 앉힐 수 있는 자리는 G층 Sisdur·IT 각 1석, 1층 채권관리 1석으로 합계 3석이며, 해당 부서 증원에만 쓸 수 있음. 그 이상은 5층 좌측 구역 사용이나 사옥 이전 시기 검토가 필요함.</p>
@@ -258,36 +258,36 @@ const FLOORS=[
    ["c",750,13900,6050,2750,"계단"],["c",6800,13600,2580,3050,"금고(BPKB)"],["c",9380,13600,3120,3050,"창고"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
  zones:[[0,2720,8385,1080,"corr","엘리베이터 홀",0,"corr"],[0,3800,14665,1300,"corr","주 통로",0,"corr"],[0,12400,12500,1200,"corr","주 통로(계단·화장실)",0,"corr"],
    [8385,0,3815,3800,"exec","CFO실",1,"room"],[12200,0,2465,3800,"comm","소회의실",4,"meet"],
-   [0,5100,9780,7300,"fin","회계·자금·기획·사업개발",10,"open",{head:2}],
-   [9780,5100,2930,7300,"ctrl","법무",3,"open",{head:1}],
-   [12710,5100,1955,7300,"ctrl","Corsec",2,"open"]],
- paths:[[9540,5100,12400,"통행로 약 1.6m"]],
+   [0,5100,9800,7300,"fin","회계·자금·기획·사업개발",10,"open",{head:1,groups:[7,3]}],
+   [9800,5100,4865,4350,"ctrl","법무",3,"open",{head:1}],
+   [9800,9450,4865,2950,"ctrl","Corsec",2,"open"]],
+ paths:[[8000,5100,12400,"통행로"]],
  resident:16,reserve:0,
  desc:"CFO실, 회계·자금·기획·사업개발(한 구역), 법무, Corsec, 소회의실",
- notes:["CFO 담당 조직(회계·자금, 기획·사업개발) 10명을 한 구역의 책상 한 덩어리로 묶음. 왼쪽 끝에 회계·자금 부서장, 오른쪽 끝(CFO실 앞)에 기획·사업개발 부서장을 T자로 둠.","CFO실은 기존 심사 GM실에 소회의실 일부를 합쳐 약 14.5㎡로 만듦. 소회의실은 약 9㎡로 줄어듦.","CEO 직속인 법무·Corsec은 CEO실 바로 아래층에 둠. Corsec은 법무 바로 옆에 두어 향후 통합 시 자리 이동이 없음.","서버실·금고는 기존 위치를 유지함."]},
+ notes:["CFO 담당 조직(회계·자금, 기획·사업개발) 10명을 한 구역에 모음. 위쪽 책상 줄은 회계·자금, 아래쪽 책상 줄은 기획·사업개발이며, 두 부서장 모두 왼쪽 끝에 T자로 앉음.","CFO실은 기존 심사 GM실에 소회의실 일부를 합쳐 약 14.5㎡로 만듦. 소회의실은 약 9㎡로 줄어듦.","CEO 직속인 법무·Corsec은 CEO실 바로 아래층에 둠. Corsec은 법무 바로 옆에 두어 향후 통합 시 자리 이동이 없음.","서버실·금고는 기존 위치를 유지함."]},
 {id:"3",name:"3층",sub:"CEO · Risk Expert · 심사 · 리스크·컴플라이언스 · CEO 특설조직",W:16040,H:16650,line:"CEO",
  fixed:[["c",1010,0,3090,2720,"E/V"],["c",4100,0,750,2720,"전기"],
    ["c",1150,13800,5650,2850,"계단"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
- zones:[[4850,3800,9815,1300,"corr","주 통로",0,"corr"],[0,12400,12500,1300,"corr","주 통로(계단·화장실)",0,"corr"],
-   [0,2720,4850,2380,"exec","비서·로비",1,"open"],
-   [4850,0,2700,3800,"ctrl","심사 GM실",1,"room"],[7550,0,2715,3800,"exec","Risk Expert실",1,"room"],[10265,0,4400,3800,"exec","CEO실",1,"room",{meet:6}],
-   [0,5100,6900,7300,"ctrl","심사",7,"open",{head:1}],
-   [11715,5100,2950,7300,"new","CEO 특설조직",3,"open",{head:1}],
-   [6900,5100,4815,7300,"ctrl","리스크·컴플라이언스",5,"open",{head:1}],
+ zones:[[4850,3700,9815,1200,"corr","주 통로",0,"corr"],[0,12400,12500,1300,"corr","주 통로(계단·화장실)",0,"corr"],
+   [0,2720,4850,2180,"exec","비서·로비",1,"open"],
+   [4850,0,2700,3700,"ctrl","심사 GM실",1,"room"],[7550,0,2715,3700,"exec","Risk Expert실",1,"room"],[10265,0,4400,3700,"exec","CEO실",1,"room",{meet:6}],
+   [0,4900,6540,7500,"ctrl","심사",7,"open",{head:1}],
+   [6540,4900,4735,7500,"ctrl","리스크·컴플라이언스",5,"open",{head:1}],
+   [11275,4900,3390,7500,"new","CEO 특설조직",3,"open",{head:1}],
    [6800,13700,5700,2950,"comm","소회의실",6,"meet"]],
- paths:[[11250,5100,12400,"통행로 약 2.0m"]],
+ paths:[[10500,4900,12400,"통행로"]],
  resident:19,reserve:0,
  desc:"CEO실·Risk Management Expert실·심사 GM실, 비서, 심사, CEO 특설조직, 리스크·컴플라이언스, 소회의실",
- notes:["Risk Management Expert는 심사·리스크와 반드시 같은 층에 있어야 하므로 CEO·Risk Expert·심사·리스크·컴플라이언스를 3층에 모음.","심사·리스크·컴플라이언스·Risk Expert를 층 왼쪽과 가운데에 붙여 모음. 심사 구역과 리스크·컴플라이언스 구역이 맞닿아 있고, 심사 GM실과 Risk Expert실은 벽 하나를 사이에 두고 나란히 있으며 두 방 모두 두 팀 구역 바로 앞(주 통로 건너편)에 있음.","CEO실은 오른쪽 끝에 두고 CEO 특설조직을 바로 앞에 둠. 각 부서는 나누지 않고 한 구역에 앉힘.","개인실 깊이를 2·4층과 같은 3.8m로 맞춰 팀 구역을 넓힘. 개인실은 CEO실 약 16.7㎡, Risk Expert실 약 10.3㎡, 심사 GM실 약 10.3㎡임.","CEO실 안 왼쪽에 6인 회의 테이블(1,400×800, 양옆 2명씩·양끝 1명씩)을 두고, 집무 책상은 오른쪽에 둠. 회의 공간이 약 2.4m×3.8m여서 테이블 주변 통행폭이 빠듯하므로 가구 치수 확인 필요.","하단 실(기존 문서고)은 6인 소회의실로 씀.","CFO실은 바로 아래 2층에 둠. 주재원 가운데 CFO만 한 층 떨어짐.","비서석은 엘리베이터 앞 로비에 두어 방문객 안내를 겸함. CEO실과는 약 6m 떨어져 있음."]},
+ notes:["Risk Management Expert는 심사·리스크와 반드시 같은 층에 있어야 하므로 CEO·Risk Expert·심사·리스크·컴플라이언스를 3층에 모음.","심사·리스크·컴플라이언스·Risk Expert를 층 왼쪽과 가운데에 붙여 모음. 심사 구역과 리스크·컴플라이언스 구역이 맞닿아 있고, 심사 GM실과 Risk Expert실은 벽 하나를 사이에 두고 나란히 있으며 두 방 모두 두 팀 구역 바로 앞(주 통로 건너편)에 있음.","CEO실은 오른쪽 끝에 두고 CEO 특설조직을 바로 앞에 둠. 각 부서는 나누지 않고 한 구역에 앉힘.","개인실 깊이를 3.7m, 주 통로 폭을 1.2m로 하여 팀 구역 깊이를 7.5m로 확보함. 개인실은 CEO실 약 16.3㎡, Risk Expert실 약 10.0㎡, 심사 GM실 약 10.0㎡임.","CEO실 안 왼쪽에 6인 회의 테이블(1,400×800, 양옆 2명씩·양끝 1명씩)을 두고, 집무 책상은 오른쪽에 둠. 회의 공간이 약 2.4m×3.8m여서 테이블 주변 통행폭이 빠듯하므로 가구 치수 확인 필요.","하단 실(기존 문서고)은 6인 소회의실로 씀.","CFO실은 바로 아래 2층에 둠. 주재원 가운데 CFO만 한 층 떨어짐.","비서석은 엘리베이터 앞 로비에 두어 방문객 안내를 겸함. CEO실과는 약 6m 떨어져 있음."]},
 {id:"4",name:"4층",sub:"영업이사 라인 · 영업본부",W:16040,H:16650,line:"영업이사",
  fixed:[["c",1010,0,3090,2720,"E/V"],["c",4100,0,750,2720,"전기"],
    ["c",600,13930,6050,2720,"계단"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
  zones:[[0,2720,4850,2380,"corr","엘리베이터 홀",0,"corr"],[4850,3800,9815,1300,"corr","주 통로",0,"corr"],[0,12400,12500,1300,"corr","주 통로(계단·화장실)",0,"corr"],
    [4850,0,3950,3800,"exec","영업이사실",1,"room"],[8800,0,2930,3800,"sales","Corporate GM실",1,"room"],[11730,0,2935,3800,"sales","Retail GM실",1,"room"],
-   [0,5100,7820,7300,"sales","리테일 본사",8,"open",{head:1,dx:-300}],
+   [0,5100,7820,7300,"sales","리테일 본사",8,"open",{head:1}],
    [7820,5100,6845,7300,"sales","Corporate·Fleet",7,"open",{head:1}],
    [6650,13700,2650,2950,"sales","샤리아(UUS)",1,"open"],[9300,13700,3200,2950,"comm","소회의실",4,"meet"]],
- paths:[[7430,5100,12400,"통행로 약 1.3m"]],
+ paths:[[6350,5100,12400,"통행로"]],
  resident:19,reserve:0,
  desc:"영업이사실, Corporate·Retail GM실, 리테일 본사, Corporate·Fleet, 샤리아(UUS), 소회의실",
  notes:["영업이사 담당 조직(리테일, Corporate·Fleet, 샤리아)을 한 층에 모음.","기도실(5층 이전)과 문서고(1층 이전)가 빠진 상단부를 이사실·GM실로 씀.","사업개발은 CFO 라인 기획·사업개발로 옮겨 2층에 둠."]},
@@ -296,7 +296,7 @@ const FLOORS=[
    ["c",0,11875,6050,4775,"계단"],["c",11600,12000,2515,4650,"화장실·탕비실"],["v",14115,0,1175,16650,"외부"]],
  zones:[[6425,7430,2640,5770,"corr","홀·통로",0,"corr"],
    [6425,0,7690,7430,"comm","다목적 공간(교육·행사·직원 모임)",40,"multi"],
-   [9065,7430,5050,4150,"supp","인사실",3,"open",{head:1,walled:1}],
+   [9065,7430,5050,4200,"supp","인사실",3,"open",{head:1,walled:1}],
    [6050,13200,5550,3450,"comm","기도실(4층에서 이전)",0,"text"]],
  resident:3,reserve:0,
  desc:"다목적 공간(약 57㎡), 인사실, 기도실",
@@ -306,47 +306,30 @@ const FLOORS=[
 const NS="http://www.w3.org/2000/svg";
 function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
 
-// desk module: staff 1,600×800 (column pitch 1,700), back-to-back pairs, 1,800 between desk rows.
-// Department head: T-shape — head desk (1,800×900) set perpendicular at the end of the team's desk island.
-function seatSlots(x,y,w,h,n,head){
-  const pad=220,lab=450;const ax=x+pad,ay=y+pad+lab,aw=w-2*pad,ah=h-2*pad-lab;const out=[];
-  const rowsFor=(H)=>{let r=0;while(r<30){const p=Math.floor(r/2);const need=p*3400+(r%2?3200:1600);if(need<=H)r++;else break}return r};
-  if(!head){
-    const cols=Math.max(1,Math.floor((aw+100)/1700));let rows=rowsFor(ah);if(rows===0&&ah>=700)rows=1;
-    const c=Math.min(cols,Math.max(1,n));const ox=ax+(aw-(c*1700-100))/2;
-    for(let k=0;k<Math.min(n,cols*rows);k++){const r=Math.floor(k/c),col=k%c,p=Math.floor(r/2),odd=r%2;const dy=ay+p*3400+(odd?1600:800);
-      out.push({x:ox+col*1700,y:dy,w:1600,h:800,cx:ox+col*1700+800,cy:odd?dy+800+330:dy-330})}
-    return {slots:out,cap:cols*rows};
-  }
-  if(head===2){const m2=n-2,HC2=1350,ch=Math.floor((aw-2*HC2+100)/1700),rh=rowsFor(ah);
-    if(ch>=1&&rh>=1&&ch*rh>=m2){const r0=Math.min(rh,Math.max(1,Math.ceil(m2/ch)));const c=Math.min(ch,Math.ceil(m2/r0));
-      const iw=2*HC2+c*1700-100;const ox=ax+(aw-iw)/2;const tx=ox+HC2;const dy0=ay+800;const pairH=r0>=2?1600:800;
-      out.push({x:ox+450,y:dy0+pairH/2-900,w:900,h:1800,cx:ox+225,cy:dy0+pairH/2,head:true,vert:true});
-      out.push({x:ox+iw-1350,y:dy0+pairH/2-900,w:900,h:1800,cx:ox+iw-225,cy:dy0+pairH/2,head:true,vert:true});
-      for(let k=0;k<m2;k++){const r=Math.floor(k/c),col=k%c,p=Math.floor(r/2),odd=r%2;const dy=ay+p*3400+(odd?1600:800);
-        out.push({x:tx+col*1700,y:dy,w:1600,h:800,cx:tx+col*1700+800,cy:odd?dy+800+330:dy-330})}
-      return {slots:out,cap:ch*rh+2}}
-    head=1}
-  const m=n-1;const HC=1350; // head column: chair 450 + desk 900
-  // horizontal T: island of back-to-back rows, head desk across the left end
-  const colsH=Math.floor((aw-HC+100)/1700);const rowsH=rowsFor(ah);
-  if(colsH>=1&&rowsH>=1&&colsH*rowsH>=m){
-    const r0=Math.min(rowsH,Math.max(1,Math.ceil(m/colsH)));const c=Math.min(colsH,Math.ceil(m/r0));
-    const iw=HC+c*1700-100;const ox=ax+(aw-iw)/2;const tx=ox+HC;const dy0=ay+800;
-    const pairH=r0>=2?1600:800;
-    out.push({x:ox+450,y:dy0+pairH/2-900,w:900,h:1800,cx:ox+225,cy:dy0+pairH/2,head:true,vert:true});
-    for(let k=0;k<m;k++){const r=Math.floor(k/c),col=k%c,p=Math.floor(r/2),odd=r%2;const dy=ay+p*3400+(odd?1600:800);
-      out.push({x:tx+col*1700,y:dy,w:1600,h:800,cx:tx+col*1700+800,cy:odd?dy+800+330:dy-330})}
-    return {slots:out,cap:colsH*rowsH+1};
-  }
-  // vertical T: head desk across the top, team desks stacked below (one or two columns)
-  const two=aw>=2950&&m>1;const per=Math.max(1,Math.floor((ah-900-500+100)/1700));
-  const cap=(two?2:1)*per+1;const cx0=ax+aw/2;
-  out.push({x:cx0-900,y:ay+450,w:1800,h:900,cx:cx0,cy:ay+150,head:true});
-  for(let k=0;k<m;k++){const col=two?k%2:0,r=two?Math.floor(k/2):k;const dy=ay+1350+r*1700;
-    const dx=two?(col===0?cx0-800:cx0):cx0-400;
-    out.push({x:dx,y:dy,w:800,h:1600,cx:two?(col===0?dx-330:dx+800+330):dx+800+330,cy:dy+800})}
-  return {slots:out,cap};
+// desk module (v0.17): every team is one horizontal island of face-to-face desk rows.
+// Department head desk (1,800×900) sits across the LEFT end of the island (T shape); a second head (shared zone) sits at the right end.
+// Teams with one member, or zones too shallow for a face-to-face pair, use a single row. Islands start at the zone's top-left.
+function seatSlots(x,y,w,h,n,head,groups){
+  const pad=220,lab=250;const ax=x+pad,ay=y+pad+lab,aw=w-2*pad,ah=h-2*pad-lab;const out=[];
+  if(groups){const HC=1350;const c=Math.max(...groups.map(g=>Math.ceil((g-1)/2)));const iw=HC+c*1700-100;
+    if(iw>aw||groups.length*3400-200>ah)return {slots:[],cap:0};
+    groups.forEach((g,gi)=>{const y0=ay+gi*3400;const mid=y0+1600;out.push({x:ax+450,y:mid-900,w:900,h:1800,cx:ax+225,cy:mid,head:true,vert:true});
+      const cc=Math.ceil((g-1)/2);for(let k=0;k<g-1;k++){const row=Math.floor(k/cc),col=k%cc;const dy=y0+(row?1600:800);
+        out.push({x:ax+HC+col*1700,y:dy,w:1600,h:800,cx:ax+HC+col*1700+800,cy:row?dy+800+330:dy-330})}});
+    return {slots:out,cap:n,iw,ix:ax}}
+  const heads=head===2?2:(head?1:0);const m=Math.max(0,n-heads);const HC=1350;
+  const depth=r=>{if(r===1)return 1300;const p=Math.floor(r/2),odd=r%2;return (p-1)*3400+3200+(odd?1800:0)};
+  const cands=m<=1?[1]:[2,4,6,1,3];let best=null;
+  for(const r of cands){if(r>m&&m>0)continue;const c=Math.max(1,Math.ceil(m/r));const iw=heads*HC+c*1700-100;
+    if(iw<=aw&&depth(r)<=ah){best={r,c,iw};break}}
+  if(!best)return {slots:[],cap:0};
+  const {r,c,iw}=best;const ox=ax,tx=ox+(heads?HC:0);const rowY=k=>{const p=Math.floor(k/2),odd=k%2;return ay+p*3400+(odd?1600:800)};
+  const pairMid=r>=2?ay+1600:ay+900;
+  if(heads)out.push({x:ox+450,y:pairMid-900,w:900,h:1800,cx:ox+225,cy:pairMid,head:true,vert:true});
+  if(heads===2){const rx=tx+c*1700-100+0;out.push({x:rx,y:pairMid-900,w:900,h:1800,cx:rx+1125,cy:pairMid,head:true,vert:true})}
+  for(let k=0;k<m;k++){const row=Math.floor(k/c),col=k%c;const dy=r===1?ay+500:rowY(row);const odd=r===1?0:row%2;
+    out.push({x:tx+col*1700,y:dy,w:1600,h:800,cx:tx+col*1700+800,cy:odd?dy+800+330:dy-330})}
+  return {slots:out,cap:n,iw:iw,ix:ox};
 }
 // compact folding tables for multipurpose rooms
 function foldSlots(x,y,w,h,n){const pad=250,lab=520,ax=x+pad,ay=y+pad+lab,aw=w-2*pad,ah=h-2*pad-lab;
@@ -364,7 +347,7 @@ function drawFloor(f){
     if(type==="corr"){el("rect",{x,y,width:w,height:h,class:"s-corr"},svg);const vt=h>w*1.6;const t=el("text",{x:x+w/2,y:y+h/2+100,"text-anchor":"middle",class:"s-corrtxt"},svg,label);if(vt)t.setAttribute("transform",`rotate(-90 ${x+w/2} ${y+h/2})`);continue}
     const cls=`zone z-${cat}`+(type==="open"&&!o.walled?" openz":" walled")+(o.reserve?" dash":"");
     el("rect",{x,y,width:w,height:h,class:cls,style:type==="text"?"opacity:.55":""},svg);
-    if(type==="open"||type==="multi"){const {slots,cap}=type==="multi"?foldSlots(x,y,w,h,n):seatSlots(x,y,w,h,n,o.head);if(o.dx)for(const s of slots){s.x+=o.dx;s.cx+=o.dx}if(cap<n)console.warn("over",f.id,label,n,cap);
+    if(type==="open"||type==="multi"){const {slots,cap}=type==="multi"?foldSlots(x,y,w,h,n):seatSlots(x,y,w,h,n,o.head,o.groups);if(cap<n)console.warn("over",f.id,label,n,cap);
       const light=o.reserve||type==="multi";
       for(const s of slots){el("rect",{x:s.x,y:s.y,width:s.w,height:s.h,rx:60,class:`s-desk z-${cat}`+(s.head?" s-head":""),style:light?"fill:none;stroke-dasharray:120 90":(s.head?"":"fill:var(--sheet)")},svg);
         el("circle",{cx:s.cx,cy:s.cy,r:s.head?260:220,class:`s-chair t-${cat}`,style:light?"opacity:.45":""},svg);
