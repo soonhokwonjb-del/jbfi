@@ -145,7 +145,7 @@ html{scroll-behavior:smooth}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.18</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.19</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.8월 운영팀 배치도(Opsi 1) 인원, 2026.10월 조직도. 지점 소속 CMO는 본사 상주 인원에서 제외함. 1인당 면적은 한국 사무실 기준을 적용함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
@@ -306,35 +306,37 @@ const FLOORS=[
 const NS="http://www.w3.org/2000/svg";
 function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
 
-// desk module (v0.18): Korean-style column islands. Team desks (1,600×800, long side vertical) face each other in pairs of columns;
+// desk module (v0.19): Korean-style T islands. Team desks (1,600×800, long side vertical) face each other in pairs of columns;
 // the department head desk (1,800×900) sits across the BOTTOM end of the island facing the team, so every head on a floor sits on
-// the same line and looks the same way. Shallow zones use one row facing the same way. Islands are centred and bottom-aligned.
+// the same line and looks the same way. Leftover room in a zone is filled with spare desks (dashed). Shallow zones use one row.
 function seatSlots(x,y,w,h,n,head,groups){
   const pad=220,lab=250;const ax=x+pad,ay=y+pad+lab,aw=w-2*pad,ah=h-2*pad-lab;const out=[];
-  const HD=500+900+450; // gap + head desk + head chair
+  const HD=500+900+450,GAP=900,KEEP=1200;
   const isl=groups?groups.map(g=>({m:g-1,head:true})):[{m:Math.max(0,n-(head?1:0)),head:!!head}];
   const plan=I=>{const hd=I.head?HD:0;const rmax=Math.floor((ah-hd+100)/1700);if(rmax<1)return null;
-    if(I.m<=1)return {I,pc:0,r:1,single:true,w:Math.max(I.head?1800:0,1250),d:1600+hd};
-    let pc=Math.ceil(I.m/(2*rmax));let r=Math.ceil(I.m/(2*pc));const wd=pc*2500+(pc-1)*900;
-    return {I,pc,r,w:Math.max(wd,I.head?1800:0),d:r*1700-100+hd}};
-  let P=isl.map(plan);const gap=900;let tot=P.every(p=>p)?P.reduce((a,p)=>a+p.w,0)+gap*(P.length-1):1e9;
-  // narrow zone without head: one column of desks
-  if(tot>aw&&!groups&&!head){const r=isl[0].m;if(r*1700-100<=ah&&1250<=aw){P=[{I:isl[0],pc:0,r,single:true,col:true,w:1250,d:r*1700-100}];tot=1250}}
-  if(tot<=aw){
-    let sx=ax+(aw-tot)/2;const base=ay+ah; // bottom line
-    for(const p of P){const {I}=p;const hd=I.head?HD:0;const top=base-p.d;const cxm=sx+p.w/2;
-      if(p.single){const dx=cxm-400+225;for(let k=0;k<(p.col?p.r:I.m);k++){const dy=top+k*1700;out.push({x:dx,y:dy,w:800,h:1600,cx:dx-250,cy:dy+800})}}
-      else{const bw=p.pc*2500+(p.pc-1)*900;const bx=cxm-bw/2;let k=0;
-        for(let j=0;j<p.pc;j++){const x0=bx+j*3400+450;for(let row=0;row<p.r;row++)for(const side of [0,1]){if(k>=I.m)break;const dy=top+row*1700;
-          out.push({x:x0+side*800,y:dy,w:800,h:1600,cx:side?x0+1600+250:x0-250,cy:dy+800});k++}}}
+    const pc=Math.max(1,Math.ceil(I.m/(2*rmax)));return {I,pc,r:rmax,hd}};
+  const width=p=>p.pc*2500+(p.pc-1)*900;
+  let P=isl.map(plan);let ok=P.every(p=>p);let tot=ok?P.reduce((a,p)=>a+width(p),0)+GAP*(P.length-1):1e9;
+  if(ok&&tot<=aw){
+    if(!groups){const extra=Math.floor((aw-tot-KEEP)/3400);if(extra>0){P[0].pc+=extra;tot+=extra*3400}}
+    let sx=ax+(aw-tot)/2;const base=ay+ah;
+    for(const p of P){const {I}=p;const wd=width(p);const top=base-p.hd-(p.r*1700-100);const cxm=sx+wd/2;let k=0;
+      for(let j=0;j<p.pc;j++){const x0=sx+j*3400+450;for(let row=0;row<p.r;row++)for(const side of [0,1]){
+        const ri=p.r-1-row;const dy=top+ri*1700; // fill from the head end upward
+        out.push({x:x0+side*800,y:dy,w:800,h:1600,cx:side?x0+1600+250:x0-250,cy:dy+800,spare:k>=I.m});k++}}
       if(I.head){const hy=base-450-900;out.push({x:cxm-900,y:hy,w:1800,h:900,cx:cxm,cy:hy+900+250,head:true})}
-      sx+=p.w+gap}
+      sx+=wd+GAP}
     return {slots:out,cap:n,mode:'col'};
   }
+  // narrow zone without head: one column of desks
+  if(!groups&&!head&&1250<=aw){const r=Math.floor((ah+100)/1700);if(r>=n){const dx=ax+(aw-1250)/2+450;
+    for(let k=0;k<r;k++){const dy=ay+ah-(k+1)*1700+100;out.push({x:dx,y:dy,w:800,h:1600,cx:dx-250,cy:dy+800,spare:k>=n})}
+    return {slots:out,cap:n,mode:'colsingle'}}}
   // row mode (shallow zones): head desk then team desks, all facing the same way (chairs below)
-  const rw=(head?1900:0)+Math.max(0,n-(head?1:0))*1700;if(rw<=aw&&1800<=ah+400){let sx=ax+(aw-rw)/2;const dy=ay+(ah-1350)/2;
+  const cnt=Math.floor((aw-(head?1900:0)+100)/1700);const nm=n-(head?1:0);
+  if(cnt>=nm&&1800<=ah+400){const rw=(head?1900:0)+cnt*1700-100;let sx=ax+(aw-rw)/2;const dy=ay+(ah-1350)/2;
     if(head){out.push({x:sx,y:dy,w:1800,h:900,cx:sx+900,cy:dy+900+250,head:true});sx+=1900}
-    for(let k=0;k<n-(head?1:0);k++){out.push({x:sx+k*1700,y:dy+50,w:1600,h:800,cx:sx+k*1700+800,cy:dy+800+300})}
+    for(let k=0;k<cnt;k++){out.push({x:sx+k*1700,y:dy+50,w:1600,h:800,cx:sx+k*1700+800,cy:dy+800+300,spare:k>=nm})}
     return {slots:out,cap:n,mode:'row'}}
   return {slots:[],cap:0};
 }
@@ -356,8 +358,8 @@ function drawFloor(f){
     el("rect",{x,y,width:w,height:h,class:cls,style:type==="text"?"opacity:.55":""},svg);
     if(type==="open"||type==="multi"){const {slots,cap}=type==="multi"?foldSlots(x,y,w,h,n):seatSlots(x,y,w,h,n,o.head,o.groups);if(cap<n)console.warn("over",f.id,label,n,cap);
       const light=o.reserve||type==="multi";
-      for(const s of slots){el("rect",{x:s.x,y:s.y,width:s.w,height:s.h,rx:60,class:`s-desk z-${cat}`+(s.head?" s-head":""),style:light?"fill:none;stroke-dasharray:120 90":(s.head?"":"fill:var(--sheet)")},svg);
-        el("circle",{cx:s.cx,cy:s.cy,r:s.head?260:220,class:`s-chair t-${cat}`,style:light?"opacity:.45":""},svg);
+      for(const s of slots){const lt=light||s.spare;el("rect",{x:s.x,y:s.y,width:s.w,height:s.h,rx:60,class:`s-desk z-${cat}`+(s.head?" s-head":""),style:lt?"fill:none;stroke-dasharray:120 90":(s.head?"":"fill:var(--sheet)")},svg);
+        if(!s.spare)el("circle",{cx:s.cx,cy:s.cy,r:s.head?260:220,class:`s-chair t-${cat}`,style:light?"opacity:.45":""},svg);
         if(s.head){const ht=el("text",{x:s.x+s.w/2,y:s.y+s.h/2+105,"text-anchor":"middle",class:"s-headtxt"},svg,"부서장");if(s.vert)ht.setAttribute("transform",`rotate(-90 ${s.x+s.w/2} ${s.y+s.h/2})`)}}}
     if(type==="room"&&o.meet){const mw=2400,dx=x+mw+(w-mw-1600)/2,dy=y+1300;el("rect",{x:dx,y:dy,width:1600,height:700,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx:dx+800,cy:dy+950,r:220,class:`t-${cat}`},svg);
       const tw=800,th=1400,tx=x+(mw-tw)/2,ty=y+(h-th)/2+100;el("rect",{x:tx,y:ty,width:tw,height:th,rx:120,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);
@@ -386,10 +388,11 @@ function drawFloor(f){
 
 function floorAvg(f){let a=0,n=0;for(const z of f.zones){const o=z[8]||{};if(z[7]==="open"&&!o.reserve){a+=z[2]*z[3]/1e6;n+=z[6]}}return n?(a/n).toFixed(1)+"㎡":"–"}
 // build
+for(const f of FLOORS){let s=0;for(const z of f.zones){const [x,y,w,h,c,l,n,t,o={}]=z;if(t==="open")s+=seatSlots(x,y,w,h,n,o.head,o.groups).slots.filter(q=>q.spare).length}f.reserve=s}
 const sb=document.getElementById("sumBody");let tot=0,res=0;
 const nav=document.getElementById("nav");const host=document.getElementById("floors");
 const lg=document.getElementById("legend");for(const k in CATS){lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="background:var(--${k}-bg);border-color:var(--${k})"></i>${CATS[k]}</span>`)}
-lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>예비석·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900, T자)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:2px dashed #c9a227"></i>팀 구역 사이 통행로</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
+lg.insertAdjacentHTML("beforeend",`<span><i class="sw" style="border-style:dashed;border-color:var(--muted)"></i>빈 책상(예비석)·접이식 가구</span><span><i class="sw" style="border-width:3px;border-color:var(--ink)"></i>부서장석(1,800×900, T자)</span><span><i class="sw" style="background:var(--corr);border-color:var(--corr)"></i>주 통로(폭 1.2~1.3m)</span><span><i class="sw" style="border:2px dashed #c9a227"></i>팀 구역 사이 통행로</span><span><i class="sw" style="border:3px solid var(--wall)"></i>벽이 있는 실(개인실·회의실·창고)</span><span><i class="sw" style="border:2px dotted var(--muted)"></i>오픈 좌석 구역(벽 없음, 점선은 부서 경계)</span>`);
 for(const f of FLOORS){tot+=f.resident;res+=f.reserve;
   sb.insertAdjacentHTML("beforeend",`<tr><td><a href="#floor-${f.id}" style="color:inherit">${f.name}</a></td><td>${f.desc}</td><td class="num">${f.resident}</td><td class="num">${f.reserve||"–"}</td><td class="num">${floorAvg(f)}</td><td>${f.sub}</td></tr>`);
   nav.insertAdjacentHTML("beforeend",`<a href="#floor-${f.id}">${f.name}</a>`);
