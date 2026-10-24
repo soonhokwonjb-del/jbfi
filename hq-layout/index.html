@@ -146,7 +146,7 @@ html{scroll-behavior:smooth}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.23</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.25</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.8월 운영팀 배치도(Opsi 1) 인원, 2026.10월 조직도. 지점 소속 CMO는 본사 상주 인원에서 제외함. 1인당 면적은 한국 사무실 기준을 적용함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
@@ -238,7 +238,7 @@ const FLOORS=[
    [2595,6070,7800,6930,"ops","운영",9,"open",{head:1,keepR:1100}],
    [10395,5100,6810,7900,"coll","채권관리",9,"open",{head:1}],
    [9695,13000,5805,3800,"ops","Sisdur",2,"open",{head:1}],
-   [7545,13000,2150,3800,"comm","기사 대기실",0,"text"],[15500,13000,3505,700,"corr","",0,"corr"]],
+   [7545,13000,2150,3800,"comm","기사 대기실",0,"text",{doorSide:"t"}],[15500,13000,3505,700,"corr","",0,"corr"]],
  paths:[[10148,6070,13000,"통행로"]],
  resident:23,reserve:0,
  desc:"운영이사실, 운영 GM실, 채권관리 GM실, 운영, 채권관리, Sisdur, 기사 대기실",
@@ -248,33 +248,33 @@ const FLOORS=[
    ["v",2595,4360,8145,7380,"G층 홀 상부(오픈, 바닥 없음)"],["c",2680,11740,6650,4910,"계단"],["c",15200,11740,3300,4910,"화장실·탕비실"],
    ["c",17300,8600,1200,3140,"G층 연결 계단"],["v",18500,8600,2675,8050,"외부"]],
  zones:[[2595,2720,10765,1640,"corr","주 통로",0,"corr"],[10740,4240,6560,1200,"corr","주 통로",0,"corr"],[16290,5440,1010,6300,"corr","",0,"corr"],[9450,11740,5750,1860,"corr","통로",0,"corr"],
-   [7440,0,5920,2720,"comm","대기 공간·출장자석",0,"text"],
+   [7440,0,5920,2720,"comm","대기 공간·출장자석",0,"text",{nodoor:1}],
    [13360,0,3900,4240,"ops","AMU",2,"open",{head:1,walled:1}],
-   [17260,0,3915,4240,"ops","GA·통합 문서고",2,"open",{walled:1}],
+   [17260,0,3915,4240,"ops","GA·통합 문서고",2,"open",{walled:1,doorSide:"l",doorAt:"end"}],
    [10740,5440,5550,5810,"exec","이사회 회의실(확장)",14,"meet"],
    [17300,4240,3875,4360,"ctrl","SKAI실",3,"open",{head:1,walled:1}],
    [9450,13600,2850,3050,"comm","소회의실",4,"meet"],[12300,13600,2900,3050,"comm","커미셔너 회의·대기",0,"text"]],
  resident:7,reserve:0,
  desc:"이사회 회의실(확장, 약 32㎡·14석), AMU, GA·통합 문서고, SKAI실, 소회의실, 대기 공간",
- notes:["가운데 대부분은 G층 홀 위로 뚫린 공간이어서 바닥이 없음. 쓸 수 있는 바닥은 둘레의 방과 통로뿐임.","이사회 회의실은 기존 주 회의실(약 20㎡) 자리에서 오른쪽 오픈 공간까지 합쳐 약 32㎡, 14석으로 넓힘. 이사회 회의실 위·오른쪽으로 통로(폭 1.0~1.2m)를 남겨 엘리베이터 쪽과 계단·화장실 쪽을 이음.","오른쪽 위 기존 방(약 33㎡)은 칸막이 하나로 나눠 AMU와 GA·통합 문서고로 씀.","SKAI는 오른쪽 기존 소규모 회의실 자리(약 17㎡)를 독립실로 씀. 3명 기준 1인당 약 5.6㎡로 6㎡보다 조금 좁음.","아래쪽 기존 방 2개는 소회의실과 커미셔너 회의·대기 공간으로 씀. 위쪽 가운데 오픈 공간은 대기 공간과 본사 출장자석으로 씀.","업체 의견대로 1층은 상주 인원을 줄이고 회의·방문 기능 위주로 씀."]},
-{id:"2",name:"2층",sub:"CFO 라인 · 회계·자금·기획·사업개발·IT + 법무",W:16040,H:16650,line:"CFO·CEO",
+ notes:["가운데 대부분은 G층 홀 위로 뚫린 공간이어서 바닥이 없음. 쓸 수 있는 바닥은 둘레의 방과 통로뿐임.","이사회 회의실은 기존 주 회의실(약 20㎡) 자리에서 오른쪽 오픈 공간까지 합쳐 약 32㎡, 14석으로 넓힘. 이사회 회의실 위·오른쪽으로 통로(폭 1.0~1.2m)를 남겨 엘리베이터 쪽과 계단·화장실 쪽을 이음.","오른쪽 위 기존 방(약 33㎡)은 칸막이 하나로 나눠 AMU와 GA·통합 문서고로 씀. GA·통합 문서고는 복도에 직접 면하지 않아 AMU실을 거쳐 드나듦.","SKAI는 오른쪽 기존 소규모 회의실 자리(약 17㎡)를 독립실로 씀. 3명 기준 1인당 약 5.6㎡로 6㎡보다 조금 좁음.","아래쪽 기존 방 2개는 소회의실과 커미셔너 회의·대기 공간으로 씀. 위쪽 가운데 오픈 공간은 대기 공간과 본사 출장자석으로 씀.","업체 의견대로 1층은 상주 인원을 줄이고 회의·방문 기능 위주로 씀."]},
+{id:"2",name:"2층",sub:"CFO 라인 · 회계·자금·기획·사업개발·IT + 법무실",W:18365,H:16650,line:"CFO·CEO",
  fixed:[["c",1010,0,2540,2720,"E/V"],["c",3550,0,1700,2720,"전기"],["c",5250,0,3135,2720,"서버실"],
-   ["c",750,13900,6050,2750,"계단"],["c",6800,13600,2580,3050,"금고(BPKB)"],["c",9380,13600,3120,3050,"창고"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
+   ["c",750,13900,6050,2750,"계단"],["c",6800,13600,2580,3050,"금고(BPKB)"],["c",9380,13600,3120,3050,"창고"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,7700,3700,8950,"외부"],["v",14665,0,3700,650,""]],
  zones:[[0,2720,8385,1080,"corr","엘리베이터 홀",0,"corr"],[0,3800,14665,1300,"corr","주 통로",0,"corr"],[0,12400,12500,1200,"corr","주 통로(계단·화장실)",0,"corr"],
    [8385,0,3815,3800,"exec","CFO실",1,"room"],[12200,0,2465,3800,"comm","소회의실",4,"meet"],
-   [0,5100,8300,7300,"fin","회계·자금·기획·사업개발",10,"open",{head:1,groups:[7,3],keepR:1300}],
-   [8300,5100,3400,7300,"fin","IT",4,"open",{head:1}],
-   [11700,5100,2965,7300,"ctrl","법무",3,"open",{head:1}],],
- paths:[[7935,5100,12400,"통행로"]],
+   [0,5100,9300,7300,"fin","회계·자금·기획·사업개발",10,"open",{head:1,groups:[7,3],keepR:1500}],
+   [9300,5100,5365,7300,"fin","IT",4,"open",{head:1}],
+   [14665,650,3700,7050,"ctrl","법무실",3,"open",{head:1,walled:1}]],
+ paths:[[8790,5100,12400,"통행로"]],
  resident:18,reserve:0,
- desc:"CFO실, 회계·자금·기획·사업개발(한 구역), IT, 법무, 소회의실",
- notes:["CFO 담당 조직(회계·자금, 기획·사업개발, IT)을 CFO실과 같은 층에 모음. 회계·자금과 기획·사업개발은 한 구역, IT는 바로 옆 구역에 둠.","IT는 CFO 산하로 옮기면서 서버실과 같은 층에 오게 됨.","CFO실은 기존 심사 GM실에 소회의실 일부를 합쳐 약 14.5㎡로 만듦. 소회의실은 약 9㎡로 줄어듦.","CEO 직속인 법무는 CEO실 바로 아래층에 둠. Corsec은 3층으로 옮김.","서버실·금고는 기존 위치를 유지함."]},
+ desc:"CFO실, 회계·자금·기획·사업개발(한 구역), IT, 법무실(기존 독립실), 소회의실",
+ notes:["CFO 담당 조직(회계·자금, 기획·사업개발, IT)을 CFO실과 같은 층에 모음. 회계·자금과 기획·사업개발은 한 구역, IT는 바로 옆 구역에 둠.","IT는 CFO 산하로 옮기면서 서버실과 같은 층에 오게 됨.","CFO실은 기존 심사 GM실에 소회의실 일부를 합쳐 약 14.5㎡로 만듦. 소회의실은 약 9㎡로 줄어듦.","법무는 지금 쓰는 2층 오른쪽 위 독립 법무실(약 3.7m×7m, 약 26㎡)을 그대로 씀. KUBUS 도면에서 회색으로 표시된 부분으로, 치수는 축척으로 잰 개략치임.","법무가 독립실로 가면서 생긴 오픈 공간은 CFO 라인과 IT 구역을 넓히는 데 쓰고, 남는 자리는 빈 책상(예비석)으로 채움. Corsec은 3층 CEO 특설조직 옆에 둠.","서버실·금고는 기존 위치를 유지함."]},
 {id:"3",name:"3층",sub:"CEO · Risk Expert · 심사 · 리스크·컴플라이언스 · CEO 특설조직 · Corsec",W:16040,H:16650,line:"CEO",
  fixed:[["c",1010,0,3090,2720,"E/V"],["c",4100,0,750,2720,"전기"],
    ["c",1150,13800,5650,2850,"계단"],["c",12500,12400,2165,4250,"화장실·탕비실"],["v",14665,0,1375,16650,"외부"]],
  zones:[[4850,3700,9815,1200,"corr","주 통로",0,"corr"],[0,12400,12500,1300,"corr","주 통로(계단·화장실)",0,"corr"],
    [0,2720,4850,2180,"exec","비서·로비",1,"open"],
-   [4850,0,2700,3700,"ctrl","심사 GM실",1,"room"],[7550,0,2715,3700,"exec","Risk Expert실",1,"room"],[10265,0,4400,3700,"exec","CEO실",1,"room",{meet:6}],
+   [4850,0,2700,3700,"ctrl","심사 GM실",1,"room"],[7550,0,2715,3700,"exec","Risk Expert실",1,"room"],[10265,0,4400,3700,"exec","CEO실",1,"room",{meet:6,doorAt:"end"}],
    [0,4900,6000,7500,"ctrl","심사",7,"open",{head:1,keepR:1400}],
    [6000,4900,4000,7500,"ctrl","리스크·컴플라이언스",5,"open",{head:1}],
    [10000,4900,2940,7500,"new","CEO 특설조직",3,"open",{head:1}],
@@ -354,6 +354,29 @@ function foldSlots(x,y,w,h,n){const pad=250,lab=520,ax=x+pad,ay=y+pad+lab,aw=w-2
   const two=n>cols*rows;const t=two?Math.min(Math.ceil(n/2),cols*rows):Math.min(n,cols*rows);for(let k=0;k<t;k++){const r=Math.floor(k/c),col=k%c;const dy=ay+r*1500+400;const bx=ox+col*1350;if(two){out.push({x:bx,y:dy,w:1200,h:500,cx:bx+300,cy:dy+700,head:false});out.push({x:bx,y:dy,w:1200,h:500,cx:bx+900,cy:dy+700,head:false})}else out.push({x:bx,y:dy,w:1200,h:500,cx:bx+600,cy:dy+700,head:false})}
   return {slots:out,cap:two?cols*rows*2:cols*rows}}
 
+function doorOf(f,z){const [x,y,w,h,,,,,o={}]=z;const pr={b:0,t:1,l:2,r:3};const cand=[];
+  for(const c of f.zones){if(c[7]!=="corr")continue;const [cx,cy,cw,ch]=c;
+    const ox=Math.min(x+w,cx+cw)-Math.max(x,cx),oy=Math.min(y+h,cy+ch)-Math.max(y,cy);
+    if(Math.abs(cy-(y+h))<80&&ox>=1000)cand.push({s:"b",a:Math.max(x,cx),b:Math.min(x+w,cx+cw)});
+    if(Math.abs(cy+ch-y)<80&&ox>=1000)cand.push({s:"t",a:Math.max(x,cx),b:Math.min(x+w,cx+cw)});
+    if(Math.abs(cx+cw-x)<80&&oy>=1000)cand.push({s:"l",a:Math.max(y,cy),b:Math.min(y+h,cy+ch)});
+    if(Math.abs(cx-(x+w))<80&&oy>=1000)cand.push({s:"r",a:Math.max(y,cy),b:Math.min(y+h,cy+ch)})}
+  cand.sort((p,q)=>pr[p.s]-pr[q.s]);const d=o.doorSide?{s:o.doorSide,a:(o.doorSide==="l"||o.doorSide==="r")?y:x,b:(o.doorSide==="l"||o.doorSide==="r")?y+h:x+w}:(cand[0]||{s:"b",a:x,b:x+w});
+  d.p=o.doorAt==="end"?d.b-700:d.a+700;return d}
+function drawDoor(svg,z,d){const [x,y,w,h]=z;const p=d.p;let g,leaf;
+  if(d.s==="b"){g=[p-450,y+h-90,900,180];leaf=`M${p-450} ${y+h} L${p-450} ${y+h-900} A900 900 0 0 1 ${p+450} ${y+h}`}
+  if(d.s==="t"){g=[p-450,y-90,900,180];leaf=`M${p-450} ${y} L${p-450} ${y+900} A900 900 0 0 0 ${p+450} ${y}`}
+  if(d.s==="l"){g=[x-90,p-450,180,900];leaf=`M${x} ${p-450} L${x+900} ${p-450} A900 900 0 0 1 ${x} ${p+450}`}
+  if(d.s==="r"){g=[x+w-90,p-450,180,900];leaf=`M${x+w} ${p-450} L${x+w-900} ${p-450} A900 900 0 0 0 ${x+w} ${p+450}`}
+  el("rect",{x:g[0],y:g[1],width:g[2],height:g[3],style:"fill:var(--sheet);stroke:none"},svg);
+  el("path",{d:leaf,style:"fill:none;stroke:var(--wall);stroke-width:45"},svg)}
+// person in a private room: back to the wall opposite the door, facing the door
+function roomDesk(svg,x,y,w,h,s,cat){let dx,dy,dw,dh,cx,cy;
+  if(s==="b"){dw=1600;dh=700;dx=x+(w-dw)/2;dy=y+1350;cx=dx+800;cy=y+1000}
+  if(s==="t"){dw=1600;dh=700;dx=x+(w-dw)/2;dy=y+h-2050;cx=dx+800;cy=y+h-650}
+  if(s==="l"){dw=700;dh=1600;dx=x+w-1750;dy=y+(h-dh)/2;cx=x+w-650;cy=dy+800}
+  if(s==="r"){dw=700;dh=1600;dx=x+1050;dy=y+(h-dh)/2;cx=x+650;cy=dy+800}
+  el("rect",{x:dx,y:dy,width:dw,height:dh,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx,cy,r:220,class:`t-${cat}`},svg)}
 function drawFloor(f){
   const m=700;const svg=el("svg",{viewBox:`${-m} ${-m} ${f.W+2*m} ${f.H+2*m+500}`,role:"img","aria-label":`${f.name} 배치 개략도`});
   el("rect",{x:-m,y:-m,width:f.W+2*m,height:f.H+2*m+500,style:"fill:var(--sheet)"},svg);
@@ -368,10 +391,10 @@ function drawFloor(f){
       for(const s of slots){const lt=light||s.spare;el("rect",{x:s.x,y:s.y,width:s.w,height:s.h,rx:60,class:`s-desk z-${cat}`+(s.head?" s-head":""),style:lt?"fill:none;stroke-dasharray:120 90":(s.head?"":"fill:var(--sheet)")},svg);
         if(!s.spare)el("circle",{cx:s.cx,cy:s.cy,r:s.head?260:220,class:`s-chair t-${cat}`,style:light?"opacity:.45":""},svg);
         if(s.head){const ht=el("text",{x:s.x+s.w/2,y:s.y+s.h/2+105,"text-anchor":"middle",class:"s-headtxt"},svg,"부서장");if(s.vert)ht.setAttribute("transform",`rotate(-90 ${s.x+s.w/2} ${s.y+s.h/2})`)}}}
-    if(type==="room"&&o.meet){const mw=2400,dx=x+mw+(w-mw-1600)/2,dy=y+1300;el("rect",{x:dx,y:dy,width:1600,height:700,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx:dx+800,cy:dy+950,r:220,class:`t-${cat}`},svg);
+    if(type==="room"&&o.meet){const mw=2400,dx=x+mw+(w-mw-1600)/2,dy=y+1350;el("rect",{x:dx,y:dy,width:1600,height:700,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx:dx+800,cy:y+1000,r:220,class:`t-${cat}`},svg);
       const tw=800,th=1400,tx=x+(mw-tw)/2,ty=y+(h-th)/2+100;el("rect",{x:tx,y:ty,width:tw,height:th,rx:120,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);
       for(const [cx,cy] of [[tx-300,ty+th*0.28],[tx-300,ty+th*0.72],[tx+tw+300,ty+th*0.28],[tx+tw+300,ty+th*0.72],[tx+tw/2,ty-300],[tx+tw/2,ty+th+300]])el("circle",{cx,cy,r:190,class:`t-${cat}`,style:"opacity:.7"},svg)}
-    else if(type==="room"){const dx=x+w/2-800,dy=y+h/2;el("rect",{x:dx,y:dy,width:1600,height:700,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx:dx+800,cy:dy+950,r:220,class:`t-${cat}`},svg)}
+    else if(type==="room"){roomDesk(svg,x,y,w,h,doorOf(f,z).s,cat)}
     if(type==="meet"){const vert=h>w*1.1;const per=Math.ceil(n/2);
       if(vert){const th=Math.min(h*0.78,Math.max(1800,per*700)),tw=Math.min(w*0.32,n>12?2000:1400);const tx=x+(w-tw)/2,ty=y+(h-th)/2+250;
         el("rect",{x:tx,y:ty,width:tw,height:th,rx:tw/2,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);
@@ -383,6 +406,7 @@ function drawFloor(f){
       const fs=w<3600?300:360;t.setAttribute("style",`font-size:${fs}px`);t.textContent=label;
       if(n&&type!=="text"){el("tspan",{class:"s-ztxt2",dx:180},t,`${n}${type==="meet"||type==="multi"?"인":"석"}`)}}
   }
+  for(const z of f.zones){const [x,y,w,h,cat,label,n,type,o={}]=z;const walled=type==="room"||type==="meet"||type==="multi"||(type==="text"&&label&&!o.nodoor)||(type==="open"&&o.walled);if(walled)drawDoor(svg,z,doorOf(f,z))}
   for(const [px,py1,py2,pl] of (f.paths||[])){el("rect",{x:px-550,y:py1+650,width:1100,height:py2-py1-650,class:"s-pathband"},svg);const pt=el("text",{x:px,y:(py1+py2)/2+425,"text-anchor":"middle",class:"s-corrtxt"},svg,pl);pt.setAttribute("transform",`rotate(-90 ${px} ${(py1+py2)/2+325})`)}
   el("rect",{x:0,y:0,width:f.W,height:f.H,class:"s-wall"},svg);
   // scale bar 5m
