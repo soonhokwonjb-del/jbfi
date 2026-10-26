@@ -51,10 +51,11 @@ html[lang="id"] svg .s-ztxt{font-size:240px!important}
 h1{font-size:28px;line-height:1.25;margin:0;text-wrap:balance;font-weight:700}
 h2{font-size:19px;margin:0;text-wrap:balance}
 h3{font-size:15px;margin:0}
-p{margin:0;max-width:68ch}
+p{margin:0}
 .basis{color:var(--muted);font-size:13.5px;max-width:none}
 section{display:flex;flex-direction:column;gap:12px}
 .tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:4px}
+.tbl th,.tbl td:first-child,.tbl td.num{white-space:nowrap}
 table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
 th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
 th{font-weight:600;font-size:12.5px;color:var(--muted);background:var(--void)}
@@ -86,7 +87,7 @@ ul.zones li b{font-family:var(--font-mono);font-weight:500;font-variant-numeric:
 .notes p{padding-left:12px;border-left:2px solid var(--rule)}
 .tag{font-family:var(--font-mono);font-size:11.5px;color:var(--muted)}
 .checks{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px}
-.checks ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+.checks ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 /* SVG */
 .s-wall{fill:none;stroke:var(--wall);stroke-width:120}
 .s-core{fill:var(--core);stroke:var(--wall);stroke-width:40}
@@ -161,7 +162,7 @@ html{scroll-behavior:smooth}
 <div class="wrap">
 <header>
 <div id="langsw" class="langsw"><a data-l="ko" href="?lang=ko">한국어</a><span>|</span><a data-l="id" href="?lang=id">Bahasa Indonesia</a></div>
-  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.44</div>
+  <div class="eyebrow">JB Finance Indonesia · HQ Remodeling · 배치 초안 v0.45</div>
   <h1>KBBF 본사 층별 부서·인력 배치안</h1>
   <p class="basis">작성 기준: KUBUS 「HQ Remodeling Work」 v1(2026.10.22) 층별 도면 외곽치수, 2026.10월 부서별 업무보고의 본사 근무 인원(운영·채권관리는 2026-10-26 KBBF 제출 인원 가운데 Graha DKI 를 뺀 본사 근무 인원과 채권관리 증원 3명), 2026.10월 조직도. 지점·KSKC 근무자는 본사 상주 인원에서 제외함. 1인당 면적은 현재 사무실보다 넓게 잡는 것을 원칙으로 하고 6㎡를 목표로 함. 도면은 개략 배치이며 실제 벽체·기둥·창 위치와 다를 수 있음.</p>
 </header>
