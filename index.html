@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>KBBF 본사 리모델링</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--paper:#f7f8f9;--sheet:#fff;--ink:#1b2433;--muted:#5d6878;--rule:#d5dae1;--accent:#1f3a68;--accent-bg:#dfe6f2;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#12161c;--sheet:#1a2028;--ink:#e4e8ee;--muted:#9aa4b2;--rule:#323b47;--accent:#9db7e8;--accent-bg:#24324a}}
+:root[data-theme="dark"]{--paper:#12161c;--sheet:#1a2028;--ink:#e4e8ee;--muted:#9aa4b2;--rule:#323b47;--accent:#9db7e8;--accent-bg:#24324a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6}
+main{max-width:960px;margin:0 auto;padding:28px 16px 48px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.langsw{display:flex;gap:4px}
+.langsw a{font-size:13px;padding:4px 10px;border:1px solid var(--rule);border-radius:4px;color:var(--muted);text-decoration:none}
+.langsw a.on{border-color:var(--ink);color:var(--ink);font-weight:600}
+h1{font-size:24px;margin:10px 0 6px;line-height:1.35}
+h2{font-size:17px;margin:32px 0 12px}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0 6px}
+.fact{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:12px 14px}
+.fact b{display:block;font-size:22px;font-family:var(--font-mono);font-weight:500}
+.fact span{font-size:13px;color:var(--muted)}
+.primary{display:inline-block;margin-top:14px;padding:10px 18px;border-radius:5px;background:var(--ink);color:var(--sheet);text-decoration:none;font-weight:600}
+.floors{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.floor{display:flex;gap:14px;align-items:flex-start;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px;text-decoration:none;color:inherit;transition:border-color .15s}
+.floor:hover,.floor:focus-visible{border-color:var(--accent)}
+.badge{flex:0 0 52px;height:52px;border-radius:6px;background:var(--accent-bg);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+.floor h3{margin:0 0 2px;font-size:15px}
+.floor .sub{font-size:13px;color:var(--muted)}
+.floor .n{font-size:12px;font-family:var(--font-mono);color:var(--muted);margin-top:6px}
+.links{display:flex;flex-direction:column;gap:8px;padding:0;margin:0;list-style:none}
+.links a{color:var(--accent)}
+footer{margin-top:36px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div class="eyebrow" id="eyebrow">KB Bukopin Finance · HQ Remodeling</div>
+    <nav class="langsw" aria-label="Language"><a data-l="ko" href="?lang=ko">한국어</a><a data-l="id" href="?lang=id">Bahasa Indonesia</a></nav>
+  </div>
+  <h1 data-t="title"></h1>
+  <p class="muted" data-t="lead"></p>
+  <div class="facts">
+    <div class="fact"><b id="fVer">–</b><span data-t="ver"></span></div>
+    <div class="fact"><b id="fRes">–</b><span data-t="res"></span></div>
+    <div class="fact"><b>6</b><span data-t="floorsN"></span></div>
+  </div>
+  <a class="primary" id="openAll" href="hq-layout/" data-t="open"></a>
+
+  <h2 data-t="byFloor"></h2>
+  <div class="floors" id="floors"></div>
+
+  <h2 data-t="more"></h2>
+  <ul class="links">
+    <li><a id="lnkSum" href="hq-layout/#summary" data-t="lSum"></a></li>
+    <li><a id="lnkDec" href="hq-layout/#decision" data-t="lDec"></a></li>
+  </ul>
+  <footer data-t="foot"></footer>
+</main>
+<script>
+(function(){
+const lang=new URLSearchParams(location.search).get("lang")==="id"?"id":"ko";
+document.documentElement.lang=lang;
+document.querySelectorAll(".langsw a").forEach(a=>a.classList.toggle("on",a.dataset.l===lang));
+const T={
+ ko:{title:"KBBF 본사 층별 부서·인력 배치안",lead:"본사 리모델링(KUBUS 도면 기준)에 맞춘 층별 부서 배치와 좌석 계획임. 층을 누르면 해당 층 도면으로 바로 이동함.",
+  ver:"배치 초안 버전",res:"본사 상주 인원(명)",floorsN:"대상 층(G~5층)",open:"전체 배치안 보기",byFloor:"층별 바로가기",
+  more:"관련 내용",lSum:"층별 배치 요약표",lDec:"의사결정 필요 사항",resN:n=>`상주 ${n}명`,
+  foot:"인원은 2026년 10월 부서별 업무보고의 본사 근무자 기준임. 도면은 개략 배치이며 실제 벽체·기둥 위치와 다를 수 있음."},
+ id:{title:"Rencana Penempatan Departemen & Pegawai per Lantai Kantor Pusat KBBF",lead:"Rencana penempatan departemen dan tempat duduk per lantai sesuai renovasi kantor pusat (berdasarkan denah KUBUS). Klik lantai untuk langsung menuju denah lantai tersebut.",
+  ver:"Versi draf penempatan",res:"Pegawai tetap kantor pusat (orang)",floorsN:"Lantai (G–5)",open:"Lihat seluruh rencana",byFloor:"Pintasan per Lantai",
+  more:"Konten Terkait",lSum:"Tabel ringkasan penempatan per lantai",lDec:"Hal yang memerlukan keputusan",resN:n=>`${n} pegawai tetap`,
+  foot:"Jumlah pegawai mengacu pada pegawai kantor pusat dalam laporan kerja per departemen Oktober 2026. Denah bersifat skematis dan dapat berbeda dari posisi dinding dan kolom sebenarnya."}}[lang];
+document.querySelectorAll("[data-t]").forEach(e=>{const v=T[e.dataset.t];if(typeof v==="string")e.textContent=v});
+document.title=lang==="id"?"Renovasi Kantor Pusat KBBF":"KBBF 본사 리모델링";
+const q=lang==="id"?"?lang=id":"";
+document.getElementById("openAll").href="hq-layout/"+q;
+document.getElementById("lnkSum").href="hq-layout/"+q+"#summary";
+document.getElementById("lnkDec").href="hq-layout/"+q+"#decision";
+const box=document.getElementById("floors");
+const fname=id=>lang==="id"?"Lantai "+id:(id+"층");
+fetch("hq-layout/",{cache:"no-store"}).then(r=>r.text()).then(s=>{
+  const i=s.indexOf("const FLOORS="),j=s.indexOf("\n];",i)+3;
+  const FLOORS=new Function(s.slice(i,j)+";return FLOORS")();
+  let ID={};try{const a=s.indexOf("const ID={")+9,b=s.indexOf("};",a)+1;ID=JSON.parse(s.slice(a,b))}catch(e){}
+  const tr=t=>lang==="id"&&ID[t]?ID[t]:t;
+  const v=s.match(/배치 초안 (v[0-9.]+)/);if(v)document.getElementById("fVer").textContent=v[1];
+  document.getElementById("fRes").textContent=FLOORS.reduce((a,f)=>a+(f.resident||0),0);
+  for(const f of FLOORS){
+    const a=document.createElement("a");a.className="floor";a.href="hq-layout/"+q+"#floor-"+f.id;
+    a.innerHTML=`<div class="badge">${f.id}</div><div><h3></h3><div class="sub"></div><div class="n"></div></div>`;
+    a.querySelector("h3").textContent=fname(f.id);
+    a.querySelector(".sub").textContent=tr(f.desc||f.sub);
+    a.querySelector(".n").textContent=T.resN(f.resident||0);
+    box.appendChild(a);
+  }
+}).catch(()=>{box.innerHTML="";const a=document.createElement("a");a.className="floor";a.href="hq-layout/"+q;a.textContent=T.open;box.appendChild(a)});
+})();
+</script>
+</body>
+</html>
