@@ -68,8 +68,8 @@ nav.floors{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
 nav.floors a{font-family:var(--font-mono);font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--rule);background:var(--sheet);padding:4px 12px;border-radius:3px}
 nav.floors a:hover,nav.floors a:focus-visible{border-color:var(--ink);outline:none}
-.floor{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);scroll-margin-top:56px}
-.floor .plan{padding:16px;border-right:1px solid var(--rule);min-width:0}
+.floor{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;display:grid;grid-template-columns:minmax(0,1fr);scroll-margin-top:56px}
+.floor .plan{padding:16px;border-bottom:1px solid var(--rule);min-width:0}
 .floor .info{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .ftitle{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .flabel{font-family:var(--font-mono);font-size:26px;font-weight:500;line-height:1}
@@ -120,7 +120,10 @@ ul.zones li b{font-family:var(--font-mono);font-weight:500;font-variant-numeric:
 .s-dimtxt{font-family:var(--font-mono);font-size:190px;fill:var(--muted);letter-spacing:0}
 .s-dimbig{font-size:230px}
 .s-dimt{font-family:var(--font-mono);font-size:200px;letter-spacing:0}
-.s-dimln{stroke:var(--muted);stroke-width:30}
+.s-dimln{stroke:var(--muted);stroke-width:22}
+.s-dimtick{stroke:var(--ink);stroke-width:30}
+.s-chtxt{font-family:var(--font-mono);font-size:210px;fill:var(--ink)}
+.s-chsm{font-size:150px}
 .s-entry{fill:#d9480f}
 .s-entryar{fill:#d9480f}
 .s-entrytxt{fill:#d9480f;font-family:var(--font-body);font-size:260px;font-weight:700}
@@ -408,8 +411,8 @@ function roomDesk(svg,x,y,w,h,s,cat){let dx,dy,dw,dh,cx,cy;
   if(s==="r"){dw=700;dh=1600;dx=x+1050;dy=y+(h-dh)/2;cx=x+650;cy=dy+800}
   el("rect",{x:dx,y:dy,width:dw,height:dh,rx:60,class:`s-desk z-${cat}`,style:"fill:var(--sheet)"},svg);el("circle",{cx,cy,r:220,class:`t-${cat}`},svg)}
 function drawFloor(f){
-  const m=700;const svg=el("svg",{viewBox:`${-m} ${-m} ${f.W+2*m} ${f.H+2*m+500}`,role:"img","aria-label":`${f.name} 배치 개략도`});
-  el("rect",{x:-m,y:-m,width:f.W+2*m,height:f.H+2*m+500,style:"fill:var(--sheet)"},svg);
+  const m=2100;const svg=el("svg",{viewBox:`${-m} ${-m} ${f.W+2*m} ${f.H+2*m+600}`,role:"img","aria-label":`${f.name} 배치 개략도`});
+  el("rect",{x:-m,y:-m,width:f.W+2*m,height:f.H+2*m+600,style:"fill:var(--sheet)"},svg);
   for(const [t,x,y,w,h,l,fo={}] of f.fixed){const ly=fo.ly!=null?fo.ly:y+h/2+110;el("rect",{x,y,width:w,height:h,class:t==="v"?"s-void":"s-core"},svg);
     if(l){const tx=el("text",{x:x+w/2,y:ly,"text-anchor":"middle",class:"s-txt"},svg,l);if(w<1500&&h>w){tx.setAttribute("transform",`rotate(-90 ${x+w/2} ${y+h/2})`)}else if(w>=1800&&h>=1500){el("text",{x:x+w/2,y:ly+270,"text-anchor":"middle",class:"s-dimtxt"},svg,`${w.toLocaleString()}×${h.toLocaleString()}`)}}}
   for(const z of f.zones){const [x,y,w,h,cat,label,n,type,o={}]=z;
@@ -450,10 +453,23 @@ function drawFloor(f){
       el("path",{d:`M${cx-A/1.4} ${ay} L${cx+A/1.4} ${ay} L${cx} ${tip} Z`,class:"s-entryar"},svg);el("text",{x:cx,y:dir==="u"?ay+380:ay-160,"text-anchor":"middle",class:"s-entrytxt"},svg,lab)}
     else{el("rect",{x:ex-t/2,y:ey,width:t,height:len,class:"s-entry"},svg);const cy=ey+len/2,ax=dir==="r"?ex-A-300:ex+A+300,tip=dir==="r"?ex-250:ex+250;
       el("path",{d:`M${ax} ${cy-A/1.4} L${ax} ${cy+A/1.4} L${tip} ${cy} Z`,class:"s-entryar"},svg);const tx=dir==="r"?ax-200:ax+200;el("text",{x:tx,y:cy,"text-anchor":"middle",class:"s-entrytxt",transform:`rotate(-90 ${tx} ${cy})`},svg,lab)}}
-  {const dy=-380,dx=-380;el("line",{x1:0,y1:dy,x2:f.W,y2:dy,class:"s-dimln"},svg);for(const xx of [0,f.W])el("line",{x1:xx,y1:dy-150,x2:xx,y2:dy+150,class:"s-dimln"},svg);el("text",{x:f.W/2,y:dy-90,"text-anchor":"middle",class:"s-dimtxt s-dimbig"},svg,`${f.W.toLocaleString()} mm`);
-   el("line",{x1:dx,y1:0,x2:dx,y2:f.H,class:"s-dimln"},svg);for(const yy of [0,f.H])el("line",{x1:dx-150,y1:yy,x2:dx+150,y2:yy,class:"s-dimln"},svg);el("text",{x:dx-90,y:f.H/2,"text-anchor":"middle",class:"s-dimtxt s-dimbig",transform:`rotate(-90 ${dx-90} ${f.H/2})`},svg,`${f.H.toLocaleString()} mm`)}
+  {const R=[...f.fixed.map(a=>[a[1],a[2],a[3],a[4]]),...f.zones.map(z=>[z[0],z[1],z[2],z[3]])],T=60;
+   const uniq=a=>{a.sort((p,q)=>p-q);const o=[];for(const v of a)if(!o.length||v-o[o.length-1]>120)o.push(v);return o};
+   const chain=(pts,horiz,pos,side)=>{const L=pts[pts.length-1];
+     el("line",horiz?{x1:pts[0],y1:pos,x2:L,y2:pos,class:"s-dimln"}:{x1:pos,y1:pts[0],x2:pos,y2:L,class:"s-dimln"},svg);
+     for(const v of pts)el("line",horiz?{x1:v-110,y1:pos+110,x2:v+110,y2:pos-110,class:"s-dimtick"}:{x1:pos-110,y1:v+110,x2:pos+110,y2:v-110,class:"s-dimtick"},svg);
+     for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1],d=b-a;if(d<500)continue;const c=(a+b)/2,off=side*170,txt=d.toLocaleString();
+       if(horiz)el("text",{x:c,y:pos+(side<0?-off*-1-60:off+150),"text-anchor":"middle",class:"s-chtxt"+(d<1100?" s-chsm":"")},svg,txt);
+       else{const x=pos+(side<0?-100:260);el("text",{x,y:c,"text-anchor":"middle",class:"s-chtxt"+(d<1100?" s-chsm":""),transform:`rotate(-90 ${x} ${c})`},svg,txt)}}};
+   const top=uniq([0,f.W,...R.filter(r=>r[1]<=T).flatMap(r=>[r[0],r[0]+r[2]])]).filter(v=>v>=-1&&v<=f.W+1);
+   const bot=uniq([0,f.W,...R.filter(r=>r[1]+r[3]>=f.H-T).flatMap(r=>[r[0],r[0]+r[2]])]).filter(v=>v>=-1&&v<=f.W+1);
+   const vscan=fromLeft=>{const xs=uniq(R.flatMap(r=>[r[0]+T,r[0]+r[2]-T])).sort((p,q)=>fromLeft?p-q:q-p);
+     for(const xs0 of xs){const hit=R.filter(r=>r[0]<xs0&&r[0]+r[2]>xs0);const ys=uniq([0,f.H,...hit.flatMap(r=>[r[1],r[1]+r[3]])]).filter(v=>v>=-1&&v<=f.H+1);if(ys.length>2)return ys}return [0,f.H]};
+   const lef=vscan(true),rig=vscan(false);
+   chain(top,true,-750,-1);chain([0,f.W],true,-1550,-1);chain(bot,true,f.H+750,1);chain([0,f.W],true,f.H+1550,1);
+   chain(lef,false,-750,-1);chain([0,f.H],false,-1550,-1);chain(rig,false,f.W+750,1);chain([0,f.H],false,f.W+1550,1)}
   // scale bar 5m
-  const sy=f.H+650;el("line",{x1:0,y1:sy,x2:5000,y2:sy,style:"stroke:var(--ink);stroke-width:60"},svg);
+  const sy=f.H+2300;el("line",{x1:0,y1:sy,x2:5000,y2:sy,style:"stroke:var(--ink);stroke-width:60"},svg);
   for(const xx of [0,2500,5000])el("line",{x1:xx,y1:sy-150,x2:xx,y2:sy+150,style:"stroke:var(--ink);stroke-width:40"},svg);
   el("text",{x:5250,y:sy+110,class:"s-txt"},svg,"5m");
   el("text",{x:f.W,y:sy+110,"text-anchor":"end",class:"s-txt"},svg,`${(f.W/1000).toFixed(1)}m × ${(f.H/1000).toFixed(1)}m`);
