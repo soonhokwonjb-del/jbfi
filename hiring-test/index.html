@@ -136,7 +136,7 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
 .pick.mm .tag{flex-basis:100%;margin-left:36px;font-size:12px;font-weight:700}
 .pick.mm .tb{color:var(--navy)}
 .pick.mm .tw{color:var(--danger)}
-.timer{position:fixed;top:calc(26px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:18;background:var(--navy);color:var(--on-navy);border-radius:999px;padding:5px 14px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.timer{pointer-events:none;position:fixed;top:calc(26px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:18;background:var(--navy);color:var(--on-navy);border-radius:999px;padding:5px 14px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .timer.low{background:#B42318;color:#fff}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:22;background:#14212B;color:#fff;border-radius:10px;padding:10px 16px;font-size:14px}
 .noselect main{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
@@ -610,7 +610,7 @@ function tick(){if(!TKEY||!TIMER){$('timer').classList.add('hide');return;}
   if(left<=0){const k=TKEY,f=TEXP;TKEY=null;TEXP=null;$('timer').classList.add('hide');
     if(S.ig.to.indexOf(k)<0)S.ig.to.push(k);save();f&&f();}}
 setInterval(tick,250);
-function backVis(){return !TIMER;}
+function backVis(){return TEST||!TIMER;}
 
 /* 화면 이탈·복사·붙여넣기 기록 */
 let awayAt=null;
@@ -688,6 +688,7 @@ function aShow(){$('a-count').innerHTML='<b>'+(S.ia+1)+'</b> / 50';$('a-bar').st
   const k='a'+S.ia;if(!S.shown[k]){S.shown[k]=Date.now();save();}
   timer(k,CFG.lim.a,()=>{aAdvance();});}
 $('a-back').onclick=()=>{if(S.ia>0&&!busy&&backVis())aGo(S.ia-1);};
+if(TEST){const sk=document.createElement('button');sk.type='button';sk.className='back';sk.textContent='다음 문항 →';sk.onclick=()=>{if(!busy){stopTimer();aAdvance();}};$('a-count').parentNode.insertBefore(sk,$('a-count'));}
 
 /* 파트 2: 평가형은 대응 방법을 하나씩, 선택형은 한 화면에. 보기 순서는 응답자마다 무작위 */
 function ordOf(it){return S.ord&&S.ord[it.id]?S.ord[it.id]:[...Array(it.o.length).keys()];}
@@ -714,7 +715,7 @@ function bShow(keep){const it=BI[S.ib],n=it.o.length,ord=ordOf(it);
     for(let p=0;p<n;p++){const val=cur[ord[p]];const b=document.createElement('button');b.type='button';b.className=(val?'done':'')+(p===S.bo?' cur':'');
       b.textContent=L[p]+' '+(val?val+'점':'–');b.onclick=()=>{S.bo=p;save();bShow();};sr.appendChild(b);}
     body.appendChild(sr);const sn=document.createElement('p');sn.className='sumnote';sn.textContent='평가한 방법을 누르면 점수를 다시 고칠 수 있습니다.';body.appendChild(sn);
-    const all=cur.every(x=>x>0);$('b-next').classList.toggle('hide',!all);$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';
+    const all=cur.every(x=>x>0);$('b-next').classList.toggle('hide',!all&&!TEST);$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';
   }else{const a=document.createElement('div');a.className='ask';
     a.innerHTML='<b>아래 '+n+'가지 대응 방법 중 하나만</b> 골라 주십시오.<small>바람직한 방법보다 귀하가 실제로 가장 할 것 같은 방법을 기준으로 골라 주십시오.</small>';body.appendChild(a);
     const p=document.createElement('div');p.className='pick';
@@ -743,7 +744,7 @@ function mmShow(it,body){const ord=ordOf(it),kk=kindOf(it),v=S.b[it.id]||{best:'
       S.b[it.id]=cur;save();$('e-b').textContent='';const y=window.scrollY;bShow(true);window.scrollTo(0,y);};
     p.appendChild(b);});
   body.appendChild(p);
-  const done=v.best&&v.worst;$('b-next').classList.toggle('hide',!done);$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';}
+  const done=v.best&&v.worst;$('b-next').classList.toggle('hide',!done&&!TEST);$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';}
 function bRate(it,v){if(busy)return;const n=it.o.length,ord=ordOf(it);const arr=S.b[it.id]||new Array(n).fill(0);arr[ord[S.bo]]=v;S.b[it.id]=arr;save();
   $('b-body').querySelectorAll('.choices .ch').forEach((b,i)=>{b.classList.toggle('on',i+1===v);});busy=true;
   setTimeout(()=>{busy=false;
@@ -754,7 +755,7 @@ function bNextItem(){const k='b'+S.ib;if(S.rt.b[S.ib]===null&&S.shown[k])S.rt.b[
   if(S.ib<NB-1)bMove(S.ib+1,0);else{stopTimer();mark('B1');S.step='iC';save();progress('파트2 완료');route();}}
 function bMove(ib,bo){const st=$('b-stage');const go=()=>{S.ib=ib;S.bo=bo;save();bShow();};
   if(RM){go();return;}st.classList.add('out');setTimeout(()=>{go();st.classList.remove('out');},130);}
-$('b-next').onclick=()=>{const it=BI[S.ib],v=S.b[it.id];
+$('b-next').onclick=()=>{const it=BI[S.ib],v=S.b[it.id];if(TEST){bNextItem();return;}
   if(it.t==='pick'&&!v){$('e-b').textContent='대응 방법 하나를 골라 주십시오.';return;}
   if(it.t==='mm'&&!(v&&v.best&&v.worst)){$('e-b').textContent='두 가지를 모두 골라 주십시오.';return;}
   if(it.t==='rate'&&!(Array.isArray(v)&&v.every(x=>x>0))){$('e-b').textContent='모든 방법을 평가해 주십시오.';return;}
@@ -786,7 +787,7 @@ function c1Render(){const C=CFG.C1;$('c1-desc').textContent=C.desc;$('c1-step2')
       b.onclick=()=>{S.c1.m[i]=m;save();ch.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$('e-c1').textContent='';};ch.appendChild(b);});
     plan.appendChild(r);});}
 $('c1-basis').addEventListener('input',()=>{S.c1.basis=$('c1-basis').value;save();$('e-c1').textContent='';counter($('c1-basis'),$('c1-cnt'),MIN_BASIS);});
-$('c1-next').onclick=()=>{
+$('c1-next').onclick=()=>{if(TEST){S.step='C2';save();route();return;}
   if(S.c1.order.length<NC1){$('e-c1').textContent=NC1+'건 모두 순서를 매겨 주십시오.';return;}
   for(const i of S.c1.order){if(CFG.C1.method&&!S.c1.m[i]){$('e-c1').textContent='모든 항목의 처리 방식을 골라 주십시오.';return;}}
   if((S.c1.basis||'').trim().length<MIN_BASIS){$('e-c1').textContent='우선순위 기준을 '+MIN_BASIS+'자 이상 적어 주십시오.';return;}
@@ -795,7 +796,7 @@ $('c1-back').onclick=()=>{if(!backVis())return;S.step='B';S.ib=NB-1;const p=BI[N
 
 /* 과제 2 */
 $('c2-text').addEventListener('input',()=>{S.c2=$('c2-text').value;save();$('e-c2').textContent='';});
-$('c2-next').onclick=()=>{if(!S.c2.trim()){$('e-c2').textContent='발견한 오류를 적어 주십시오.';return;}S.step='C3';save();route();};
+$('c2-next').onclick=()=>{if(!TEST&&!S.c2.trim()){$('e-c2').textContent='발견한 오류를 적어 주십시오.';return;}S.step='C3';save();route();};
 $('c2-back').onclick=()=>{if(!backVis())return;S.step='C1';save();route();};
 
 /* 과제 3 */
@@ -813,7 +814,7 @@ function c3Render(){const jr=LV==='junior';$('c3-head').classList.toggle('hide',
   else{radios($('c3-br'),BRANCHES,S.c3.br,v=>{S.c3.br=v;save();$('e-c3').textContent='';});$('c3-text').value=S.c3.t||'';counter($('c3-text'),$('c3-cnt'),MIN_REASON);}}
 $('c3-text').addEventListener('input',()=>{S.c3.t=$('c3-text').value;save();$('e-c3').textContent='';counter($('c3-text'),$('c3-cnt'),MIN_REASON);});
 function afterC3(){if(LV==='junior'){S.step='C4';save();route();}else{mark('C1');finish();}}
-$('c3-next').onclick=()=>{
+$('c3-next').onclick=()=>{if(TEST){afterC3();return;}
   if(LV==='junior'){const miss=STMTS.filter(s=>!S.c3.st[s.id]).length;if(miss){$('e-c3').textContent='모든 문장을 판단해 주십시오. ('+miss+'개 남음)';return;}}
   else{if(!S.c3.br){$('e-c3').textContent='지점을 하나 골라 주십시오.';return;}
     if((S.c3.t||'').trim().length<MIN_REASON){$('e-c3').textContent='이유를 '+MIN_REASON+'자 이상 적어 주십시오.';return;}}
@@ -830,7 +831,7 @@ function c4Render(){$('c4-back').style.visibility=backVis()?'visible':'hidden';
   $('c4-picked').textContent='현재 '+S.c4.pick.length+'개 선택 (3개를 골라 주십시오)';
   $('c4-text').value=S.c4.text||'';counter($('c4-text'),$('c4-cnt'),MIN_BASIS);}
 $('c4-text').addEventListener('input',()=>{S.c4.text=$('c4-text').value;save();$('e-c4').textContent='';counter($('c4-text'),$('c4-cnt'),MIN_BASIS);});
-$('c4-next').onclick=()=>{if(S.c4.pick.length!==3){$('e-c4').textContent='분석을 3개 골라 주십시오.';return;}
+$('c4-next').onclick=()=>{if(TEST){mark('C1');finish();return;}if(S.c4.pick.length!==3){$('e-c4').textContent='분석을 3개 골라 주십시오.';return;}
   if((S.c4.text||'').trim().length<MIN_BASIS){$('e-c4').textContent='보고 문장을 '+MIN_BASIS+'자 이상 적어 주십시오.';return;}
   mark('C1');finish();};
 $('c4-back').onclick=()=>{if(!backVis())return;S.step='C3';save();route();};
@@ -875,7 +876,7 @@ if(TEST){
   const go=(step,extra)=>{ensure();S.step=step;if(extra)extra();S.submitted=false;clearDl();save();pn.classList.add('hide');route();};
   function draw(){
     const b=(t,f,on)=>'<button type="button" data-f="'+f+'"'+(on?' class="on"':'')+'>'+t+'</button>';
-    let h='<h4>점검 메뉴</h4><p class="tnote">시험용 기능입니다. 실제 응답자에게 보내는 주소에는 나타나지 않습니다. 화면을 이동하면 해당 화면의 제한 시간이 새로 시작됩니다.</p>';
+    let h='<h4>점검 메뉴</h4><p class="tnote">시험용 기능입니다. 실제 응답자에게 보내는 주소에는 나타나지 않습니다. 점검 모드에서는 응답하지 않아도 다음·이전으로 이동할 수 있고, 화면을 이동하면 그 화면의 제한 시간이 새로 시작됩니다. 응답이 필요하면 자동 채우기를 눌러 주십시오.</p>';
     h+='<p class="tsec">화면 이동</p><div class="tg">'+b('시작 화면','start')+b('파트1 안내','iA')+b('파트1 첫 문항','a0')+b('파트1 마지막 문항','a49')+b('파트2 안내','iB')+'</div>';
     h+='<p class="tsec">파트2 상황</p><div class="tg">';for(let i=0;i<NB;i++)h+=b(String(i+1),'b'+i,S.step==='B'&&S.ib===i);h+='</div>';
     h+='<p class="tsec">파트3</p><div class="tg">'+b('파트3 안내','iC');for(let i=1;i<=NC;i++)h+=b('과제 '+i,'C'+i);h+=b('완료 화면','DONE')+'</div>';
@@ -889,10 +890,10 @@ if(TEST){
     if(f==='start'){pn.classList.add('hide');stopTimer();showSec('s-start');return;}
     if(f==='iA'||f==='iB'||f==='iC'){go(f);return;}
     if(f==='a0'){go('A',()=>{mark('A0');S.ia=0;});return;}
-    if(f==='a49'){go('A',()=>{mark('A0');fillA();S.a[49]=0;S.ia=49;});return;}
-    if(/^b\d+$/.test(f)){const i=+f.slice(1);go('B',()=>{fillA();mark('B0');S.ib=i;S.bo=0;});return;}
-    if(f==='C1'){go('C1',()=>{fillA();fillB();mark('C0');});return;}
-    if(/^C[234]$/.test(f)){go(f,()=>{fillA();fillB();mark('C0');fillC();});return;}
+    if(f==='a49'){go('A',()=>{mark('A0');S.ia=49;});return;}
+    if(/^b\d+$/.test(f)){const i=+f.slice(1);go('B',()=>{mark('B0');S.ib=i;S.bo=0;});return;}
+    if(f==='C1'){go('C1',()=>{mark('C0');});return;}
+    if(/^C[234]$/.test(f)){go(f,()=>{mark('C0');});return;}
     if(f==='DONE'){ensure();fillA();fillB();fillC();save();pn.classList.add('hide');finish();return;}
     if(f==='fA'){ensure();fillA();save();route();draw();return;}
     if(f==='fB'){ensure();fillB();save();route();draw();return;}
