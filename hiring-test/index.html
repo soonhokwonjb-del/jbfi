@@ -207,8 +207,12 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
   <div class="inbox" id="c1-list"></div>
   <div id="c1-plan-wrap" class="hide">
     <div class="task" style="margin-top:8px">
-      <p><b id="c1-step2"></b></p>
-      <div class="plan" id="c1-plan"></div>
+      <div id="c1-plan-box"><p><b id="c1-step2"></b></p>
+      <div class="plan" id="c1-plan"></div></div>
+      <p><b id="c1-step3"></b></p>
+      <p class="hint">기준을 설명하고, 그 기준에 따라 1순위 항목과 마지막 순위 항목을 왜 그 자리에 두었는지 적어 주십시오. (3~5문장)</p>
+      <textarea id="c1-basis" style="min-height:120px"></textarea>
+      <p class="cnt" id="c1-cnt"></p>
     </div>
   </div>
   <div class="err" id="e-c1" role="alert"></div>
@@ -293,25 +297,9 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
     <p class="cnt" id="q4-cnt"></p>
   </div>
   <div class="err" id="e-c3" role="alert"></div>
-  <button class="primary" id="c3-next">다음</button>
+  <button class="primary" id="c3-next">제출하기</button>
 </section>
 
-<!-- 의견 -->
-<section id="s-fb" class="hide">
-  <div class="top"><button class="back" id="fb-back">이전</button><span class="count">마지막 단계</span></div>
-  <h2>설문에 대한 의견</h2>
-  <p class="lead">설문 문항을 다듬는 데 참고합니다. 의견 문항은 평가에 반영되지 않습니다.</p>
-  <p class="lbl">전체 소요 시간은 어떠셨습니까?</p>
-  <div class="radios row" id="fb-time"></div>
-  <p class="lbl">가장 어려웠던 파트는 어디였습니까?</p>
-  <div class="radios" id="fb-hard"></div>
-  <p class="lbl">이해하기 어렵거나, 답이 너무 뻔해 보였던 문항 (선택)</p>
-  <textarea id="fb-item" style="min-height:90px" placeholder="예) 상황 3번은 행동 간 차이가 잘 안 느껴졌음"></textarea>
-  <p class="lbl">기타 의견 (선택)</p>
-  <textarea id="fb-free" style="min-height:90px"></textarea>
-  <div class="err" id="e-fb" role="alert"></div>
-  <button class="primary" id="submit">제출하기</button>
-</section>
 
 <!-- 완료 -->
 <section id="s-done" class="hide">
@@ -335,6 +323,7 @@ const GROUP=Q.get('g')||'TF 테스트';
 const LV=Q.get('lv')==='junior'?'junior':'head';
 const STORE='jbfi-hire-'+VERSION+'-'+LV+'-'+GROUP;
 const MIN_REASON=10;
+const MIN_BASIS=30;
 const TEST=Q.get('test')==='1';
 let SAVE=!TEST;
 
@@ -498,7 +487,7 @@ const B_JUNIOR=[
 
 /* 파트 3-1 */
 const C1_HEAD={desc:'귀하는 JBFI의 부서장입니다. 월요일 오전 8시 30분, 아래 8건의 요청이 와 있습니다.',
- step2:'② 각 건을 어떻게 처리할지 고르고, 그 이유를 적어 주십시오.',method:['직접 처리','위임','일정 조정'],items:[
+ step2:'② 각 건을 어떻게 처리할지 골라 주십시오.',step3:'③ 우선순위를 정한 기준을 설명해 주십시오.',method:['직접 처리','위임','일정 조정'],items:[
 'OJK 정기보고 자료 제출 마감이 오늘 16시이며, 담당자가 일부 수치 확인을 요청함',
 'CEO가 오후 2시 회의 전에 지난달 실적 요약을 오늘 13시까지 요청함',
 '팀원 한 명이 가족 사정으로 면담을 요청함. 급하지 않다고 함',
@@ -508,7 +497,7 @@ const C1_HEAD={desc:'귀하는 JBFI의 부서장입니다. 월요일 오전 8시
 '이번 달 사내 교육 일정 조율 메일',
 '시스템 벤더가 계약 갱신 견적서 검토를 요청함. 계약 만료는 3주 후']};
 const C1_JUNIOR={desc:'귀하는 JBFI의 담당자입니다. 화요일 오전 9시에 출근해 보니 아래 6건의 업무가 있습니다.',
- step2:'② 각 건을 그 순서로 정한 이유를 적어 주십시오.',method:null,items:[
+ step2:'',step3:'② 우선순위를 정한 기준을 설명해 주십시오.',method:null,items:[
 '팀장이 오늘 11시 회의에 쓸 지난주 계약 건수 집계를 요청함',
 '고객이 어제 오후에 대출 상환 일정을 문의하는 메일을 보냈고, 아직 답하지 않음',
 '오늘 17시까지 계약 서류 20건을 스캔해 시스템에 등록해야 함',
@@ -518,8 +507,8 @@ const C1_JUNIOR={desc:'귀하는 JBFI의 담당자입니다. 화요일 오전 9�
 const BRANCHES=['Jakarta','Surabaya','Bandung','Medan','Makassar'];
 
 const CFG=LV==='junior'
- ?{B:B_JUNIOR,C1:C1_JUNIOR,total:'약 25분',t:['약 5분','약 8분','약 12분'],lim:{a:20,b:90,c1:240,c2:240,c3:240}}
- :{B:B_HEAD,C1:C1_HEAD,total:'약 30분',t:['약 5분','약 10분','약 15분'],lim:{a:20,b:90,c1:360,c2:240,c3:300}};
+ ?{B:B_JUNIOR,C1:C1_JUNIOR,total:'약 25분',t:['약 5분','약 8분','약 11분'],lim:{a:20,b:90,c1:180,c2:240,c3:240}}
+ :{B:B_HEAD,C1:C1_HEAD,total:'약 30분',t:['약 5분','약 10분','약 15분'],lim:{a:20,b:90,c1:300,c2:240,c3:300}};
 const NC1=CFG.C1.items.length;
 const RATE_LBL={J:['전혀 효과 없음','효과 낮음','보통','효과 높음','매우 효과 높음'],E:['전혀 적절하지 않음','적절하지 않은 편','보통','적절한 편','매우 적절']};
 const mmss=s=>Math.floor(s/60)+'분'+(s%60?' '+(s%60)+'초':'');
@@ -529,7 +518,7 @@ const $=id=>document.getElementById(id);
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const L='ABCD';
 function fresh(){return{id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),group:GROUP,lv:LV,version:VERSION,
-  name:'',step:'start',ia:0,ib:0,bo:0,a:new Array(50).fill(0),b:{},c1:{order:[],m:{},r:{}},c2:'',c3:{br:'',t:'',q1:'',q2:'',q3:'',q4:''},
+  name:'',step:'start',ia:0,ib:0,bo:0,a:new Array(50).fill(0),b:{},c1:{order:[],m:{},r:{},basis:''},c2:'',c3:{br:'',t:'',q1:'',q2:'',q3:'',q4:''},
   fb:{time:'',hard:'',item:'',free:''},tm:{},sent:{},submitted:false,
   dl:{},shown:{},rt:{a:new Array(50).fill(null),b:new Array(10).fill(null)},
   ig:{awayN:0,awayMs:0,awayBy:{},paste:0,copy:0,reconn:0,to:[]}};}
@@ -537,7 +526,7 @@ let S=fresh(),busy=false,TIMER=!TEST||true;
 function save(){try{localStorage.setItem(STORE,JSON.stringify(S));}catch(e){}}
 function load(){try{const v=JSON.parse(localStorage.getItem(STORE)||'null');if(v&&v.id&&!v.submitted&&v.step!=='start'&&v.version===VERSION)return v;}catch(e){}return null;}
 function mark(k){if(!S.tm[k]){S.tm[k]=Date.now();}}
-const SECTIONS=['s-start','s-intro','s-a','s-b','s-c1','s-c2','s-c3','s-fb','s-done'];
+const SECTIONS=['s-start','s-intro','s-a','s-b','s-c1','s-c2','s-c3','s-done'];
 function showSec(id){SECTIONS.forEach(s=>$(s).classList.toggle('hide',s!==id));window.scrollTo(0,0);}
 
 /* 제한 시간: 화면별 마감 시각을 저장해 새로고침해도 시간이 멈추지 않음 */
@@ -597,15 +586,14 @@ function start(){const n=$('name').value.trim();
 const INTRO={
  iA:['파트 1 / 3','성향 문항','업무 중 나의 모습에 가까운 정도를 골라 주십시오. 바람직한 모습보다 실제 평소 모습을 기준으로, 처음 떠오르는 대로 답해 주십시오. 문항마다 '+CFG.lim.a+'초 안에 답해야 하며, 시간이 지나면 응답 없이 다음 문항으로 넘어갑니다. (50문항, '+CFG.t[0]+')','A'],
  iB:['파트 2 / 3','업무 상황 판단','업무 중 겪을 수 있는 상황 10개입니다. 상황마다 서로 다른 대응 방법 4가지(A~D)가 제시됩니다. 상황에 따라 각 방법을 하나씩 1~5점으로 평가하거나, 4가지 중 실제로 가장 할 것 같은 방법 하나를 고르게 됩니다. 상황마다 '+CFG.lim.b+'초 안에 답해 주십시오. (10개 상황, '+CFG.t[1]+')','B'],
- iC:['파트 3 / 3','실무 과제','짧은 업무 과제 3개입니다. 과제마다 제한 시간이 있으며, 시간이 지나면 그때까지 작성한 내용으로 다음 과제로 넘어갑니다. 면담에서 답한 내용을 바탕으로 이야기를 나누게 되니 본인의 판단으로 작성해 주십시오. (과제 1 '+mmss(CFG.lim.c1)+', 과제 2 '+mmss(CFG.lim.c2)+', 과제 3 '+mmss(CFG.lim.c3)+')','C1']};
+ iC:['파트 3 / 3','실무 과제','짧은 업무 과제 3개입니다. 과제마다 제한 시간이 있으며, 시간이 지나면 그때까지 작성한 내용으로 다음 과제로 넘어갑니다. 면담에서 답한 내용을 바탕으로 이야기를 나누게 되니 본인의 판단으로 작성해 주십시오. (과제 1 '+mmss(CFG.lim.c1)+', 과제 2 '+mmss(CFG.lim.c2)+', 과제 3 '+mmss(CFG.lim.c3)+') 과제 3을 마치면 바로 제출됩니다.','C1']};
 function route(){const st=S.step;stopTimer();
   if(INTRO[st]){const x=INTRO[st];$('i-eye').textContent=x[0];$('i-title').textContent=x[1];$('i-lead').textContent=x[2];showSec('s-intro');return;}
   if(st==='A'){showSec('s-a');aShow();return;}
   if(st==='B'){showSec('s-b');bShow();return;}
   if(st==='C1'){showSec('s-c1');c1Render();timer('c1',CFG.lim.c1,()=>{S.step='C2';save();route();});return;}
   if(st==='C2'){showSec('s-c2');$('c2-text').value=S.c2;$('c2-back').style.visibility=backVis()?'visible':'hidden';timer('c2',CFG.lim.c2,()=>{S.step='C3';save();route();});return;}
-  if(st==='C3'){showSec('s-c3');c3Render();timer('c3',CFG.lim.c3,()=>{mark('C1');S.step='FB';save();route();});return;}
-  if(st==='FB'){showSec('s-fb');fbRender();return;}
+  if(st==='C3'){showSec('s-c3');c3Render();timer('c3',CFG.lim.c3,()=>{mark('C1');finish();});return;}
   showSec('s-start');}
 $('i-go').onclick=()=>{const nx=INTRO[S.step][3];S.step=nx;
   if(nx==='A')mark('A0');if(nx==='B')mark('B0');if(nx==='C1')mark('C0');save();route();};
@@ -689,20 +677,22 @@ function c1Render(){const C=CFG.C1;$('c1-desc').textContent=C.desc;$('c1-step2')
     b.onclick=()=>{const p=S.c1.order.indexOf(i);if(p>=0)S.c1.order.splice(p,1);else S.c1.order.push(i);save();$('e-c1').textContent='';c1Render();};
     list.appendChild(b);});
   const full=S.c1.order.length===NC1;$('c1-plan-wrap').classList.toggle('hide',!full);
+  $('c1-plan-box').classList.toggle('hide',!C.method);$('c1-step3').textContent=C.step3;
+  $('c1-basis').value=S.c1.basis||'';counter($('c1-basis'),$('c1-cnt'),MIN_BASIS);
   const plan=$('c1-plan');plan.innerHTML='';
-  if(full)S.c1.order.forEach((i,n)=>{const r=document.createElement('div');r.className='row';
-    r.innerHTML='<p class="t"><b>'+(n+1)+'</b><span></span></p>'+(C.method?'<div class="chips"></div>':'')+'<input class="rinput" maxlength="200" placeholder="이유 ('+MIN_REASON+'자 이상)"><p class="cnt"></p>';
+  if(full&&C.method)S.c1.order.forEach((i,n)=>{const r=document.createElement('div');r.className='row';
+    r.innerHTML='<p class="t"><b>'+(n+1)+'</b><span></span></p><div class="chips"></div>';
     r.querySelector('.t span').textContent=C.items[i];
-    if(C.method){const ch=r.querySelector('.chips');
-      C.method.forEach(m=>{const b=document.createElement('button');b.type='button';b.textContent=m;b.className=S.c1.m[i]===m?'on':'';
-        b.onclick=()=>{S.c1.m[i]=m;save();ch.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$('e-c1').textContent='';};ch.appendChild(b);});}
-    const inp=r.querySelector('input'),cn=r.querySelector('.cnt');inp.value=S.c1.r[i]||'';counter(inp,cn,MIN_REASON);
-    inp.oninput=()=>{S.c1.r[i]=inp.value;save();$('e-c1').textContent='';counter(inp,cn,MIN_REASON);};
+    const ch=r.querySelector('.chips');
+    C.method.forEach(m=>{const b=document.createElement('button');b.type='button';b.textContent=m;b.className=S.c1.m[i]===m?'on':'';
+      b.onclick=()=>{S.c1.m[i]=m;save();ch.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$('e-c1').textContent='';};ch.appendChild(b);});
     plan.appendChild(r);});}
+$('c1-basis').addEventListener('input',()=>{S.c1.basis=$('c1-basis').value;save();$('e-c1').textContent='';counter($('c1-basis'),$('c1-cnt'),MIN_BASIS);});
 $('c1-next').onclick=()=>{
   if(S.c1.order.length<NC1){$('e-c1').textContent=NC1+'건 모두 순서를 매겨 주십시오.';return;}
   for(const i of S.c1.order){if(CFG.C1.method&&!S.c1.m[i]){$('e-c1').textContent='모든 항목의 처리 방식을 골라 주십시오.';return;}
-    if((S.c1.r[i]||'').trim().length<MIN_REASON){$('e-c1').textContent='모든 항목의 이유를 '+MIN_REASON+'자 이상 적어 주십시오.';return;}}
+}
+  if((S.c1.basis||'').trim().length<MIN_BASIS){$('e-c1').textContent='우선순위 기준을 '+MIN_BASIS+'자 이상 적어 주십시오.';return;}
   S.step='C2';save();route();};
 $('c1-back').onclick=()=>{if(!backVis())return;S.step='B';S.ib=9;S.bo=BI[9].t==='rate'?3:0;save();route();};
 
@@ -727,27 +717,19 @@ $('c3-next').onclick=()=>{
     if((S.c3.q4||'').trim().length<MIN_REASON){$('e-c3').textContent='④는 '+MIN_REASON+'자 이상 적어 주십시오.';return;}}
   else{if(!S.c3.br){$('e-c3').textContent='지점을 하나 골라 주십시오.';return;}
     if((S.c3.t||'').trim().length<MIN_REASON){$('e-c3').textContent='이유를 '+MIN_REASON+'자 이상 적어 주십시오.';return;}}
-  mark('C1');S.step='FB';save();route();};
+  mark('C1');finish();};
 $('c3-back').onclick=()=>{if(!backVis())return;S.step='C2';save();route();};
 
-/* 의견 */
-function fbRender(){radios($('fb-time'),['짧다','적당하다','길다'],S.fb.time,v=>{S.fb.time=v;save();$('e-fb').textContent='';});
-  radios($('fb-hard'),['파트 1. 성향 문항','파트 2. 업무 상황 판단','파트 3. 실무 과제'],S.fb.hard,v=>{S.fb.hard=v;save();$('e-fb').textContent='';});
-  $('fb-item').value=S.fb.item;$('fb-free').value=S.fb.free;$('fb-back').style.visibility='hidden';}
-$('fb-item').addEventListener('input',()=>{S.fb.item=$('fb-item').value;save();});
-$('fb-free').addEventListener('input',()=>{S.fb.free=$('fb-free').value;save();});
-$('fb-back').onclick=()=>{};
 
 /* 저장 */
 function payload(status){const t=S.tm,min=(a,b)=>t[a]&&t[b]?Math.round((t[b]-t[a])/600)/100:null;
   return{action:'save',status:status,id:S.id,group:S.group,lv:S.lv,version:S.version,name:S.name,submittedAt:new Date().toISOString(),test:TEST,timer:TIMER,
     minutes:{p1:min('A0','A1'),p2:min('B0','B1'),p3:min('C0','C1'),total:min('start','C1')},
-    a:S.a,b:S.b,c1:{order:S.c1.order.map(i=>i+1),method:S.c1.order.map(i=>S.c1.m[i]||''),reason:S.c1.order.map(i=>S.c1.r[i]||'')},
+    a:S.a,b:S.b,c1:{order:S.c1.order.map(i=>i+1),method:S.c1.order.map(i=>S.c1.m[i]||''),reason:[],basis:S.c1.basis||''},
     c2:S.c2,c3:S.c3,fb:S.fb,rt:S.rt,ig:S.ig,ua:navigator.userAgent};}
 function post(status){return fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload(status))});}
 function progress(status){if(!SCRIPT_URL||!SAVE||S.sent[status])return;S.sent[status]=1;save();post(status).catch(()=>{S.sent[status]=0;save();});}
-$('submit').onclick=()=>{if(!S.fb.time||!S.fb.hard){$('e-fb').textContent='소요 시간과 가장 어려웠던 파트를 골라 주십시오.';return;}
-  S.submitted=true;save();stopTimer();$('d-title').textContent=S.name+' 님, 수고하셨습니다';showSec('s-done');send();};
+function finish(){S.submitted=true;save();stopTimer();$('d-title').textContent=S.name+' 님, 수고하셨습니다';showSec('s-done');send();}
 async function send(){const st=$('d-status'),msg=st.querySelector('span');st.className='status';msg.textContent='응답을 저장하고 있습니다';
   $('d-fallback').classList.add('hide');
   if(TEST&&!SAVE){msg.textContent='점검 모드: 시트에 저장하지 않았습니다';return;}
@@ -770,7 +752,7 @@ if(TEST){
   const fillA=()=>{S.a=S.a.map(v=>v||rnd(5));mark('A0');mark('A1');};
   const fillB=()=>{BI.forEach(it=>{if(it.t==='rate'){const v=S.b[it.id]||[0,0,0,0];S.b[it.id]=v.map(x=>x||rnd(5));}else if(!S.b[it.id])S.b[it.id]=L[rnd(4)-1];});mark('B0');mark('B1');};
   const fillC=()=>{const C=CFG.C1;if(S.c1.order.length<NC1)S.c1.order=C.items.map((x,i)=>i);
-    S.c1.order.forEach(i=>{if(C.method&&!S.c1.m[i])S.c1.m[i]=C.method[0];if((S.c1.r[i]||'').length<MIN_REASON)S.c1.r[i]='점검용 예시 이유입니다';});
+    S.c1.order.forEach(i=>{if(C.method&&!S.c1.m[i])S.c1.m[i]=C.method[0];});if((S.c1.basis||'').length<MIN_BASIS)S.c1.basis='점검용 예시 답안입니다. 마감 시간과 외부 영향이 큰 일을 먼저 두었습니다.';
     if(!S.c2)S.c2='점검용 예시 답안';
     if(LV==='junior'){['q1','q2','q3'].forEach(k=>{if(!S.c3[k])S.c3[k]='3.0';});if((S.c3.q4||'').length<MIN_REASON)S.c3.q4='점검용 예시 답안입니다';}
     else{if(!S.c3.br)S.c3.br='Bandung';if((S.c3.t||'').length<MIN_REASON)S.c3.t='점검용 예시 답안입니다';}mark('C0');mark('C1');};
@@ -781,7 +763,7 @@ if(TEST){
     let h='<h4>점검 메뉴</h4><p class="tnote">시험용 기능입니다. 실제 응답자에게 보내는 주소에는 나타나지 않습니다. 화면을 이동하면 해당 화면의 제한 시간이 새로 시작됩니다.</p>';
     h+='<p class="tsec">화면 이동</p><div class="tg">'+b('시작 화면','start')+b('파트1 안내','iA')+b('파트1 첫 문항','a0')+b('파트1 마지막 문항','a49')+b('파트2 안내','iB')+'</div>';
     h+='<p class="tsec">파트2 상황</p><div class="tg">';for(let i=0;i<10;i++)h+=b((i+1)+' '+(BI[i].t==='rate'?'평가':'선택'),'b'+i,S.step==='B'&&S.ib===i);h+='</div>';
-    h+='<p class="tsec">파트3 · 마무리</p><div class="tg">'+b('파트3 안내','iC')+b('과제 1','C1')+b('과제 2','C2')+b('과제 3','C3')+b('의견','FB')+b('완료 화면','DONE')+'</div>';
+    h+='<p class="tsec">파트3 · 마무리</p><div class="tg">'+b('파트3 안내','iC')+b('과제 1','C1')+b('과제 2','C2')+b('과제 3','C3')+b('완료 화면','DONE')+'</div>';
     h+='<p class="tsec">자동 채우기 (비어 있는 응답만)</p><div class="tg">'+b('파트1 채우기','fA')+b('파트2 채우기','fB')+b('파트3 채우기','fC')+'</div>';
     h+='<p class="tsec">설정</p><div class="tg">'+b(TIMER?'시간 제한: 켜짐':'시간 제한: 꺼짐','timer',TIMER)+b(SAVE?'시트 저장: 켜짐':'시트 저장: 꺼짐','save',SAVE)+b(LV==='junior'?'헤드 버전으로':'주니어 버전으로','lv')+b('응답 초기화','reset')+b('닫기','close')+'</div>';
     h+='<p class="tsec">현재 기록</p><p class="tnote">화면 이탈 '+S.ig.awayN+'회('+Math.round(S.ig.awayMs/1000)+'초) · 붙여넣기 시도 '+S.ig.paste+'회 · 재접속 '+S.ig.reconn+'회 · 시간 초과 '+S.ig.to.length+'건</p>';
@@ -796,8 +778,7 @@ if(TEST){
     if(f[0]==='b'&&f.length<=3){const i=+f.slice(1);go('B',()=>{fillA();mark('B0');S.ib=i;S.bo=0;});return;}
     if(f==='C1'){go('C1',()=>{fillA();fillB();mark('C0');});return;}
     if(f==='C2'||f==='C3'){go(f,()=>{fillA();fillB();mark('C0');fillC();});return;}
-    if(f==='FB'){go('FB',()=>{fillA();fillB();fillC();});return;}
-    if(f==='DONE'){ensure();fillA();fillB();fillC();if(!S.fb.time)S.fb.time='적당하다';if(!S.fb.hard)S.fb.hard='파트 3. 실무 과제';save();pn.classList.add('hide');stopTimer();
+    if(f==='DONE'){ensure();fillA();fillB();fillC();save();pn.classList.add('hide');stopTimer();
       $('d-title').textContent=S.name+' 님, 수고하셨습니다';showSec('s-done');send();return;}
     if(f==='fA'){ensure();fillA();save();route();draw();return;}
     if(f==='fB'){ensure();fillB();save();route();draw();return;}
