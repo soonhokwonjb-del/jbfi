@@ -123,6 +123,15 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
 .status{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--sub);margin:16px 0}
 .status i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .status.ok i{background:var(--ok)}.status.bad i{background:var(--danger)}
+.tbtn{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:20;border:0;border-radius:999px;background:#B42318;color:#fff;font-size:13px;font-weight:700;padding:9px 14px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.tpanel{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:78vh;overflow:auto;background:var(--paper);border-top:2px solid #B42318;box-shadow:0 -4px 16px rgba(0,0,0,.2);padding:14px 16px calc(16px + env(safe-area-inset-bottom))}
+.tpanel h4{margin:0 0 4px;font-size:15px}
+.tpanel .tnote{font-size:12px;color:var(--muted);margin:0 0 10px}
+.tpanel .tsec{font-size:12px;font-weight:700;color:var(--sub);margin:12px 0 6px}
+.tpanel .tg{display:flex;flex-wrap:wrap;gap:6px}
+.tpanel .tg button{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font-size:13px}
+.tpanel .tg button.on{background:#B42318;border-color:#B42318;color:#fff}
+.tbadge{position:fixed;top:0;left:0;right:0;z-index:19;background:#B42318;color:#fff;font-size:12px;font-weight:700;text-align:center;padding:3px 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:360px){h1{font-size:24px}.stmt{font-size:19px}}
 </style>
@@ -312,6 +321,8 @@ const GROUP=Q.get('g')||'TF 테스트';
 const LV=Q.get('lv')==='junior'?'junior':'head';
 const STORE='jbfi-hire-'+VERSION+'-'+LV+'-'+GROUP;
 const MIN_REASON=10;
+const TEST=Q.get('test')==='1';
+let SAVE=!TEST;
 
 /* 파트 1: 성향 문항 50개 (IPIP Big-Five Factor Markers 기반, 공통) */
 const A_ITEMS=[
@@ -666,12 +677,12 @@ function payload(status){const t=S.tm,min=(a,b)=>t[a]&&t[b]?Math.round((t[b]-t[a
     minutes:{p1:min('A0','A1'),p2:min('B0','B1'),p3:min('C0','C1'),total:min('start','C1')},
     a:S.a,b:S.b,c1:{order:S.c1.order.map(i=>i+1),method:S.c1.order.map(i=>S.c1.m[i]||''),reason:S.c1.order.map(i=>S.c1.r[i]||'')},
     c2:S.c2,c3:S.c3,fb:S.fb,ua:navigator.userAgent};}
-function progress(status){if(!SCRIPT_URL||S.sent[status])return;S.sent[status]=1;save();
+function progress(status){if(!SCRIPT_URL||!SAVE||S.sent[status])return;S.sent[status]=1;save();
   fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload(status))}).catch(()=>{S.sent[status]=0;save();});}
 $('submit').onclick=()=>{if(!S.fb.time||!S.fb.hard){$('e-fb').textContent='소요 시간과 가장 어려웠던 파트를 골라 주십시오.';return;}
   S.submitted=true;save();$('d-title').textContent=S.name+' 님, 수고하셨습니다';showSec('s-done');send();};
 async function send(){const st=$('d-status'),msg=st.querySelector('span');st.className='status';msg.textContent='응답을 저장하고 있습니다';
-  $('d-fallback').classList.add('hide');if(!SCRIPT_URL){fail();return;}
+  $('d-fallback').classList.add('hide');if(TEST&&!SAVE){st.className='status';msg.textContent='점검 모드: 시트에 저장하지 않았습니다';return;}if(!SCRIPT_URL){fail();return;}
   try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload('제출 완료'))});
     st.className='status ok';msg.textContent='응답이 저장되었습니다. 창을 닫으셔도 됩니다.';try{localStorage.removeItem(STORE);}catch(e){}}
   catch(e){fail();}}
@@ -679,6 +690,51 @@ function fail(){const st=$('d-status');st.className='status bad';st.querySelecto
 $('d-retry').onclick=send;
 $('d-dl').onclick=()=>{const blob=new Blob([JSON.stringify(payload('제출 완료'),null,1)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='설문응답_'+S.name+'_'+S.id+'.json';document.body.appendChild(a);a.click();a.remove();};
+/* 점검 모드 (?test=1): 원하는 화면으로 이동, 자동 채우기, 저장 켜기/끄기. 실제 응답자 주소에는 나타나지 않음 */
+if(TEST){
+  const bd=document.createElement('div');bd.className='tbadge';bd.textContent='점검 모드 · '+(LV==='junior'?'주니어':'헤드');document.body.appendChild(bd);
+  const btn=document.createElement('button');btn.className='tbtn';btn.textContent='점검 메뉴';document.body.appendChild(btn);
+  const pn=document.createElement('div');pn.className='tpanel hide';document.body.appendChild(pn);
+  const rnd=n=>1+Math.floor(Math.random()*n);
+  const ensure=()=>{if(!S.name)S.name='점검';mark('start');};
+  const fillA=()=>{S.a=S.a.map(v=>v||rnd(5));mark('A0');mark('A1');};
+  const fillB=()=>{BI.forEach(it=>{if(it.t==='rate'){const v=S.b[it.id]||[0,0,0,0];S.b[it.id]=v.map(x=>x||rnd(5));}else if(!S.b[it.id])S.b[it.id]=L[rnd(4)-1];});mark('B0');mark('B1');};
+  const fillC=()=>{const C=CFG.C1;if(S.c1.order.length<NC1)S.c1.order=C.items.map((x,i)=>i);
+    S.c1.order.forEach(i=>{if(C.method&&!S.c1.m[i])S.c1.m[i]=C.method[0];if((S.c1.r[i]||'').length<MIN_REASON)S.c1.r[i]='점검용 예시 이유입니다';});
+    if(!S.c2)S.c2='점검용 예시 답안';
+    if(LV==='junior'){['q1','q2','q3'].forEach(k=>{if(!S.c3[k])S.c3[k]='3.0';});if((S.c3.q4||'').length<MIN_REASON)S.c3.q4='점검용 예시 답안입니다';}
+    else{if(!S.c3.br)S.c3.br='Bandung';if((S.c3.t||'').length<MIN_REASON)S.c3.t='점검용 예시 답안입니다';}mark('C0');mark('C1');};
+  const go=(step,extra)=>{ensure();S.step=step;if(extra)extra();S.submitted=false;save();pn.classList.add('hide');route();};
+  function draw(){
+    const b=(t,f,on)=>'<button type="button" data-f="'+f+'"'+(on?' class="on"':'')+'>'+t+'</button>';
+    let h='<h4>점검 메뉴</h4><p class="tnote">시험용 기능입니다. 실제 응답자에게 보내는 주소에는 나타나지 않습니다.</p>';
+    h+='<p class="tsec">화면 이동</p><div class="tg">'+b('시작 화면','start')+b('파트1 안내','iA')+b('파트1 첫 문항','a0')+b('파트1 마지막 문항','a49')+b('파트2 안내','iB')+'</div>';
+    h+='<p class="tsec">파트2 상황</p><div class="tg">';for(let i=0;i<10;i++)h+=b((i+1)+' '+(BI[i].t==='rate'?'평가':'선택'),'b'+i,S.step==='B'&&S.ib===i);h+='</div>';
+    h+='<p class="tsec">파트3 · 마무리</p><div class="tg">'+b('파트3 안내','iC')+b('과제 1','C1')+b('과제 2','C2')+b('과제 3','C3')+b('의견','FB')+b('완료 화면','DONE')+'</div>';
+    h+='<p class="tsec">자동 채우기 (비어 있는 응답만)</p><div class="tg">'+b('파트1 채우기','fA')+b('파트2 채우기','fB')+b('파트3 채우기','fC')+'</div>';
+    h+='<p class="tsec">기타</p><div class="tg">'+b(SAVE?'시트 저장: 켜짐':'시트 저장: 꺼짐','save',SAVE)+b(LV==='junior'?'헤드 버전으로':'주니어 버전으로','lv')+b('응답 초기화','reset')+b('닫기','close')+'</div>';
+    pn.innerHTML=h;}
+  btn.onclick=()=>{draw();pn.classList.toggle('hide');};
+  pn.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const f=t.dataset.f;
+    if(f==='close'){pn.classList.add('hide');return;}
+    if(f==='start'){pn.classList.add('hide');showSec('s-start');return;}
+    if(f==='iA'||f==='iB'||f==='iC'){go(f);return;}
+    if(f==='a0'){go('A',()=>{mark('A0');S.ia=0;});return;}
+    if(f==='a49'){go('A',()=>{mark('A0');fillA();S.a[49]=0;S.ia=49;});return;}
+    if(f[0]==='b'&&f.length<=3){const i=+f.slice(1);go('B',()=>{fillA();mark('B0');S.ib=i;S.bo=0;});return;}
+    if(f==='C1'){go('C1',()=>{fillA();fillB();mark('C0');});return;}
+    if(f==='C2'||f==='C3'){go(f,()=>{fillA();fillB();mark('C0');const o=S.c1.order.slice(),c2=S.c2,c3=JSON.stringify(S.c3);fillC();if(f==='C3'){}});return;}
+    if(f==='FB'){go('FB',()=>{fillA();fillB();fillC();});return;}
+    if(f==='DONE'){ensure();fillA();fillB();fillC();if(!S.fb.time)S.fb.time='적당하다';if(!S.fb.hard)S.fb.hard='파트 3. 실무 과제';save();pn.classList.add('hide');
+      $('d-title').textContent=S.name+' 님, 수고하셨습니다';showSec('s-done');send();return;}
+    if(f==='fA'){ensure();fillA();save();route();draw();return;}
+    if(f==='fB'){ensure();fillB();save();route();draw();return;}
+    if(f==='fC'){ensure();fillC();save();route();draw();return;}
+    if(f==='save'){SAVE=!SAVE;draw();return;}
+    if(f==='lv'){const u=new URL(location.href);if(LV==='junior')u.searchParams.delete('lv');else u.searchParams.set('lv','junior');location.href=u.toString();return;}
+    if(f==='reset'){if(confirm('이 버전의 응답을 모두 지웁니다.')){try{localStorage.removeItem(STORE);}catch(x){}location.reload();}return;}
+  });
+}
 </script>
 </body>
 </html>
