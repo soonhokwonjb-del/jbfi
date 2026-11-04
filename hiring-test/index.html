@@ -141,6 +141,7 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:22;background:#14212B;color:#fff;border-radius:10px;padding:10px 16px;font-size:14px}
 .noselect main{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .noselect main input,.noselect main textarea{-webkit-user-select:text;user-select:text}
+.langs{display:flex;gap:6px;margin:0 0 18px;flex-wrap:wrap}.langs button{flex:1 1 auto;white-space:nowrap;padding:0 10px;height:38px;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;font-size:14px}.langs button.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy);font-weight:700}
 .rules{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:4px 0 16px;font-size:14px;line-height:1.6}
 .rules .rt{font-weight:800;margin:0 0 6px;font-size:15px}
 .rules ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
@@ -166,19 +167,20 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
 
 <!-- 시작 -->
 <section id="s-start">
+  <div class="langs hide" id="langs"></div>
   <p class="eyebrow">JB Finance Indonesia</p>
-  <h1>업무 스타일 설문</h1>
-  <p class="lead">평소 성향, 업무 상황에서의 판단 방식, 간단한 실무 과제로 구성되어 있습니다. 정답을 맞히는 시험보다는 평소 일하는 방식을 확인하는 데 목적이 있으니 편하게 답해 주십시오.</p>
-  <ul class="facts"><li>3개 파트</li><li id="f-total"></li><li>제한 시간 있음</li></ul>
+  <h1 data-i="h1">업무 스타일 설문</h1>
+  <p class="lead" data-i="lead">평소 성향, 업무 상황에서의 판단 방식, 간단한 실무 과제로 구성되어 있습니다. 정답을 맞히는 시험보다는 평소 일하는 방식을 확인하는 데 목적이 있으니 편하게 답해 주십시오.</p>
+  <ul class="facts"><li data-i="f3">3개 파트</li><li id="f-total"></li><li data-i="ftimed">제한 시간 있음</li></ul>
   <div class="parts" id="parts"></div>
-  <div id="resume" class="notice hide">이전에 시작한 응답이 있습니다. 아래 버튼을 누르면 이어서 진행되며, 재접속 기록이 남습니다. 제한 시간은 그동안에도 계속 흘렀습니다.</div>
-  <div class="field"><label for="name">이름</label><input id="name" autocomplete="name" maxlength="40" enterkeyhint="go"></div>
+  <div id="resume" class="notice hide" data-i="resume">이전에 시작한 응답이 있습니다. 아래 버튼을 누르면 이어서 진행되며, 재접속 기록이 남습니다. 제한 시간은 그동안에도 계속 흘렀습니다.</div>
+  <div class="field"><label for="name" data-i="nameLbl">이름</label><input id="name" autocomplete="name" maxlength="40" enterkeyhint="go"></div>
   <div class="rules" id="rules"></div>
-  <label class="agree"><input type="checkbox" id="agree"><span>위 안내를 확인했으며, 다른 사람이나 외부 도구의 도움 없이 본인의 판단으로 응답하겠습니다.</span></label>
+  <label class="agree"><input type="checkbox" id="agree"><span data-i="agree">위 안내를 확인했으며, 다른 사람이나 외부 도구의 도움 없이 본인의 판단으로 응답하겠습니다.</span></label>
   <div class="err" id="e-start" role="alert"></div>
   <button class="primary" id="go">시작하기</button>
   <button class="ghost hide" id="restart">처음부터 다시 하기</button>
-  <p class="privacy"><span id="f-quiet"></span> 이름, 응답 내용, 응답 시간과 화면 전환 기록은 설문 목적으로만 저장되며 지정된 담당자만 열람합니다.</p>
+  <p class="privacy" id="privacy"></p>
 </section>
 
 <!-- 파트 안내 -->
@@ -213,9 +215,9 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
 <section id="s-c1" class="hide">
   <div class="top"><button class="back" id="c1-back">이전</button><span class="count" id="c1-count"></span></div>
   <div class="task">
-    <h3>업무 우선순위 정하기</h3>
+    <h3 data-i="c1h">업무 우선순위 정하기</h3>
     <p id="c1-desc"></p>
-    <p><b>① 처리할 순서대로 항목을 눌러 번호를 매기십시오.</b> 잘못 눌렀다면 다시 누르면 취소됩니다.</p>
+    <p data-i="c1s1"><b>① 처리할 순서대로 항목을 눌러 번호를 매기십시오.</b> 잘못 눌렀다면 다시 누르면 취소됩니다.</p>
   </div>
   <div class="inbox" id="c1-list"></div>
   <div id="c1-plan-wrap" class="hide">
@@ -223,22 +225,22 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
       <div id="c1-plan-box"><p><b id="c1-step2"></b></p>
       <div class="plan" id="c1-plan"></div></div>
       <p><b id="c1-step3"></b></p>
-      <p class="hint">기준을 설명하고, 그 기준에 따라 1순위 항목과 마지막 순위 항목을 왜 그 자리에 두었는지 적어 주십시오. (3~5문장)</p>
+      <p class="hint" data-i="c1hint">기준을 설명하고, 그 기준에 따라 1순위 항목과 마지막 순위 항목을 왜 그 자리에 두었는지 적어 주십시오. (3~5문장)</p>
       <textarea id="c1-basis" style="min-height:120px"></textarea>
       <p class="cnt" id="c1-cnt"></p>
     </div>
   </div>
   <div class="err" id="e-c1" role="alert"></div>
-  <button class="primary" id="c1-next">다음 과제</button>
+  <button class="primary" id="c1-next" data-t="nextTask">다음 과제</button>
 </section>
 
 <!-- 파트 3-2 -->
 <section id="s-c2" class="hide">
   <div class="top"><button class="back" id="c2-back">이전</button><span class="count" id="c2-count"></span></div>
   <div class="task">
-    <h3>보고 자료 검토</h3>
-    <p>아래 표는 팀원이 작성한 보고 자료입니다. 상사에게 올리기 전에 검토한다고 생각하고, 발견한 오류를 모두 적어 주십시오.</p>
-    <div class="tbl"><table>
+    <h3 data-i="c2h">보고 자료 검토</h3>
+    <p data-i="c2p">아래 표는 팀원이 작성한 보고 자료입니다. 상사에게 올리기 전에 검토한다고 생각하고, 발견한 오류를 모두 적어 주십시오.</p>
+    <div class="tbl"><table data-i="c2tbl">
       <caption>2026년 9월 지점별 신규 취급 실적 (단위: Rp miliar)</caption>
       <thead><tr><th>지점</th><th>취급액</th><th>건수</th><th>전월 취급액</th><th>전월 대비 증감</th></tr></thead>
       <tbody>
@@ -250,14 +252,14 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
         <tr class="sum"><td>합계</td><td>254.5</td><td>1,243</td><td>236.0</td><td>+5.7%</td></tr>
       </tbody>
     </table></div>
-    <p class="foot">* 기준일: 2026-08-31</p>
-    <p class="foot">* 전월 대비 증감 = (취급액 − 전월 취급액) ÷ 전월 취급액</p>
+    <p class="foot" data-i="c2f1">* 기준일: 2026-08-31</p>
+    <p class="foot" data-i="c2f2">* 전월 대비 증감 = (취급액 − 전월 취급액) ÷ 전월 취급액</p>
   </div>
-  <p class="lbl">발견한 오류</p>
-  <p class="hint">한 줄에 하나씩, 어디가 어떻게 틀렸는지 적어 주십시오.</p>
+  <p class="lbl" data-i="c2lbl">발견한 오류</p>
+  <p class="hint" data-i="c2hint">한 줄에 하나씩, 어디가 어떻게 틀렸는지 적어 주십시오.</p>
   <textarea id="c2-text" placeholder="예) ○○ 지점의 △△ 수치가 □□와 맞지 않음"></textarea>
   <div class="err" id="e-c2" role="alert"></div>
-  <button class="primary" id="c2-next">다음 과제</button>
+  <button class="primary" id="c2-next" data-t="nextTask">다음 과제</button>
 </section>
 
 <!-- 파트 3-3 -->
@@ -287,9 +289,9 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
   </div>
   <div id="c3-jr">
     <div class="task">
-      <h3>데이터 해석</h3>
-      <p>아래 자료를 보고, 각 문장이 자료에 비추어 맞는지 판단해 주십시오. 자료만으로는 맞는지 틀린지 알 수 없는 문장도 있습니다.</p>
-      <div class="tbl"><table>
+      <h3 data-i="c3h">데이터 해석</h3>
+      <p data-i="c3p">아래 자료를 보고, 각 문장이 자료에 비추어 맞는지 판단해 주십시오. 자료만으로는 맞는지 틀린지 알 수 없는 문장도 있습니다.</p>
+      <div class="tbl"><table data-i="c3tbl">
         <caption>상품별 신규 취급액과 30일 이상 연체율 (2026년)</caption>
         <thead><tr><th>월</th><th>신차<br>취급액</th><th>중고차<br>취급액</th><th>이륜차<br>취급액</th><th>신차<br>연체율</th><th>중고차<br>연체율</th><th>이륜차<br>연체율</th></tr></thead>
         <tbody>
@@ -301,8 +303,8 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
           <tr><td>9월</td><td>45</td><td>47</td><td>18</td><td>2.0%</td><td>3.6%</td><td>7.6%</td></tr>
         </tbody>
       </table></div>
-      <p class="foot">* 취급액 단위: Rp miliar</p>
-      <p class="foot">* 연체율 = 각 상품의 월말 대출 잔액 대비 30일 이상 연체 잔액 비율</p>
+      <p class="foot" data-i="c3f1">* 취급액 단위: Rp miliar</p>
+      <p class="foot" data-i="c3f2">* 연체율 = 각 상품의 월말 대출 잔액 대비 30일 이상 연체 잔액 비율</p>
     </div>
     <div id="c3-stmts"></div>
   </div>
@@ -314,15 +316,15 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
 <section id="s-c4" class="hide">
   <div class="top"><button class="back" id="c4-back">이전</button><span class="count" id="c4-count"></span></div>
   <div class="task">
-    <h3>문제 구조화</h3>
-    <p>딜러 채널의 신규 취급 건수가 7월부터 석 달째 줄고 있습니다(7월 1,200건 → 9월 950건). 같은 기간 직영 채널 건수는 큰 변화가 없습니다. 팀장이 원인을 파악해 보고하라고 했습니다.</p>
+    <h3 data-i="c4h">문제 구조화</h3>
+    <p data-i="c4p">딜러 채널의 신규 취급 건수가 7월부터 석 달째 줄고 있습니다(7월 1,200건 → 9월 950건). 같은 기간 직영 채널 건수는 큰 변화가 없습니다. 팀장이 원인을 파악해 보고하라고 했습니다.</p>
   </div>
-  <p class="lbl">① 원인을 찾기 위해 가장 먼저 볼 분석 3개를 고르십시오.</p>
+  <p class="lbl" data-i="c4l1">① 원인을 찾기 위해 가장 먼저 볼 분석 3개를 고르십시오.</p>
   <p class="hint" id="c4-picked"></p>
   <div class="radios" id="c4-opts"></div>
   <div class="task">
-    <p><b>② 분석 결과가 아래와 같이 나왔다고 가정하고, 팀장에게 보고할 첫 두 문장을 작성해 주십시오.</b></p>
-    <ul style="margin:0 0 4px;padding-left:18px">
+    <p data-i="c4l2"><b>② 분석 결과가 아래와 같이 나왔다고 가정하고, 팀장에게 보고할 첫 두 문장을 작성해 주십시오.</b></p>
+    <ul style="margin:0 0 4px;padding-left:18px" data-i="c4ul">
       <li>딜러 채널의 신청 건수는 7~9월 거의 같고, 승인율은 72%에서 58%로 떨어짐</li>
       <li>승인 거절 사유 중 "소득 증빙 미비"가 8월 심사 기준 변경 이후 2배로 늘어남</li>
       <li>상위 딜러 10곳 중 8곳에서 비슷한 감소가 나타남</li>
@@ -331,19 +333,19 @@ textarea{width:100%;min-height:130px;padding:12px 14px;font:inherit;font-size:15
   <textarea id="c4-text" style="min-height:110px"></textarea>
   <p class="cnt" id="c4-cnt"></p>
   <div class="err" id="e-c4" role="alert"></div>
-  <button class="primary" id="c4-next">제출하기</button>
+  <button class="primary" id="c4-next" data-t="submit">제출하기</button>
 </section>
 
 <!-- 완료 -->
 <section id="s-done" class="hide">
-  <p class="eyebrow">제출 완료</p>
+  <p class="eyebrow" data-i="doneEye">제출 완료</p>
   <h2 id="d-title">수고하셨습니다</h2>
-  <p class="lead">응답이 제출되었습니다. 결과는 담당자가 검토한 뒤 면담에서 함께 이야기하게 됩니다.</p>
+  <p class="lead" data-i="doneLead">응답이 제출되었습니다. 결과는 담당자가 검토한 뒤 면담에서 함께 이야기하게 됩니다.</p>
   <div class="status" id="d-status"><i></i><span>응답을 저장하고 있습니다</span></div>
   <div id="d-fallback" class="hide">
-    <div class="notice">저장 서버에 연결하지 못했습니다. 아래 버튼으로 응답 파일을 내려받아 담당자에게 전달해 주십시오.</div>
-    <button class="primary" id="d-dl">응답 파일 내려받기</button>
-    <button class="ghost" id="d-retry">다시 저장 시도</button>
+    <div class="notice" data-i="fb">저장 서버에 연결하지 못했습니다. 아래 버튼으로 응답 파일을 내려받아 담당자에게 전달해 주십시오.</div>
+    <button class="primary" id="d-dl" data-i="dl">응답 파일 내려받기</button>
+    <button class="ghost" id="d-retry" data-i="retry">다시 저장 시도</button>
   </div>
 </section>
 
@@ -354,8 +356,13 @@ const VERSION='v4';
 const Q=new URLSearchParams(location.search);
 const GROUP=Q.get('g')||'TF 테스트';
 const LV=Q.get('lv')==='junior'?'junior':'head';
+const LANGS={ko:'한국어',id:'Bahasa Indonesia',en:'English'};
+const LANG=(()=>{if(LV!=='junior')return 'ko';const q=Q.get('lang');if(LANGS[q])return q;
+  const b=((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase().slice(0,2);
+  return b==='ko'?'ko':b==='en'?'en':'id';})();
+document.documentElement.lang=LANG;
 const STORE='jbfi-hire-'+VERSION+'-'+LV+'-'+GROUP;
-const MIN_REASON=10,MIN_BASIS=30;
+const MIN_REASON=10,MIN_BASIS=LANG==='ko'?30:60;
 const TEST=Q.get('test')==='1';
 let SAVE=!TEST;
 
@@ -570,12 +577,445 @@ const STMTS=[
 const STMT_OPT=[['T','맞음'],['F','틀림'],['U','자료만으로는 판단할 수 없음']];
 const C4_OPTS=['딜러별 취급 건수 변화 (일부 딜러의 문제인지 전체의 문제인지)','회사 전체 직원 수 변화','딜러 담당 영업 인력의 변동과 딜러 방문 횟수','딜러 채널의 신청 건수와 승인율 추이','지난 3년간 연간 실적 요약','차종별 평균 대출 금액 변화','경쟁사의 금리·대출 조건과 딜러 수수료 비교','직영 채널 고객 만족도 조사 결과'];
 
+/* 인도네시아어·영어 (주니어 전용). 한국어는 위의 원문을 그대로 쓴다 */
+const LDATA={
+id:{
+A:[
+"Dalam rapat yang dihadiri beberapa divisi, saya cenderung memimpin pembicaraan.",
+"Jika rekan kerja sedang kesulitan dengan pekerjaannya, saya tidak terlalu peduli selama itu bukan pekerjaan saya.",
+"Sebelum rapat atau memulai pekerjaan, saya menyiapkan bahan yang diperlukan terlebih dahulu.",
+"Saat pekerjaan menumpuk, saya cepat merasa stres.",
+"Saat menulis laporan atau email, saya pandai memilih kata yang sesuai dengan situasinya.",
+"Saya cenderung tidak banyak bicara dalam rapat.",
+"Saya biasanya peduli dan menanyakan kepada anggota tim pekerjaan apa yang sedang menyulitkan mereka.",
+"Saya cenderung membiarkan dokumen dan barang berserakan di meja tanpa dirapikan.",
+"Saya tetap tenang bahkan saat pekerjaan sedang sibuk.",
+"Saat mendengar penjelasan tentang kebijakan baru, saya sulit memahaminya jika tidak ada contoh konkret.",
+"Saya merasa lebih bersemangat saat bekerja bersama banyak orang.",
+"Jika kesal karena pekerjaan, saya cenderung mengucapkan kata-kata yang menyinggung kepada rekan kerja.",
+"Sebelum menyerahkan laporan, saya memeriksa angka dan salah ketik dengan teliti.",
+"Saya cenderung khawatir lebih dulu bahwa pekerjaan yang saya pegang akan bermasalah.",
+"Saat bekerja, saya sering memikirkan cara yang belum pernah dipakai sebelumnya.",
+"Dalam rapat atau acara, saya lebih suka mengamati dari belakang daripada tampil di depan.",
+"Jika rekan kerja kesulitan dengan pekerjaannya, saya bisa memahami perasaannya.",
+"Saya sering harus mengulang pekerjaan karena mengerjakannya terburu-buru.",
+"Meskipun ditegur atasan, saya cepat melupakannya dan fokus pada pekerjaan berikutnya.",
+"Saya tidak tertarik pada teori atau konsep yang tidak langsung terpakai dalam pekerjaan.",
+"Saat pertama kali bekerja dengan orang dari divisi lain, biasanya saya yang lebih dulu menghubungi.",
+"Saya merasa terganggu jika harus mendengarkan rekan kerja bercerita tentang masalah pekerjaannya.",
+"Jika ada pekerjaan yang harus dilakukan, saya langsung mengerjakannya tanpa menunda.",
+"Kesalahan kecil atau perubahan jadwal saat bekerja mudah membuat saya gelisah.",
+"Saya sering menyampaikan ide baru dalam rapat.",
+"Dalam rapat dengan banyak orang, saya sulit menemukan hal yang ingin saya sampaikan.",
+"Saya mudah luluh ketika konsumen menceritakan kesulitan yang sedang dihadapinya.",
+"Saya sering harus mencari lagi dokumen atau file karena tidak mengembalikannya ke tempat semula.",
+"Saya mudah kecewa jika pekerjaan tidak berjalan sesuai harapan.",
+"Untuk pekerjaan yang belum pernah saya lakukan, saya sulit membayangkan bagaimana jalannya.",
+"Saat makan bersama tim atau acara kantor, saya berbincang dengan banyak orang secara bergantian.",
+"Saya kurang tertarik untuk mengetahui pendapat atau keadaan rekan kerja.",
+"Saya baru bisa bekerja dengan baik jika meja dan file saya tertata rapi.",
+"Suasana hati saya bisa naik-turun drastis dalam sehari, tergantung hasil pekerjaan.",
+"Saya cepat memahami kebijakan atau cara kerja yang baru.",
+"Saya merasa tidak nyaman jika menjadi pusat perhatian dalam rapat atau presentasi.",
+"Meskipun sedang sibuk, saya meluangkan waktu jika rekan kerja meminta bantuan.",
+"Saya cenderung menunda pekerjaan yang tidak saya sukai sampai menjelang tenggat waktu.",
+"Meskipun pekerjaan itu biasanya dipuji, satu kritik kecil saja bisa membuat suasana hati saya sangat buruk.",
+"Saya terbiasa menggunakan istilah teknis secara wajar dalam laporan atau rapat.",
+"Saya tidak merasa terbebani saat presentasi atau berbicara di depan banyak orang.",
+"Saya bisa menyadari jika rekan kerja sedang tidak enak hati, meskipun dia tidak mengatakannya.",
+"Saya menyusun jadwal kerja harian lebih dulu dan menjalankannya sesuai rencana.",
+"Saya mudah kesal meskipun pekerjaan hanya sedikit tersendat.",
+"Setelah pekerjaan selesai, saya merenungkan apakah ada cara yang lebih baik.",
+"Saya menjadi pendiam saat bertemu mitra bisnis untuk pertama kali.",
+"Konsumen yang baru pertama kali bertemu dengan saya pun biasanya merasa nyaman berbicara dengan saya.",
+"Saya tidak membiarkan selisih sekecil apa pun dan langsung memperbaikinya.",
+"Jika membuat kesalahan dalam pekerjaan, saya terus memikirkannya selama berhari-hari.",
+"Saya sering mendapat ide untuk memperbaiki cara kerja."],
+scale:['Sangat tidak sesuai','Kurang sesuai','Netral','Cukup sesuai','Sangat sesuai'],
+B:{
+J1:{s:'Besok kepala tim Anda (Ibu) akan melaporkan penyebab kenaikan rasio tunggakan cabang dalam rapat manajemen, dan Anda yang menyiapkan bahannya. Kepala tim menilai penyebabnya adalah kurangnya tenaga penagihan. Namun, dari data terlihat bahwa sebagian besar kenaikan tunggakan berasal dari pembiayaan melalui 2 dealer tertentu. Sore ini Anda akan meninjau bahan tersebut bersama kepala tim.',o:[
+ 'Menyusun bahan dengan fokus pada kurangnya tenaga penagihan, dan menyiapkan data dealer secara terpisah untuk dijelaskan jika ada pertanyaan.',
+ 'Menunjukkan data dealer saat peninjauan sore nanti, lalu meminta kepala tim memutuskan arah penyusunan bahan.',
+ 'Menyajikan bukti kedua penyebab secara berdampingan, lalu menyampaikan pendapat Anda tentang penyebab mana yang lebih besar.',
+ 'Menyusun bahan dengan konsentrasi tunggakan di 2 dealer sebagai penyebab utama, dan menempatkan masalah tenaga penagihan sebagai hal yang perlu dicek lebih lanjut.',
+ 'Sebelum peninjauan, meminta konfirmasi kepala tim penagihan tentang konsentrasi tunggakan di dealer tersebut, lalu memasukkan pendapatnya ke dalam bahan.']},
+J2:{s:'Anda sedang menerima serah terima tugas menyiapkan data laporan berkala bulanan ke OJK dari rekan senior Anda (Pak). Menurut manual, data harus dicocokkan dengan buku besar (ledger) di sistem setiap bulan. Namun, rekan senior mengatakan bahwa karena prosesnya lama, selama ini ia hanya memperbarui bagian yang berubah pada file bulan lalu, dan meminta Anda melakukan hal yang sama.',o:[
+ 'Memberi tahu kepala tim bahwa cara yang dijalankan berbeda dengan manual, lalu mengerjakannya setelah memastikan cara mana yang harus dipakai.',
+ 'Mengikuti cara rekan senior, tetapi mencocokkan dengan ledger hanya untuk pos yang angkanya berubah besar.',
+ 'Bulan ini mengikuti cara rekan senior, lalu mulai mencocokkan dengan ledger bulan depan.',
+ 'Menyusun data dengan cara rekan senior lebih dulu, lalu membuat versi yang dicocokkan dengan ledger secara terpisah dan membandingkan hasilnya.',
+ 'Menanyakan langsung kepada tim Manajemen Risiko apakah pencocokan dengan ledger boleh dilewati.']},
+J3:{s:'Demi target akhir bulan, tim marketing meminta tim perencanaan mengkaji perubahan proses menjadi "dokumen bukti penghasilan diterima paling lambat satu minggu setelah persetujuan". Jika diterapkan, indikator kinerja proyek "aktivasi kanal dealer" yang Anda pegang juga akan membaik.',o:[
+ 'Karena berdampak baik pada kinerja, memberikan pendapat setuju dengan disertai rencana pemantauan penerimaan dokumen.',
+ 'Memberikan pendapat tidak setuju berdasarkan contoh masalah yang pernah terjadi dengan cara serupa di masa lalu.',
+ 'Mengusulkan uji coba selama satu bulan di satu cabang, lalu memutuskan apakah akan diperluas.',
+ 'Memberikan pendapat setelah mengecek kepada tim analisis kredit dan tim Manajemen Risiko dampaknya terhadap tunggakan dan dokumen yang tidak terkumpul.',
+ 'Meminta tim marketing menyampaikan perkiraan dampaknya dalam angka, dan memberikan pendapat setuju jika dampaknya besar.']},
+J4:{s:'Kriteria grade dealer yang Anda susun telah disetujui kepala tim dan akan dipakai untuk menghitung komisi dealer mulai bulan depan. Kriteria ini belum disampaikan kepada tim marketing dan cabang.',o:[
+ 'Karena sudah disetujui, mengumumkannya melalui memo pemberlakuan yang menjelaskan cara perhitungan dan kontak untuk pertanyaan secara rinci.',
+ 'Sebelum berlaku, menjelaskannya kepada tim marketing dan cabang serta meminta masukan, lalu menyempurnakannya bersama kepala tim jika perlu.',
+ 'Meminta persetujuan kepala tim marketing lebih dulu, lalu menyampaikannya ke cabang melalui tim marketing.',
+ 'Pada bulan pertama, menghitung dengan kriteria lama dan baru untuk menunjukkan perbedaannya, lalu menerapkannya mulai bulan berikutnya.',
+ 'Menunjukkannya lebih dulu kepada beberapa cabang, dan jika tidak ada masalah, mengumumkannya ke semua pihak melalui memo.']},
+J5:{s:'Pada malam hari, kepala tim Anda (Ibu) hanya mengirim pesan WhatsApp: "Tolong rangkum kinerja dealer untuk rapat besok." Rapatnya besok pukul 10.00. Periode dan kriterianya tidak jelas, dan menurut Anda rasio tunggakan juga perlu dilihat.',o:[
+ 'Menanyakan singkat tujuan rapat dan periodenya, sekaligus menyampaikan pendapat bahwa rasio tunggakan sebaiknya juga dilihat.',
+ 'Menyusunnya berdasarkan nilai pembiayaan dengan format bahan rapat sebelumnya, dan menambahkan rasio tunggakan sebagai lampiran.',
+ 'Karena sudah larut, tidak bertanya dan menyiapkan dua versi: berdasarkan nilai pembiayaan saja, dan yang mencakup rasio tunggakan.',
+ 'Datang lebih pagi besok, lalu mulai mengerjakan setelah mengonfirmasi kepada kepala tim.',
+ 'Hanya menanyakan singkat tujuan rapat, lalu menentukan sendiri kriterianya.']},
+J6:{s:'Anda menemukan bahwa pada data bulanan yang kemarin dikirim ke perusahaan induk di Korea setelah ditinjau kepala tim, rasio tunggakan tercantum 0,3 poin persentase lebih rendah dari angka sebenarnya karena kesalahan penghitungan Anda. Kepala tim belum mengetahuinya dan hari ini seharian berada di luar kantor.',o:[
+ 'Menyelesaikan data koreksi lebih dulu, lalu melaporkannya langsung kepada kepala tim saat ia kembali besok.',
+ 'Mengirim data koreksi lebih dulu kepada PIC di perusahaan induk, lalu menyampaikan hal yang sama kepada kepala tim.',
+ 'Langsung memberi tahu kepala tim melalui pesan, menyiapkan data koreksi, dan menanyakan cara penanganannya.',
+ 'Merangkum penyebab dan cakupan dampaknya, lalu menyampaikan koreksinya bersama laporan berkala berikutnya.',
+ 'Memberi tahu kepala tim melalui telepon, lalu langsung menghubungi perusahaan induk bahwa koreksi akan dikirim hari ini.']},
+J7:{s:'Anda memiliki pekerjaan menyiapkan data settlement dealer dengan tenggat waktu sehari sebelum libur Lebaran. Karena ada pekerjaan mendesak lain yang bersamaan, sepertinya sulit selesai tepat waktu. Tenggat waktunya 5 hari lagi.',o:[
+ 'Lembur sebisa mungkin sebelum libur, lalu menyelesaikan sisanya segera setelah libur.',
+ 'Meminta rekan kerja mengambil sebagian pekerjaan, lalu melaporkan hasilnya kepada kepala tim sehari sebelum tenggat waktu.',
+ 'Mengerjakan sekitar tiga hari lagi, lalu membicarakan tenggat waktu dengan kepala tim setelah melihat sisa pekerjaan.',
+ 'Sekarang juga memberi tahu kepala tim tentang perkiraan keterlambatan, lalu membahas penyesuaian prioritas atau tenggat waktu.',
+ 'Menunda sementara pekerjaan mendesak lainnya dan fokus pada pekerjaan ini lebih dulu.']},
+J8:{s:'Kepala tim Anda (Ibu) meminta pendapat Anda paling lambat besok pagi tentang apakah suku bunga pembiayaan mobil bekas perlu diturunkan. Dari 3 kompetitor pembanding, data 2 perusahaan sudah ada, sedangkan 1 lagi baru bisa diperoleh minggu depan.',o:[
+ 'Meminta agar penyampaian pendapat ditunda sampai minggu depan, saat data ketiga kompetitor sudah lengkap.',
+ 'Berdasarkan data 2 kompetitor yang sudah ada, hanya menyampaikan pendapat bahwa suku bunga sebaiknya diturunkan.',
+ 'Menyampaikan kelebihan dan kekurangan dua opsi, yaitu menurunkan atau mempertahankan suku bunga, lalu menyerahkan keputusannya kepada kepala tim.',
+ 'Membandingkan tiga opsi (menurunkan, mempertahankan, dan menurunkan dengan syarat tertentu), lalu menyampaikan opsi yang direkomendasikan beserta data yang masih kurang.',
+ 'Menyusun laporan rinci yang memuat semua analisis yang memungkinkan, termasuk dampak terhadap profitabilitas, tunggakan, dan pangsa pasar.']},
+J9:{s:'Seorang rekan dari tim marketing meminta Anda menarik data tunggakan (nama, nomor kontak, jumlah hari tunggakan) konsumen dari dealer kenalannya, karena dealer tersebut ingin menghubungi konsumen untuk mengingatkan pembayaran. Anda memiliki akses untuk menarik data ini.',o:[
+ 'Hanya memberikan jumlah konsumen yang menunggak dan total nilai tunggakan, tanpa memberikan data per konsumen.',
+ 'Karena ia karyawan internal, memberikan daftar tersebut tetapi berpesan agar tidak diteruskan ke dealer.',
+ 'Setelah mendapat izin kepala tim, mengirim daftar tersebut kepada rekan melalui email kantor.',
+ 'Menjelaskan bahwa data konsumen sulit diberikan kepada dealer, dan jika diperlukan, menanyakan prosedur resminya kepada kepala tim.',
+ 'Menyerahkan daftar tersebut kepada tim penagihan agar perusahaan yang menghubungi konsumen secara langsung, lalu memberi tahu rekan bahwa hal itu sudah dilakukan.']},
+J10:{s:'Perbaikan isi pesan WhatsApp untuk konsumen yang menunggak, yang Anda usulkan dan sudah dijalankan selama tiga bulan, hanya menaikkan tingkat penagihan (collection rate) sebesar 0,5 poin persentase, di bawah kenaikan 3 poin persentase yang diharapkan.',o:[
+ 'Karena tetap ada dampaknya, mengusulkan agar cara saat ini dipertahankan dan dipantau tiga bulan lagi.',
+ 'Mengumpulkan masukan dari rekan di tim penagihan, mengubah isi pesan, lalu segera menjalankannya kembali.',
+ 'Menganalisis penyebabnya dengan memisahkan hasil per kelompok konsumen dan waktu pengiriman, lalu mengusulkan untuk mencoba lagi setelah diperbaiki.',
+ 'Karena tidak mencapai target, mengusulkan agar proyek ini diakhiri dan mencari cara lain.',
+ 'Mencari contoh serupa di cabang lain atau di kompetitor, lalu mengusulkan untuk menerapkan cara yang hasilnya baik.']},
+J11:{s:'Anda bertugas menentukan grade dealer. Menjelang Lebaran, salah satu dealer mitra mengirimkan parsel dan amplop berisi uang tunai atas nama Anda ke kantor.',o:[
+ 'Mengembalikan keduanya, lalu melaporkan penerimaan dan penanganannya kepada kepala tim.',
+ 'Mengembalikan uang tunainya, dan meletakkan parsel di kantor untuk dibagi bersama seluruh anggota tim.',
+ 'Melaporkan penerimaan tersebut kepada kepala tim lebih dulu, lalu mengikuti arahannya tentang cara penanganannya.',
+ 'Menerima keduanya tetapi hanya dipakai untuk keperluan bersama tim, lalu memberi tahu kepala tim.',
+ 'Mengembalikan uang tunainya, dan untuk parsel, melapor kepada kepala tim lalu mengikuti arahannya.']},
+J12:{s:'Saat merapikan data pengajuan per dealer, Anda menemukan bahwa pada sekitar 20 pengajuan terakhir dari satu dealer, format dan nominal dokumen bukti penghasilan konsumen hampir sama persis. Belum dapat dipastikan apakah dokumen tersebut dipalsukan.',o:[
+ 'Karena belum bisa dipastikan, memantau sekitar satu bulan apakah pola yang sama muncul lagi, lalu melaporkannya.',
+ 'Merangkum pola tersebut dan daftar pengajuannya, segera melapor kepada kepala tim, dan menyampaikan pendapat bahwa perlu pengecekan oleh tim analisis kredit.',
+ 'Menanyakan lebih dulu kepada staf marketing yang menangani dealer tersebut, lalu memutuskan apakah perlu melapor.',
+ 'Mengirim langsung daftar pengajuan tersebut ke tim analisis kredit untuk dicek, lalu melapor kepada kepala tim setelah hasilnya keluar.',
+ 'Menganalisis sendiri dokumen dan status tunggakan pengajuan-pengajuan tersebut untuk memastikan kemungkinan pemalsuan, lalu melaporkannya.']}},
+C1:{desc:'Anda adalah staf tim perencanaan di JBFI. Hari Selasa pukul 09.00, ada 5 pekerjaan berikut.',step3:'② Jelaskan dasar Anda dalam menentukan prioritas.',items:[
+'Kepala tim meminta 2 angka diperbaiki pada data kinerja bulanan yang akan dipakai untuk laporan kepada kepala divisi hari ini pukul 14.00',
+'Tim Manajemen Risiko meminta penarikan data tunggakan per produk paling lambat Jumat minggu ini',
+'Perusahaan induk di Korea meminta bahan untuk rapat video besok pukul 09.00 dikirim hari ini',
+'Divisi marketing meminta pengecekan karena tabel kinerja per dealer yang mereka terima minggu lalu sepertinya ada kesalahan. Tabel ini akan dipakai dalam rapat dealer besok',
+'Merangkum ide untuk rapat rencana bisnis hari Rabu minggu depan']},
+STMT:{s1:'Selama 6 bulan, satu-satunya produk yang nilai pembiayaan barunya naik setiap bulan adalah mobil bekas.',
+ s3:'Pada September, rasio tunggakan mobil bekas lebih dari 2 kali rasio tunggakan mobil baru.',
+ s4:'Rasio tunggakan motor naik karena pembiayaan barunya menurun.',
+ s6:'Pada September, porsi mobil bekas dalam total pembiayaan baru lebih dari 40%.',
+ s7:'Tingkat kenaikan pembiayaan baru dari April ke September untuk mobil bekas lebih dari 5 kali lipat tingkat kenaikan untuk mobil baru.',
+ s2:'Rasio tunggakan motor pada September 2,1 poin persentase lebih tinggi daripada April.',
+ s5:'Pada September, produk dengan saldo tunggakan terbesar adalah motor.'},
+STMT_OPT:['Benar','Salah','Tidak dapat ditentukan dari data'],
+C4:['Perubahan jumlah kontrak per dealer (apakah masalahnya di sebagian dealer atau di semua dealer)','Perubahan jumlah seluruh karyawan perusahaan','Perubahan jumlah staf marketing yang menangani dealer dan frekuensi kunjungan ke dealer','Tren jumlah pengajuan dan tingkat persetujuan di kanal dealer','Ringkasan kinerja tahunan selama 3 tahun terakhir','Perubahan rata-rata nilai pembiayaan per jenis kendaraan','Perbandingan suku bunga, syarat pembiayaan, dan komisi dealer kompetitor','Hasil survei kepuasan konsumen kanal langsung'],
+total:'Sekitar 36 menit',t:['Sekitar 5 menit','Sekitar 15 menit','Sekitar 16 menit'],
+html:{
+title:'Survei Gaya Kerja JBFI',
+h1:'Survei Gaya Kerja',
+lead:'Survei ini berisi pertanyaan tentang kecenderungan Anda sehari-hari, cara Anda menilai situasi kerja, dan beberapa tugas praktis singkat. Tujuannya untuk memahami cara Anda biasanya bekerja, bukan ujian benar-salah, jadi jawablah dengan santai.',
+f3:'3 bagian',ftimed:'Ada batas waktu',
+resume:'Ada jawaban yang sudah Anda mulai sebelumnya. Tekan tombol di bawah untuk melanjutkan; akses ulang ini akan tercatat. Batas waktu tetap berjalan selama Anda keluar.',
+nameLbl:'Nama',
+agree:'Saya telah membaca petunjuk di atas dan akan menjawab berdasarkan penilaian saya sendiri, tanpa bantuan orang lain atau alat eksternal.',
+c1h:'Menentukan prioritas pekerjaan',
+c1s1:'<b>① Ketuk pekerjaan sesuai urutan pengerjaannya untuk memberi nomor.</b> Jika salah, ketuk lagi untuk membatalkan.',
+c1hint:'Jelaskan dasar Anda, lalu tuliskan mengapa pekerjaan urutan pertama dan urutan terakhir ditempatkan di posisi tersebut berdasarkan dasar itu. (3–5 kalimat)',
+c2h:'Memeriksa bahan laporan',
+c2p:'Tabel di bawah ini adalah bahan laporan yang disusun oleh rekan satu tim. Anggap Anda memeriksanya sebelum diserahkan kepada atasan, lalu tuliskan semua kesalahan yang Anda temukan.',
+c2tbl:'<caption>Kinerja pembiayaan baru per cabang, September 2026 (dalam Rp miliar)</caption><thead><tr><th>Cabang</th><th>Nilai pembiayaan</th><th>Jumlah kontrak</th><th>Nilai bulan lalu</th><th>Perubahan dari bulan lalu</th></tr></thead><tbody><tr><td>Jakarta</td><td>85,0</td><td>420</td><td>78,0</td><td>+9,0%</td></tr><tr><td>Surabaya</td><td>62,5</td><td>310</td><td>65,0</td><td>+3,8%</td></tr><tr><td>Bandung</td><td>41,0</td><td>205</td><td>38,0</td><td>+7,9%</td></tr><tr><td>Medan</td><td>33,5</td><td>168</td><td>30,0</td><td>+11,7%</td></tr><tr><td>Makassar</td><td>27.500</td><td>140</td><td>25,0</td><td>+10,0%</td></tr><tr class="sum"><td>Total</td><td>254,5</td><td>1.243</td><td>236,0</td><td>+5,7%</td></tr></tbody>',
+c2f1:'* Posisi per: 2026-08-31',
+c2f2:'* Perubahan dari bulan lalu = (Nilai pembiayaan − Nilai bulan lalu) ÷ Nilai bulan lalu',
+c2lbl:'Kesalahan yang ditemukan',
+c2hint:'Tulis satu kesalahan per baris: di mana letaknya dan apa yang salah.',
+c2ph:'Contoh: Angka △△ di cabang ○○ tidak sesuai dengan □□',
+c3h:'Interpretasi data',
+c3p:'Lihat data di bawah ini, lalu tentukan apakah setiap pernyataan benar berdasarkan data tersebut. Ada pernyataan yang benar atau salahnya tidak dapat ditentukan dari data ini saja.',
+c3tbl:'<caption>Nilai pembiayaan baru dan rasio tunggakan 30 hari ke atas per produk (2026)</caption><thead><tr><th>Bulan</th><th>Pembiayaan<br>mobil baru</th><th>Pembiayaan<br>mobil bekas</th><th>Pembiayaan<br>motor</th><th>Tunggakan<br>mobil baru</th><th>Tunggakan<br>mobil bekas</th><th>Tunggakan<br>motor</th></tr></thead><tbody><tr><td>Apr</td><td>40</td><td>30</td><td>25</td><td>1,8%</td><td>3,0%</td><td>5,5%</td></tr><tr><td>Mei</td><td>42</td><td>32</td><td>24</td><td>1,9%</td><td>3,1%</td><td>5,8%</td></tr><tr><td>Jun</td><td>41</td><td>35</td><td>22</td><td>1,8%</td><td>3,1%</td><td>6,2%</td></tr><tr><td>Jul</td><td>43</td><td>38</td><td>21</td><td>1,9%</td><td>3,2%</td><td>6,6%</td></tr><tr><td>Agu</td><td>44</td><td>42</td><td>19</td><td>2,0%</td><td>3,4%</td><td>7,1%</td></tr><tr><td>Sep</td><td>45</td><td>47</td><td>18</td><td>2,0%</td><td>3,6%</td><td>7,6%</td></tr></tbody>',
+c3f1:'* Satuan nilai pembiayaan: Rp miliar',
+c3f2:'* Rasio tunggakan = saldo tunggakan 30 hari ke atas dibagi saldo pembiayaan akhir bulan, untuk setiap produk',
+c4h:'Menyusun struktur masalah',
+c4p:'Jumlah kontrak pembiayaan baru dari kanal dealer terus turun selama tiga bulan sejak Juli (Juli 1.200 kontrak → September 950 kontrak). Pada periode yang sama, jumlah kontrak dari kanal langsung tidak banyak berubah. Kepala tim meminta Anda mencari penyebabnya dan melaporkannya.',
+c4l1:'① Pilih 3 analisis yang akan Anda lihat pertama kali untuk mencari penyebabnya.',
+c4l2:'<b>② Anggap hasil analisisnya seperti di bawah ini. Tuliskan dua kalimat pertama laporan Anda kepada kepala tim.</b>',
+c4ul:'<li>Jumlah pengajuan di kanal dealer hampir sama pada Juli–September, sedangkan tingkat persetujuan turun dari 72% menjadi 58%</li><li>Di antara alasan penolakan, "bukti penghasilan tidak lengkap" naik 2 kali lipat sejak perubahan kriteria analisis kredit pada bulan Agustus</li><li>Penurunan serupa terjadi di 8 dari 10 dealer teratas</li>',
+doneEye:'Terkirim',
+doneLead:'Jawaban Anda telah dikirim. Hasilnya akan ditinjau oleh petugas dan dibahas bersama Anda dalam wawancara.',
+fb:'Tidak dapat terhubung ke server penyimpanan. Unduh file jawaban dengan tombol di bawah, lalu kirimkan kepada petugas.',
+dl:'Unduh file jawaban',retry:'Coba simpan lagi'},
+T:{
+go:'Mulai',cont:'Lanjutkan',restart:'Ulangi dari awal',
+privacy:'Kerjakan di tempat yang tenang tanpa gangguan selama {0}. Nama, jawaban, waktu menjawab, dan catatan perpindahan layar hanya disimpan untuk keperluan survei ini dan hanya dapat dilihat oleh petugas yang ditunjuk.',
+p1:'1. Pertanyaan kecenderungan (50 butir)',p2:'2. Penilaian situasi kerja ({0} situasi)',p3:'3. Tugas praktis ({0} tugas)',
+rulesT:'Petunjuk',
+r1:'Setiap pertanyaan dan tugas memiliki batas waktu: {0} detik per pertanyaan kecenderungan, {1} detik per situasi kerja, dan {2} per tugas praktis. Jika waktu habis, Anda otomatis lanjut ke bagian berikutnya.',
+r2:'Anda tidak dapat kembali ke pertanyaan sebelumnya.',
+r3:'Setelah mulai, selesaikan sampai akhir dalam satu kali pengerjaan. Jika halaman ditutup lalu dibuka lagi, Anda dapat melanjutkan, tetapi batas waktu tidak berhenti dan akses ulang akan tercatat.',
+r4:'Menyalin pertanyaan dan menempelkan jawaban tidak dapat dilakukan.',
+r5:'Catatan perpindahan ke layar lain dan waktu menjawab setiap pertanyaan juga disimpan.',
+r6:'Jawablah berdasarkan penilaian Anda sendiri, tanpa bantuan orang lain atau alat eksternal seperti AI.',
+eName:'Masukkan nama Anda.',eAgree:'Baca petunjuk, lalu centang kotak persetujuan.',
+iA:['Bagian 1 / 3','Pertanyaan kecenderungan','Pilih seberapa sesuai setiap pernyataan dengan diri Anda saat bekerja. Jawablah berdasarkan diri Anda yang sebenarnya, bukan yang dianggap ideal, sesuai yang pertama terlintas. Setiap pertanyaan harus dijawab dalam {0} detik; jika waktu habis, Anda lanjut ke pertanyaan berikutnya tanpa jawaban. (50 butir, {1})'],
+iB:['Bagian 2 / 3','Penilaian situasi kerja','Berikut {0} situasi yang dapat terjadi dalam pekerjaan. Setiap situasi memiliki 5 cara penanganan yang berbeda (A–E). Untuk setiap situasi, pilih satu cara yang paling efektif, lalu satu cara yang paling tidak efektif. Jawab setiap situasi dalam {1} detik. ({0} situasi, {2})'],
+iC:['Bagian 3 / 3','Tugas praktis','Berikut {0} tugas kerja singkat. Setiap tugas memiliki batas waktu; jika waktu habis, jawaban yang sudah ditulis akan disimpan dan Anda lanjut ke tugas berikutnya. Jawaban Anda akan dibahas dalam wawancara, jadi kerjakan berdasarkan penilaian Anda sendiri. ({1}) Survei langsung terkirim setelah tugas terakhir selesai.'],
+taskTime:'Tugas {0}: {1}',
+min:'{0} menit',minSec:'{0} menit {1} detik',
+bCount:'Situasi <b>{0}</b> / {1}',bTag:'Situasi {0}',
+bHow:'Dari {0} cara penanganan yang berbeda untuk situasi ini, pilih yang {1} dan yang {2}.',
+w1J:'paling efektif',w2J:'paling tidak efektif',w1E:'paling tepat',w2E:'paling tidak tepat',
+tagB:'Paling {0}',tagW:'Paling tidak {0}',tJ:'efektif',tE:'tepat',
+mm1:'<b>① Pilih satu cara yang {0}.</b><small>A–E adalah cara penanganan yang berbeda-beda. Setelah itu, Anda juga akan memilih cara yang {1}.</small>',
+mm2:'<b>② Sekarang pilih satu cara yang {1}.</b><small>Ketuk lagi pilihan sebelumnya untuk membatalkannya.</small>',
+mm3:'<b>Kedua pilihan sudah dibuat.</b><small>Untuk mengubah, ketuk lagi pilihan Anda untuk membatalkan, lalu pilih yang baru.</small>',
+mmToast:'Untuk mengubah, ketuk lagi pilihan sebelumnya untuk membatalkannya',
+bNext:'Situasi berikutnya',bLast:'Selesaikan bagian 2',eMM:'Pilih kedua jawaban terlebih dahulu.',
+cntOk:'Cukup',cntMore:'Tulis {0} karakter lagi',
+taskCnt:'Tugas praktis <b>{0}</b> / {1}',nextTask:'Tugas berikutnya',submit:'Kirim',
+eC1n:'Beri urutan untuk semua {0} pekerjaan.',eC1b:'Tulis dasar penentuan prioritas minimal {0} karakter.',
+eC2:'Tuliskan kesalahan yang Anda temukan.',eC3:'Nilai semua pernyataan. ({0} lagi)',
+c4Toast:'Anda hanya dapat memilih 3',c4Picked:'{0} dipilih (pilih 3)',eC4p:'Pilih 3 analisis.',eC4t:'Tulis kalimat laporan minimal {0} karakter.',
+timer:'Sisa waktu ',sec:' detik',pasteT:'Fitur tempel tidak dapat digunakan',copyT:'Fitur salin tidak dapat digunakan',
+doneTitle:'Terima kasih, {0}',saving:'Menyimpan jawaban…',saved:'Jawaban telah tersimpan. Anda boleh menutup halaman ini.',saveFail:'Jawaban gagal disimpan'}
+},
+en:{
+A:[
+"In meetings with several departments, I tend to lead the conversation.",
+"When a coworker is struggling with their work, I don't pay much attention if it isn't my job.",
+"Before a meeting or task, I prepare the materials I need in advance.",
+"When work piles up, I quickly feel stressed.",
+"When writing reports or emails, I'm good at choosing words that fit the situation.",
+"I tend not to say much in meetings.",
+"I take an interest in my teammates and ask what work has been difficult for them lately.",
+"I tend to leave documents and things scattered on my desk.",
+"I stay calm even during busy periods at work.",
+"When a new policy is explained to me, I find it hard to understand without concrete examples.",
+"I feel more energized when working with many people.",
+"When work makes me angry, I tend to say hurtful things to coworkers.",
+"Before submitting a report, I carefully check even the numbers and typos.",
+"I tend to worry in advance that my work will go wrong.",
+"At work, I often think of ways of doing things that haven't been used before.",
+"At meetings or events, I prefer to watch from the back rather than step forward.",
+"When a coworker is struggling with their work, I understand how they feel.",
+"I often have to redo work because I did it in a hurry.",
+"Even when my manager points out a problem, I quickly shake it off and focus on the next task.",
+"I'm not interested in theories or concepts that aren't immediately useful for work.",
+"When I first work with someone from another department, I'm usually the one who reaches out first.",
+"I find it bothersome to listen when coworkers talk about their work problems.",
+"When something needs to be done, I handle it right away without putting it off.",
+"Even small mistakes or schedule changes at work easily unsettle me.",
+"I often suggest new ideas in meetings.",
+"In meetings with many people, I struggle to think of what to say.",
+"I'm easily moved when a customer tells me about their difficult situation.",
+"I often have to search for documents or files again because I didn't put them back in place.",
+"I easily get upset when work doesn't go as planned.",
+"I find it hard to picture how a task I haven't done before will go.",
+"At team dinners or company events, I go around talking with many different people.",
+"I'm not very interested in finding out what my coworkers think or what they're going through.",
+"I can only work well when my desk and files are organized.",
+"My mood goes up and down a lot within a single day, depending on how work goes.",
+"I quickly understand new policies or ways of working.",
+"I feel uncomfortable when everyone's attention is on me in meetings or presentations.",
+"Even when I'm busy, I make time when a coworker asks for help.",
+"I tend to put off tasks I don't want to do until just before the deadline.",
+"Even for work I've usually been praised for, one small criticism can put me in a very bad mood.",
+"I use technical terms naturally in reports or meetings.",
+"Presenting or speaking in front of many people doesn't feel like a burden to me.",
+"I can tell when someone I work with is in a bad mood, even if they don't say so.",
+"I plan my daily work schedule in advance and stick to it.",
+"I get irritated when work gets even slightly off track.",
+"After finishing a task, I think carefully about whether there was a better way.",
+"I become quiet when meeting a business partner for the first time.",
+"Even customers meeting me for the first time usually feel comfortable talking with me.",
+"I don't let even small discrepancies slide; I correct them right away.",
+"If I make a mistake at work, it stays on my mind for days.",
+"Ideas for improving how work is done often come to me."],
+scale:['Not at all like me','Somewhat unlike me','Neutral','Somewhat like me','Very much like me'],
+B:{
+J1:{s:'Tomorrow your team leader will report the causes of the branch\'s rising delinquency rate at a management meeting, and you are preparing the materials. She believes the cause is a shortage of collection staff. However, the data show that most of the increase in delinquencies comes from loans made through 2 specific dealers. You will review the materials with her this afternoon.',o:[
+ 'Build the materials around the collection staff shortage, and prepare the dealer data separately to explain if questions come up.',
+ 'Show the dealer data at this afternoon\'s review and ask your team leader to decide which direction to take.',
+ 'Lay out the evidence for both causes side by side and give your opinion on which one is larger.',
+ 'Present the concentration in the 2 dealers as the main cause, and list the collection staff issue as something to check further.',
+ 'Before the review, ask the collection team leader to confirm the concentration in those dealers, and include that view in the materials.']},
+J2:{s:'You are taking over the monthly task of preparing data for regular OJK reporting from a senior colleague. The manual says the data must be reconciled against the system ledger every month, but he says this takes too long, so he has been updating only the changed items in last month\'s file, and he tells you to do the same.',o:[
+ 'Tell your team leader that actual practice differs from the manual, confirm which method to use, then proceed.',
+ 'Follow your senior colleague\'s method, but reconcile against the ledger only the items whose figures changed significantly.',
+ 'Use your senior colleague\'s method this month and start reconciling against the ledger next month.',
+ 'Prepare the data his way first, then make a separate version reconciled against the ledger and compare the results.',
+ 'Ask the Risk Management team directly whether the ledger reconciliation can be skipped.']},
+J3:{s:'To meet month-end targets, the sales team has asked the planning team to review a change to "collect income documents within one week after approval." If implemented, the performance indicators of the "dealer channel activation" project you are responsible for would also improve.',o:[
+ 'Since it improves results, support it and attach a plan to manage document collection.',
+ 'Oppose it, citing past cases where a similar approach caused problems.',
+ 'Propose a one-month pilot at one branch before deciding whether to expand it.',
+ 'Check the impact on delinquency and uncollected documents with the credit analysis team and the Risk Management team before giving an opinion.',
+ 'Ask the sales team for the expected impact in figures, and support it if the impact is large.']},
+J4:{s:'The dealer grading criteria you created have been approved by your team leader and will be used to calculate dealer commissions starting next month. They have not yet been shared with the sales team or the branches.',o:[
+ 'Since the criteria are approved, announce them in an official memo that explains the calculation method and a contact for questions in detail.',
+ 'Before they take effect, explain them to the sales team and the branches, gather feedback, and refine them with your team leader if needed.',
+ 'Get the sales team leader\'s agreement first, and have the sales team pass them on to the branches.',
+ 'In the first month, calculate under both the old and new criteria to show the difference, then apply them from the following month.',
+ 'Show them to a few branches first, and if there are no problems, announce them to everyone by memo.']},
+J5:{s:'In the evening, your team leader sends only a WhatsApp message: "Please put together dealer performance for tomorrow\'s meeting." The meeting is at 10:00 tomorrow. The period and criteria are unclear, and you think the delinquency rate should also be considered.',o:[
+ 'Briefly ask about the purpose of the meeting and the period, and add that it would be good to look at the delinquency rate too.',
+ 'Prepare it by financing amount in the format of the last meeting\'s materials, and attach the delinquency rate as an appendix.',
+ 'Since it\'s late, don\'t ask; prepare two versions: one by financing amount only and one that includes the delinquency rate.',
+ 'Come in early tomorrow morning and start working after confirming with your team leader.',
+ 'Briefly confirm only the purpose of the meeting, and decide the criteria yourself.']},
+J6:{s:'You discover that in the monthly data sent yesterday to the parent company in Korea, after your team leader\'s review, the delinquency rate was reported 0.3 percentage points lower than the actual figure because of your calculation error. Your team leader doesn\'t know yet and is out of the office all day today.',o:[
+ 'Finish the corrected data first, then report it to your team leader in person when she returns tomorrow.',
+ 'Send the corrected data to the contact person at the parent company first, then share the same with your team leader.',
+ 'Notify your team leader right away by message, prepare the corrected data, and ask how to handle it.',
+ 'Summarize the cause and the scope of the impact, and report the correction together with the next regular report.',
+ 'Call your team leader to let her know, and immediately tell the parent company that the correction will be sent today.']},
+J7:{s:'You have a dealer settlement data task due the day before the Lebaran holiday. Other urgent work overlaps, and it looks hard to finish by the deadline. There are 5 days left until the deadline.',o:[
+ 'Work overtime to finish as much as possible before the holiday, and complete the rest right after it.',
+ 'Ask a coworker to take on part of it, and report the results to your team leader the day before the deadline.',
+ 'Keep working for about three more days, then discuss the deadline with your team leader based on what is left.',
+ 'Tell your team leader now about the expected delay and discuss adjusting priorities or the deadline.',
+ 'Put the other urgent work on hold for now and focus on this task first.']},
+J8:{s:'Your team leader has asked for your opinion by tomorrow morning on whether to lower the interest rate on used-car loans. You have data for 2 of the 3 competitors to compare; data for the third won\'t be available until next week.',o:[
+ 'Ask to postpone your opinion until next week, when data for all three competitors are available.',
+ 'Based on the data for the 2 competitors you have, submit only the opinion that the rate should be lowered.',
+ 'Lay out the pros and cons of two options, lowering or keeping the rate, and leave the decision to your team leader.',
+ 'Compare three options (lower, keep, or lower with conditions), and submit your recommended option along with the data still missing.',
+ 'Prepare a detailed report with every possible analysis, including the impact on profitability, delinquency, and market share.']},
+J9:{s:'A coworker on the sales team asks you to pull the delinquency status (names, phone numbers, days past due) of the customers of a dealer they know well, saying the dealer wants to contact those customers to remind them to pay. You have access to extract this data.',o:[
+ 'Provide only the number of delinquent customers and the total overdue amount, without details for individual customers.',
+ 'Since your coworker is an internal employee, give them the list but ask them not to pass it on to the dealer.',
+ 'After getting your team leader\'s permission, send the list to your coworker by company email.',
+ 'Explain that it is difficult to give customer information to a dealer, and if needed, check the official procedure with your team leader.',
+ 'Hand the list to the collection team so that the company contacts the customers directly, and let your coworker know you did so.']},
+J10:{s:'The improved WhatsApp reminder message for delinquent customers, which you proposed and which has run for three months, raised the collection rate by only 0.5 percentage points, short of the expected increase of 3 percentage points.',o:[
+ 'Since it had some effect, propose keeping the current approach and monitoring it for three more months.',
+ 'Gather opinions from colleagues on the collection team, revise the message, and relaunch it right away.',
+ 'Break down the results by customer group and sending time to analyze the cause, and propose trying again with improvements.',
+ 'Since it fell short of the target, propose closing this project and looking for other approaches.',
+ 'Look for similar cases at other branches or competitors, and propose applying an approach that worked well.']},
+J11:{s:'You are responsible for grading dealers. Ahead of Lebaran, one of the partner dealers has sent a gift hamper (parsel) and an envelope of cash addressed to you at the office.',o:[
+ 'Return both, and tell your team leader that you received them and how you handled it.',
+ 'Return the cash, and leave the hamper in the office for the whole team to share.',
+ 'First tell your team leader that you received them, and follow her instructions on how to handle them.',
+ 'Keep both but use them only for the team, and tell your team leader.',
+ 'Return the cash, and for the hamper, tell your team leader and follow her instructions.']},
+J12:{s:'While organizing application data by dealer, you notice that in about 20 recent applications from one dealer, the format and amounts on the customers\' proof-of-income documents are almost identical. It is not yet certain whether they are forged.',o:[
+ 'Since it is hard to be sure, watch for about a month to see whether the same pattern appears again, then report it.',
+ 'Summarize the pattern and the list of applications, report to your team leader right away, and recommend that the credit analysis team check them.',
+ 'First ask the sales staff member who handles that dealer about it, then decide whether to report it.',
+ 'Send the list directly to the credit analysis team to request a check, and report to your team leader once the results are in.',
+ 'Analyze the documents and delinquency status of those applications yourself to confirm whether forgery is likely, then report it.']}},
+C1:{desc:'You are a staff member on the JBFI planning team. It is Tuesday, 9:00 a.m., and you have the following 5 tasks.',step3:'② Explain the criteria you used to set priorities.',items:[
+'Your team leader asks you to correct 2 figures in the monthly performance data that will be used in today\'s 2:00 p.m. report to the division head',
+'The Risk Management team requests an extract of delinquency data by product by this Friday',
+'The parent company in Korea asks you to send today the materials for tomorrow\'s 9:00 a.m. video conference',
+'The sales department asks you to check the dealer performance table they received last week because it seems to contain errors. The table will be used at tomorrow\'s dealer meeting',
+'Organize ideas for next Wednesday\'s business plan meeting']},
+STMT:{s1:'Over the 6 months, used cars are the only product whose new financing increased every month.',
+ s3:'In September, the used-car delinquency rate is more than twice the new-car delinquency rate.',
+ s4:'The motorcycle delinquency rate rose because new motorcycle financing decreased.',
+ s6:'In September, used cars account for more than 40% of total new financing.',
+ s7:'From April to September, the growth rate of new financing for used cars is more than 5 times that for new cars.',
+ s2:'The motorcycle delinquency rate in September is 2.1 percentage points higher than in April.',
+ s5:'In September, the product with the largest delinquent balance is motorcycles.'},
+STMT_OPT:['True','False','Cannot tell from the data'],
+C4:['Change in the number of contracts by dealer (whether the problem is with some dealers or all of them)','Change in the company\'s total headcount','Changes in the sales staff covering dealers and the number of dealer visits','Trend in the number of applications and the approval rate in the dealer channel','Summary of annual performance over the last 3 years','Change in the average loan amount by vehicle type','Comparison of competitors\' interest rates, loan terms, and dealer commissions','Customer satisfaction survey results for the direct channel'],
+total:'About 36 min',t:['About 5 min','About 15 min','About 16 min'],
+html:{
+title:'JBFI Work Style Survey',
+h1:'Work Style Survey',
+lead:'This survey covers your everyday tendencies, how you judge work situations, and a few short practical tasks. Its purpose is to understand how you usually work rather than to test for right answers, so please answer naturally.',
+f3:'3 parts',ftimed:'Timed',
+resume:'You have a survey already in progress. Press the button below to continue; the reconnection will be recorded. The time limit kept running while you were away.',
+nameLbl:'Name',
+agree:'I have read the instructions above and will answer based on my own judgment, without help from other people or external tools.',
+c1h:'Setting work priorities',
+c1s1:'<b>① Tap the tasks in the order you would handle them to number them.</b> Tap again to undo.',
+c1hint:'Explain your criteria, then write why you placed your first and last tasks where they are, based on those criteria. (3–5 sentences)',
+c2h:'Reviewing a report',
+c2p:'The table below is a report prepared by a teammate. Imagine you are reviewing it before it goes to your manager, and write down every error you find.',
+c2tbl:'<caption>New financing by branch, September 2026 (Rp billion)</caption><thead><tr><th>Branch</th><th>Amount</th><th>No. of contracts</th><th>Previous month</th><th>Change vs. previous month</th></tr></thead><tbody><tr><td>Jakarta</td><td>85.0</td><td>420</td><td>78.0</td><td>+9.0%</td></tr><tr><td>Surabaya</td><td>62.5</td><td>310</td><td>65.0</td><td>+3.8%</td></tr><tr><td>Bandung</td><td>41.0</td><td>205</td><td>38.0</td><td>+7.9%</td></tr><tr><td>Medan</td><td>33.5</td><td>168</td><td>30.0</td><td>+11.7%</td></tr><tr><td>Makassar</td><td>27,500</td><td>140</td><td>25.0</td><td>+10.0%</td></tr><tr class="sum"><td>Total</td><td>254.5</td><td>1,243</td><td>236.0</td><td>+5.7%</td></tr></tbody>',
+c2f1:'* As of: 2026-08-31',
+c2f2:'* Change vs. previous month = (Amount − Previous month) ÷ Previous month',
+c2lbl:'Errors found',
+c2hint:'One per line: where the error is and what is wrong.',
+c2ph:'e.g., The △△ figure for ○○ branch does not match □□',
+c3h:'Interpreting data',
+c3p:'Look at the data below and decide whether each statement is correct based on the data. Some statements cannot be judged true or false from this data alone.',
+c3tbl:'<caption>New financing and 30+ days delinquency rate by product (2026)</caption><thead><tr><th>Month</th><th>New car<br>financing</th><th>Used car<br>financing</th><th>Motorcycle<br>financing</th><th>New car<br>delinquency</th><th>Used car<br>delinquency</th><th>Motorcycle<br>delinquency</th></tr></thead><tbody><tr><td>Apr</td><td>40</td><td>30</td><td>25</td><td>1.8%</td><td>3.0%</td><td>5.5%</td></tr><tr><td>May</td><td>42</td><td>32</td><td>24</td><td>1.9%</td><td>3.1%</td><td>5.8%</td></tr><tr><td>Jun</td><td>41</td><td>35</td><td>22</td><td>1.8%</td><td>3.1%</td><td>6.2%</td></tr><tr><td>Jul</td><td>43</td><td>38</td><td>21</td><td>1.9%</td><td>3.2%</td><td>6.6%</td></tr><tr><td>Aug</td><td>44</td><td>42</td><td>19</td><td>2.0%</td><td>3.4%</td><td>7.1%</td></tr><tr><td>Sep</td><td>45</td><td>47</td><td>18</td><td>2.0%</td><td>3.6%</td><td>7.6%</td></tr></tbody>',
+c3f1:'* Financing amounts in Rp billion',
+c3f2:'* Delinquency rate = balance 30+ days past due ÷ month-end outstanding balance, for each product',
+c4h:'Structuring a problem',
+c4p:'New financing contracts through the dealer channel have been falling for three months since July (July: 1,200 → September: 950). Over the same period, the number of contracts through the direct channel has changed little. Your team leader has asked you to find the cause and report on it.',
+c4l1:'① Choose the 3 analyses you would look at first to find the cause.',
+c4l2:'<b>② Assume the analysis results are as shown below. Write the first two sentences of your report to your team leader.</b>',
+c4ul:'<li>Dealer-channel applications were almost the same from July to September, while the approval rate fell from 72% to 58%</li><li>Among rejection reasons, "insufficient proof of income" doubled after the credit criteria changed in August</li><li>A similar decline appeared at 8 of the top 10 dealers</li>',
+doneEye:'Submitted',
+doneLead:'Your answers have been submitted. They will be reviewed by the staff in charge and discussed with you in the interview.',
+fb:'Could not connect to the server. Use the button below to download your answer file and send it to the staff member in charge.',
+dl:'Download answer file',retry:'Try saving again'},
+T:{
+go:'Start',cont:'Continue',restart:'Start over',
+privacy:'Please take the survey somewhere you won\'t be interrupted for {0}. Your name, answers, response times, and screen-switch records are stored only for this survey and can be viewed only by designated staff.',
+p1:'1. Personal tendencies (50 items)',p2:'2. Work situations ({0} situations)',p3:'3. Practical tasks ({0} tasks)',
+rulesT:'Instructions',
+r1:'Every item and task is timed: {0} seconds per tendency item, {1} seconds per work situation, and {2} per practical task. When time runs out, you move on automatically.',
+r2:'You cannot go back to previous items.',
+r3:'Once you start, please finish in one sitting. If you close and reopen the page, you can continue, but the timer does not stop and the reconnection is recorded.',
+r4:'Copying questions and pasting answers are disabled.',
+r5:'Switches to other screens and the response time for each item are also recorded.',
+r6:'Answer on your own judgment, without help from other people or external tools such as AI.',
+eName:'Please enter your name.',eAgree:'Please read the instructions and check the agreement box.',
+iA:['Part 1 / 3','Personal tendencies','Choose how well each statement describes you at work. Answer based on how you actually are, not how you think you should be, and go with your first instinct. You have {0} seconds per item; when time runs out, you move to the next item without an answer. (50 items, {1})'],
+iB:['Part 2 / 3','Work situations','Here are {0} situations you might face at work. Each comes with 5 different ways to respond (A–E). For each situation, choose the most effective response and then the least effective one. You have {1} seconds per situation. ({0} situations, {2})'],
+iC:['Part 3 / 3','Practical tasks','Here are {0} short work tasks. Each task is timed; when time runs out, what you have written is kept and you move to the next task. Your answers will be discussed in the interview, so please work on your own judgment. ({1}) The survey is submitted as soon as you finish the last task.'],
+taskTime:'Task {0}: {1}',
+min:'{0} min',minSec:'{0} min {1} s',
+bCount:'Situation <b>{0}</b> / {1}',bTag:'Situation {0}',
+bHow:'Of the {0} different responses to this situation, choose the {1} one and the {2} one.',
+w1J:'most effective',w2J:'least effective',w1E:'most appropriate',w2E:'least appropriate',
+tagB:'Most {0}',tagW:'Least {0}',tJ:'effective',tE:'appropriate',
+mm1:'<b>① Choose the {0} response.</b><small>A–E are different ways to respond. Next, you will also choose the {1} one.</small>',
+mm2:'<b>② Now choose the {1} response.</b><small>Tap your earlier choice again to undo it.</small>',
+mm3:'<b>You have made both choices.</b><small>To change, tap a choice again to undo it, then choose again.</small>',
+mmToast:'To change, tap your earlier choice again to undo it first',
+bNext:'Next situation',bLast:'Finish part 2',eMM:'Please make both choices.',
+cntOk:'Enough',cntMore:'{0} more characters needed',
+taskCnt:'Task <b>{0}</b> / {1}',nextTask:'Next task',submit:'Submit',
+eC1n:'Please rank all {0} tasks.',eC1b:'Please write at least {0} characters explaining your priorities.',
+eC2:'Please write the errors you found.',eC3:'Please judge every statement. ({0} left)',
+c4Toast:'You can choose up to 3',c4Picked:'{0} selected (choose 3)',eC4p:'Please choose 3 analyses.',eC4t:'Please write at least {0} characters for your report.',
+timer:'Time left ',sec:'s',pasteT:'Pasting is disabled',copyT:'Copying is disabled',
+doneTitle:'Thank you, {0}',saving:'Saving your answers…',saved:'Your answers have been saved. You may close this page.',saveFail:'Your answers could not be saved'}
+}};
+const LX=LANG==='ko'?null:LDATA[LANG];
+const fmt=(t,a)=>String(t).replace(/\{(\d)\}/g,(m,i)=>a[i]===undefined?'':a[i]);
+function tx(k,ko,...a){return LX?fmt(LX.T[k],a):ko;}
+if(LX){A_ITEMS.splice(0,A_ITEMS.length,...LX.A);A_SCALE.splice(0,5,...LX.scale);
+  B_JUNIOR.forEach(it=>{const x=LX.B[it.id];if(x){it.s=x.s;it.o=x.o;}});
+  C1_JUNIOR.desc=LX.C1.desc;C1_JUNIOR.step3=LX.C1.step3;C1_JUNIOR.items=LX.C1.items;
+  STMTS.forEach(st=>{st.t=LX.STMT[st.id];});STMT_OPT.forEach((o,i)=>{o[1]=LX.STMT_OPT[i];});
+  C4_OPTS.splice(0,C4_OPTS.length,...LX.C4);
+  document.title=LX.html.title;
+  document.querySelectorAll('[data-i]').forEach(el=>{const v=LX.html[el.dataset.i];if(v!==undefined)el.innerHTML=v;});
+  document.getElementById('c2-text').placeholder=LX.html.c2ph;
+  document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=LX.T[el.dataset.t];});}
+
 const CFG=LV==='junior'
- ?{B:B_JUNIOR,C1:C1_JUNIOR,nc:4,total:'약 34분',t:['약 5분','약 13분','약 16분'],lim:{a:20,b:75,c1:180,c2:180,c3:300,c4:300}}
+ ?{B:B_JUNIOR,C1:C1_JUNIOR,nc:4,total:LX?LX.total:'약 34분',t:LX?LX.t:['약 5분','약 13분','약 16분'],lim:{a:20,b:LX?90:75,c1:180,c2:180,c3:300,c4:300}}
  :{B:B_HEAD,C1:C1_HEAD,nc:3,total:'약 30분',t:['약 5분','약 10분','약 15분'],lim:{a:20,b:90,c1:300,c2:240,c3:300}};
 const NC1=CFG.C1.items.length,BI=CFG.B,NB=BI.length,NC=CFG.nc;
 const RATE_LBL={J:['전혀 효과 없음','효과 낮음','보통','효과 높음','매우 효과 높음'],E:['전혀 적절하지 않음','적절하지 않은 편','보통','적절한 편','매우 적절']};
-const mmss=s=>Math.floor(s/60)+'분'+(s%60?' '+(s%60)+'초':'');
+const mmss=s=>LX?(s%60?fmt(LX.T.minSec,[Math.floor(s/60),s%60]):fmt(LX.T.min,[Math.floor(s/60)])):Math.floor(s/60)+'분'+(s%60?' '+(s%60)+'초':'');
 const kindOf=it=>it.k||(it.id[0]==='E'?'E':'J');
 
 /* 상태 */
@@ -605,7 +1045,7 @@ function timer(key,secs,onExpire){TKEY=key;TEXP=onExpire;
 function stopTimer(){TKEY=null;TEXP=null;$('timer').classList.add('hide');}
 function tick(){if(!TKEY||!TIMER){$('timer').classList.add('hide');return;}
   const left=Math.max(0,Math.ceil((S.dl[TKEY]-Date.now())/1000));
-  $('timer').textContent='남은 시간 '+(left>=60?Math.floor(left/60)+':'+String(left%60).padStart(2,'0'):left+'초');
+  $('timer').textContent=tx('timer','남은 시간 ')+(left>=60?Math.floor(left/60)+':'+String(left%60).padStart(2,'0'):left+tx('sec','초'));
   $('timer').classList.toggle('low',left<=10);
   if(left<=0){const k=TKEY,f=TEXP;TKEY=null;TEXP=null;$('timer').classList.add('hide');
     if(S.ig.to.indexOf(k)<0)S.ig.to.push(k);save();f&&f();}}
@@ -620,25 +1060,30 @@ function comeBack(){if(awayAt!==null){const ms=Date.now()-awayAt;awayAt=null;if(
 document.addEventListener('visibilitychange',()=>{document.hidden?goAway():comeBack();});
 window.addEventListener('blur',goAway);window.addEventListener('focus',comeBack);
 function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('hide');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.add('hide'),2200);}
-document.addEventListener('paste',e=>{if(TEST)return;e.preventDefault();S.ig.paste++;save();toast('붙여넣기는 사용할 수 없습니다');},true);
-['copy','cut'].forEach(ev=>document.addEventListener(ev,e=>{if(TEST)return;e.preventDefault();S.ig.copy++;save();toast('복사는 사용할 수 없습니다');},true));
+document.addEventListener('paste',e=>{if(TEST)return;e.preventDefault();S.ig.paste++;save();toast(tx('pasteT','붙여넣기는 사용할 수 없습니다'));},true);
+['copy','cut'].forEach(ev=>document.addEventListener(ev,e=>{if(TEST)return;e.preventDefault();S.ig.copy++;save();toast(tx('copyT','복사는 사용할 수 없습니다'));},true));
 document.addEventListener('contextmenu',e=>{if(!TEST)e.preventDefault();});
 document.addEventListener('drop',e=>{if(!TEST)e.preventDefault();});
 if(!TEST)document.body.classList.add('noselect');
 
 /* 시작 화면 */
-$('f-total').textContent=CFG.total;$('f-quiet').textContent=CFG.total+' 동안 방해받지 않는 곳에서 진행해 주십시오. ';
-$('parts').innerHTML='<div>1. 성향 문항 (50문항)<span>'+CFG.t[0]+'</span></div><div>2. 업무 상황 판단 ('+NB+'개 상황)<span>'+CFG.t[1]+'</span></div><div>3. 실무 과제 ('+NC+'개)<span>'+CFG.t[2]+'</span></div>';
+$('f-total').textContent=CFG.total;$('privacy').textContent=tx('privacy',CFG.total+' 동안 방해받지 않는 곳에서 진행해 주십시오. 이름, 응답 내용, 응답 시간과 화면 전환 기록은 설문 목적으로만 저장되며 지정된 담당자만 열람합니다.',CFG.total.charAt(0).toLowerCase()+CFG.total.slice(1));
+$('parts').innerHTML='<div>'+tx('p1','1. 성향 문항 (50문항)')+'<span>'+CFG.t[0]+'</span></div><div>'+tx('p2','2. 업무 상황 판단 ('+NB+'개 상황)',NB)+'<span>'+CFG.t[1]+'</span></div><div>'+tx('p3','3. 실무 과제 ('+NC+'개)',NC)+'<span>'+CFG.t[2]+'</span></div>';
 const cl=Object.keys(CFG.lim).filter(k=>k[0]==='c').map(k=>CFG.lim[k]),cmin=Math.min(...cl),cmax=Math.max(...cl);
-$('rules').innerHTML='<p class="rt">진행 안내</p><ul>'+
- '<li>문항과 과제마다 제한 시간이 있습니다. 성향 문항은 문항당 '+CFG.lim.a+'초, 업무 상황은 상황당 '+CFG.lim.b+'초, 실무 과제는 과제마다 '+(cmin===cmax?mmss(cmin):mmss(cmin)+'~'+mmss(cmax))+'이며, 시간이 지나면 다음으로 넘어갑니다.</li>'+
- '<li>앞 문항으로 돌아갈 수 없습니다.</li>'+
- '<li>한 번 시작하면 끝까지 한 번에 진행해 주십시오. 창을 닫았다가 다시 열면 이어서 진행되지만, 제한 시간은 멈추지 않고 재접속 기록이 남습니다.</li>'+
- '<li>문항 복사와 답변 붙여넣기는 사용할 수 없습니다.</li>'+
- '<li>진행 중 다른 화면으로 전환한 기록과 문항별 응답 시간이 함께 저장됩니다.</li>'+
- '<li>다른 사람이나 AI 등 외부 도구의 도움 없이 본인의 판단으로 답해 주십시오.</li></ul>';
+const cRange=cmin===cmax?mmss(cmin):(LX?(cmin%60||cmax%60?mmss(cmin)+'–'+mmss(cmax):fmt(LX.T.min,[cmin/60+'–'+cmax/60])):mmss(cmin)+'~'+mmss(cmax));
+$('rules').innerHTML='<p class="rt">'+tx('rulesT','진행 안내')+'</p><ul>'+
+ '<li>'+tx('r1','문항과 과제마다 제한 시간이 있습니다. 성향 문항은 문항당 '+CFG.lim.a+'초, 업무 상황은 상황당 '+CFG.lim.b+'초, 실무 과제는 과제마다 '+cRange+'이며, 시간이 지나면 다음으로 넘어갑니다.',CFG.lim.a,CFG.lim.b,cRange)+'</li>'+
+ '<li>'+tx('r2','앞 문항으로 돌아갈 수 없습니다.')+'</li>'+
+ '<li>'+tx('r3','한 번 시작하면 끝까지 한 번에 진행해 주십시오. 창을 닫았다가 다시 열면 이어서 진행되지만, 제한 시간은 멈추지 않고 재접속 기록이 남습니다.')+'</li>'+
+ '<li>'+tx('r4','문항 복사와 답변 붙여넣기는 사용할 수 없습니다.')+'</li>'+
+ '<li>'+tx('r5','진행 중 다른 화면으로 전환한 기록과 문항별 응답 시간이 함께 저장됩니다.')+'</li>'+
+ '<li>'+tx('r6','다른 사람이나 AI 등 외부 도구의 도움 없이 본인의 판단으로 답해 주십시오.')+'</li></ul>';
+$('go').textContent=tx('go','시작하기');$('i-go').textContent=tx('go','시작하기');$('restart').textContent=tx('restart','처음부터 다시 하기');
+if(LV==='junior'){const lg=$('langs');lg.classList.remove('hide');
+  Object.keys(LANGS).forEach(k=>{const b=document.createElement('button');b.type='button';b.textContent=LANGS[k];b.className=k===LANG?'on':'';
+    b.onclick=()=>{if(k===LANG)return;const u=new URL(location.href);u.searchParams.set('lang',k);location.href=u.toString();};lg.appendChild(b);});}
 const prev=load();
-if(prev){$('resume').classList.remove('hide');$('go').textContent='이어서 하기';$('name').value=prev.name;$('agree').checked=true;
+if(prev){$('resume').classList.remove('hide');$('go').textContent=tx('cont','이어서 하기');$('name').value=prev.name;$('agree').checked=true;
   if(TEST)$('restart').classList.remove('hide');}
 $('restart').onclick=()=>{if(!confirm('지금까지의 응답을 지우고 처음부터 다시 시작합니다.'))return;try{localStorage.removeItem(STORE);}catch(e){}location.reload();};
 $('name').addEventListener('input',()=>$('e-start').textContent='');
@@ -646,8 +1091,8 @@ $('agree').addEventListener('change',()=>$('e-start').textContent='');
 $('name').addEventListener('keydown',e=>{if(e.key==='Enter')start();});
 $('go').onclick=start;
 function start(){const n=$('name').value.trim();
-  if(!n){$('e-start').textContent='이름을 입력해 주십시오.';$('name').focus();return;}
-  if(!$('agree').checked){$('e-start').textContent='진행 안내를 확인하고 동의란에 표시해 주십시오.';return;}
+  if(!n){$('e-start').textContent=tx('eName','이름을 입력해 주십시오.');$('name').focus();return;}
+  if(!$('agree').checked){$('e-start').textContent=tx('eAgree','진행 안내를 확인하고 동의란에 표시해 주십시오.');return;}
   if(prev){S=prev;S.ig.reconn++;}S.name=n;mark('start');if(S.step==='start')S.step='iA';save();route();}
 
 /* 화면 전환 */
@@ -655,11 +1100,15 @@ const anyPick=BI.some(it=>it.t==='pick'),allMM=BI.every(it=>it.t==='mm');
 const cTimes=LV==='junior'
   ?'과제 1 '+mmss(CFG.lim.c1)+', 과제 2 '+mmss(CFG.lim.c2)+', 과제 3 '+mmss(CFG.lim.c3)+', 과제 4 '+mmss(CFG.lim.c4)
   :'과제 1 '+mmss(CFG.lim.c1)+', 과제 2 '+mmss(CFG.lim.c2)+', 과제 3 '+mmss(CFG.lim.c3);
-const INTRO={
+const INTRO_KO={
  iA:['파트 1 / 3','성향 문항','업무 중 나의 모습에 가까운 정도를 골라 주십시오. 바람직한 모습보다 실제 평소 모습을 기준으로, 처음 떠오르는 대로 답해 주십시오. 문항마다 '+CFG.lim.a+'초 안에 답해야 하며, 시간이 지나면 응답 없이 다음 문항으로 넘어갑니다. (50문항, '+CFG.t[0]+')','A'],
  iB:['파트 2 / 3','업무 상황 판단','업무 중 겪을 수 있는 상황 '+NB+'개입니다. 상황마다 서로 다른 대응 방법 '+(anyPick?'4가지(A~D)':'5가지(A~E)')+'가 제시됩니다. '+(allMM?'각 상황에서 가장 효과적인 방법 하나와 가장 효과적이지 않은 방법 하나를 차례로 골라 주십시오.':anyPick?'상황에 따라 각 방법을 하나씩 1~5점으로 평가하거나, 실제로 가장 할 것 같은 방법 하나를 고르게 됩니다.':'각 방법을 하나씩 보여 드리면 1~5점으로 평가해 주십시오.')+' 상황마다 '+CFG.lim.b+'초 안에 답해 주십시오. ('+NB+'개 상황, '+CFG.t[1]+')','B'],
  iC:['파트 3 / 3','실무 과제','짧은 업무 과제 '+NC+'개입니다. 과제마다 제한 시간이 있으며, 시간이 지나면 그때까지 작성한 내용으로 다음 과제로 넘어갑니다. 면담에서 답한 내용을 바탕으로 이야기를 나누게 되니 본인의 판단으로 작성해 주십시오. ('+cTimes+') 마지막 과제를 마치면 바로 제출됩니다.','C1']};
-function cnt(n){return '실무 과제 <b>'+n+'</b> / '+NC;}
+const cTimesX=LX?[1,2,3,4].slice(0,NC).map(i=>fmt(LX.T.taskTime,[i,mmss(CFG.lim['c'+i])])).join(', '):'';
+const INTRO=LX?{iA:[...LX.T.iA.slice(0,2),fmt(LX.T.iA[2],[CFG.lim.a,CFG.t[0]]),'A'],
+  iB:[...LX.T.iB.slice(0,2),fmt(LX.T.iB[2],[NB,CFG.lim.b,CFG.t[1]]),'B'],
+  iC:[...LX.T.iC.slice(0,2),fmt(LX.T.iC[2],[NC,cTimesX]),'C1']}:INTRO_KO;
+function cnt(n){return tx('taskCnt','실무 과제 <b>'+n+'</b> / '+NC,n,NC);}
 function route(){const st=S.step;stopTimer();
   if(INTRO[st]){const x=INTRO[st];$('i-eye').textContent=x[0];$('i-title').textContent=x[1];$('i-lead').textContent=x[2];showSec('s-intro');return;}
   if(st==='A'){showSec('s-a');aShow();return;}
@@ -693,8 +1142,8 @@ if(TEST){const sk=document.createElement('button');sk.type='button';sk.className
 /* 파트 2: 평가형은 대응 방법을 하나씩, 선택형은 한 화면에. 보기 순서는 응답자마다 무작위 */
 function ordOf(it){return S.ord&&S.ord[it.id]?S.ord[it.id]:[...Array(it.o.length).keys()];}
 function bShow(keep){const it=BI[S.ib],n=it.o.length,ord=ordOf(it);
-  $('b-count').innerHTML='상황 <b>'+(S.ib+1)+'</b> / '+NB;$('b-bar').style.width=(S.ib/NB*100)+'%';
-  $('b-tag').textContent='상황 '+(S.ib+1);$('b-how').textContent=it.t==='mm'?'이 상황에 대한 서로 다른 대응 방법 '+n+'가지 중 '+(kindOf(it)==='E'?'가장 적절한 것과 가장 적절하지 않은 것':'가장 효과적인 것과 가장 효과적이지 않은 것')+'을 고릅니다.':it.t==='rate'?'이 상황에 대한 서로 다른 대응 방법 '+n+'가지를 하나씩 따로 평가합니다.':'이 상황에 대한 서로 다른 대응 방법 '+n+'가지 중 하나를 고릅니다.';
+  $('b-count').innerHTML=tx('bCount','상황 <b>'+(S.ib+1)+'</b> / '+NB,S.ib+1,NB);$('b-bar').style.width=(S.ib/NB*100)+'%';
+  $('b-tag').textContent=tx('bTag','상황 '+(S.ib+1),S.ib+1);$('b-how').textContent=(LX&&it.t==='mm')?fmt(LX.T.bHow,[n,LX.T[kindOf(it)==='E'?'w1E':'w1J'],LX.T[kindOf(it)==='E'?'w2E':'w2J']]):it.t==='mm'?'이 상황에 대한 서로 다른 대응 방법 '+n+'가지 중 '+(kindOf(it)==='E'?'가장 적절한 것과 가장 적절하지 않은 것':'가장 효과적인 것과 가장 효과적이지 않은 것')+'을 고릅니다.':it.t==='rate'?'이 상황에 대한 서로 다른 대응 방법 '+n+'가지를 하나씩 따로 평가합니다.':'이 상황에 대한 서로 다른 대응 방법 '+n+'가지 중 하나를 고릅니다.';
   $('b-scene').textContent=it.s;$('e-b').textContent='';
   $('b-back').style.visibility=((it.t==='rate'&&S.bo>0)||(S.ib>0&&backVis()))?'visible':'hidden';
   const k='b'+S.ib;if(!S.shown[k]){S.shown[k]=Date.now();save();}
@@ -715,36 +1164,37 @@ function bShow(keep){const it=BI[S.ib],n=it.o.length,ord=ordOf(it);
     for(let p=0;p<n;p++){const val=cur[ord[p]];const b=document.createElement('button');b.type='button';b.className=(val?'done':'')+(p===S.bo?' cur':'');
       b.textContent=L[p]+' '+(val?val+'점':'–');b.onclick=()=>{S.bo=p;save();bShow();};sr.appendChild(b);}
     body.appendChild(sr);const sn=document.createElement('p');sn.className='sumnote';sn.textContent='평가한 방법을 누르면 점수를 다시 고칠 수 있습니다.';body.appendChild(sn);
-    const all=cur.every(x=>x>0);$('b-next').classList.toggle('hide',!all&&!TEST);$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';
+    const all=cur.every(x=>x>0);$('b-next').classList.toggle('hide',!all&&!TEST);$('b-next').textContent=S.ib<NB-1?tx('bNext','다음 상황'):tx('bLast','파트 2 마치기');
   }else{const a=document.createElement('div');a.className='ask';
     a.innerHTML='<b>아래 '+n+'가지 대응 방법 중 하나만</b> 골라 주십시오.<small>바람직한 방법보다 귀하가 실제로 가장 할 것 같은 방법을 기준으로 골라 주십시오.</small>';body.appendChild(a);
     const p=document.createElement('div');p.className='pick';
     ord.forEach((oi,pos)=>{const b=document.createElement('button');b.type='button';b.className=S.b[it.id]===L[oi]?'on':'';
       b.innerHTML='<span class="k">'+L[pos]+'</span><span></span>';b.querySelector('span:last-child').textContent=it.o[oi];
       b.onclick=()=>{S.b[it.id]=L[oi];save();p.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$('e-b').textContent='';};p.appendChild(b);});
-    body.appendChild(p);$('b-next').classList.remove('hide');$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';}
+    body.appendChild(p);$('b-next').classList.remove('hide');$('b-next').textContent=S.ib<NB-1?tx('bNext','다음 상황'):tx('bLast','파트 2 마치기');}
   window.scrollTo(0,0);}
 function mmShow(it,body){const ord=ordOf(it),kk=kindOf(it),v=S.b[it.id]||{best:'',worst:''};
-  const w1=kk==='E'?'가장 적절한':'가장 효과적인',w2=kk==='E'?'가장 적절하지 않은':'가장 효과적이지 않은';
+  const w1=LX?LX.T[kk==='E'?'w1E':'w1J']:(kk==='E'?'가장 적절한':'가장 효과적인'),w2=LX?LX.T[kk==='E'?'w2E':'w2J']:(kk==='E'?'가장 적절하지 않은':'가장 효과적이지 않은');
+  const tgB=LX?fmt(LX.T.tagB,[LX.T[kk==='E'?'tE':'tJ']]):w1+' 방법',tgW=LX?fmt(LX.T.tagW,[LX.T[kk==='E'?'tE':'tJ']]):w2+' 방법';
   const step=!v.best?1:(!v.worst?2:3);
   const a=document.createElement('div');a.className='ask';
-  a.innerHTML=step===1?'<b>① '+w1+' 대응 방법 하나를 고르십시오.</b><small>A~E는 서로 다른 대응 방법입니다. 이어서 '+w2+' 방법도 고르게 됩니다.</small>'
-    :step===2?'<b>② 이번에는 '+w2+' 대응 방법 하나를 고르십시오.</b><small>먼저 고른 방법을 다시 누르면 선택이 취소됩니다.</small>'
-    :'<b>두 가지를 모두 골랐습니다.</b><small>바꾸려면 고른 방법을 다시 눌러 취소한 뒤 새로 고르십시오.</small>';
+  a.innerHTML=step===1?tx('mm1','<b>① '+w1+' 대응 방법 하나를 고르십시오.</b><small>A~E는 서로 다른 대응 방법입니다. 이어서 '+w2+' 방법도 고르게 됩니다.</small>',w1,w2)
+    :step===2?tx('mm2','<b>② 이번에는 '+w2+' 대응 방법 하나를 고르십시오.</b><small>먼저 고른 방법을 다시 누르면 선택이 취소됩니다.</small>',w1,w2)
+    :tx('mm3','<b>두 가지를 모두 골랐습니다.</b><small>바꾸려면 고른 방법을 다시 눌러 취소한 뒤 새로 고르십시오.</small>');
   body.appendChild(a);
   const p=document.createElement('div');p.className='pick mm';
   ord.forEach((oi,pos)=>{const letter=L[oi],isB=v.best===letter,isW=v.worst===letter;
     const b=document.createElement('button');b.type='button';b.className=isB?'best':(isW?'worst':'');
-    b.innerHTML='<span class="k">'+L[pos]+'</span><span class="tx"></span>'+(isB?'<span class="tag tb">'+w1+' 방법</span>':'')+(isW?'<span class="tag tw">'+w2+' 방법</span>':'');
+    b.innerHTML='<span class="k">'+L[pos]+'</span><span class="tx"></span>'+(isB?'<span class="tag tb">'+tgB+'</span>':'')+(isW?'<span class="tag tw">'+tgW+'</span>':'');
     b.querySelector('.tx').textContent=it.o[oi];
     b.onclick=()=>{const cur=S.b[it.id]||{best:'',worst:''};
       if(cur.best===letter)cur.best='';else if(cur.worst===letter)cur.worst='';
       else if(!cur.best)cur.best=letter;else if(!cur.worst)cur.worst=letter;
-      else{toast('바꾸려면 먼저 고른 방법을 다시 눌러 취소해 주십시오');return;}
+      else{toast(tx('mmToast','바꾸려면 먼저 고른 방법을 다시 눌러 취소해 주십시오'));return;}
       S.b[it.id]=cur;save();$('e-b').textContent='';const y=window.scrollY;bShow(true);window.scrollTo(0,y);};
     p.appendChild(b);});
   body.appendChild(p);
-  const done=v.best&&v.worst;$('b-next').classList.toggle('hide',!done&&!TEST);$('b-next').textContent=S.ib<NB-1?'다음 상황':'파트 2 마치기';}
+  const done=v.best&&v.worst;$('b-next').classList.toggle('hide',!done&&!TEST);$('b-next').textContent=S.ib<NB-1?tx('bNext','다음 상황'):tx('bLast','파트 2 마치기');}
 function bRate(it,v){if(busy)return;const n=it.o.length,ord=ordOf(it);const arr=S.b[it.id]||new Array(n).fill(0);arr[ord[S.bo]]=v;S.b[it.id]=arr;save();
   $('b-body').querySelectorAll('.choices .ch').forEach((b,i)=>{b.classList.toggle('on',i+1===v);});busy=true;
   setTimeout(()=>{busy=false;
@@ -757,7 +1207,7 @@ function bMove(ib,bo){const st=$('b-stage');const go=()=>{S.ib=ib;S.bo=bo;save()
   if(RM){go();return;}st.classList.add('out');setTimeout(()=>{go();st.classList.remove('out');},130);}
 $('b-next').onclick=()=>{const it=BI[S.ib],v=S.b[it.id];if(TEST){bNextItem();return;}
   if(it.t==='pick'&&!v){$('e-b').textContent='대응 방법 하나를 골라 주십시오.';return;}
-  if(it.t==='mm'&&!(v&&v.best&&v.worst)){$('e-b').textContent='두 가지를 모두 골라 주십시오.';return;}
+  if(it.t==='mm'&&!(v&&v.best&&v.worst)){$('e-b').textContent=tx('eMM','두 가지를 모두 골라 주십시오.');return;}
   if(it.t==='rate'&&!(Array.isArray(v)&&v.every(x=>x>0))){$('e-b').textContent='모든 방법을 평가해 주십시오.';return;}
   bNextItem();};
 $('b-back').onclick=()=>{const it=BI[S.ib];
@@ -765,7 +1215,7 @@ $('b-back').onclick=()=>{const it=BI[S.ib];
   if(S.ib>0&&backVis()){const p=BI[S.ib-1];bMove(S.ib-1,p.t==='rate'?p.o.length-1:0);}};
 
 /* 글자 수 표시 */
-function counter(el,out,min){const n=(el.value||'').trim().length;out.textContent=n>=min?'충분합니다':(min-n)+'자 더 적어 주십시오';out.className='cnt'+(n>=min?' ok':'');}
+function counter(el,out,min){const n=(el.value||'').trim().length;out.textContent=n>=min?tx('cntOk','충분합니다'):tx('cntMore',(min-n)+'자 더 적어 주십시오',min-n);out.className='cnt'+(n>=min?' ok':'');}
 
 /* 과제 1 */
 function c1Render(){const C=CFG.C1;$('c1-desc').textContent=C.desc;$('c1-step2').textContent=C.step2;
@@ -788,15 +1238,15 @@ function c1Render(){const C=CFG.C1;$('c1-desc').textContent=C.desc;$('c1-step2')
     plan.appendChild(r);});}
 $('c1-basis').addEventListener('input',()=>{S.c1.basis=$('c1-basis').value;save();$('e-c1').textContent='';counter($('c1-basis'),$('c1-cnt'),MIN_BASIS);});
 $('c1-next').onclick=()=>{if(TEST){S.step='C2';save();route();return;}
-  if(S.c1.order.length<NC1){$('e-c1').textContent=NC1+'건 모두 순서를 매겨 주십시오.';return;}
+  if(S.c1.order.length<NC1){$('e-c1').textContent=tx('eC1n',NC1+'건 모두 순서를 매겨 주십시오.',NC1);return;}
   for(const i of S.c1.order){if(CFG.C1.method&&!S.c1.m[i]){$('e-c1').textContent='모든 항목의 처리 방식을 골라 주십시오.';return;}}
-  if((S.c1.basis||'').trim().length<MIN_BASIS){$('e-c1').textContent='우선순위 기준을 '+MIN_BASIS+'자 이상 적어 주십시오.';return;}
+  if((S.c1.basis||'').trim().length<MIN_BASIS){$('e-c1').textContent=tx('eC1b','우선순위 기준을 '+MIN_BASIS+'자 이상 적어 주십시오.',MIN_BASIS);return;}
   S.step='C2';save();route();};
 $('c1-back').onclick=()=>{if(!backVis())return;S.step='B';S.ib=NB-1;const p=BI[NB-1];S.bo=p.t==='rate'?p.o.length-1:0;save();route();};
 
 /* 과제 2 */
 $('c2-text').addEventListener('input',()=>{S.c2=$('c2-text').value;save();$('e-c2').textContent='';});
-$('c2-next').onclick=()=>{if(!TEST&&!S.c2.trim()){$('e-c2').textContent='발견한 오류를 적어 주십시오.';return;}S.step='C3';save();route();};
+$('c2-next').onclick=()=>{if(!TEST&&!S.c2.trim()){$('e-c2').textContent=tx('eC2','발견한 오류를 적어 주십시오.');return;}S.step='C3';save();route();};
 $('c2-back').onclick=()=>{if(!backVis())return;S.step='C1';save();route();};
 
 /* 과제 3 */
@@ -804,7 +1254,7 @@ function radios(box,opts,val,set){box.innerHTML='';opts.forEach(o=>{const b=docu
   b.className=val===o?'on':'';b.innerHTML='<span class="mk"></span><span></span>';b.querySelector('span:last-child').textContent=o;
   b.onclick=()=>{set(o);box.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));};box.appendChild(b);});}
 function c3Render(){const jr=LV==='junior';$('c3-head').classList.toggle('hide',jr);$('c3-jr').classList.toggle('hide',!jr);
-  $('c3-back').style.visibility=backVis()?'visible':'hidden';$('c3-next').textContent=jr?'다음 과제':'제출하기';
+  $('c3-back').style.visibility=backVis()?'visible':'hidden';$('c3-next').textContent=jr?tx('nextTask','다음 과제'):'제출하기';
   if(jr){const box=$('c3-stmts');box.innerHTML='';S.c3.st=S.c3.st||{};
     STMTS.forEach((s,i)=>{const d=document.createElement('div');d.className='stm';
       d.innerHTML='<p class="sq"><b>'+(i+1)+'</b><span></span></p><div class="chips"></div>';d.querySelector('.sq span').textContent=s.t;
@@ -815,7 +1265,7 @@ function c3Render(){const jr=LV==='junior';$('c3-head').classList.toggle('hide',
 $('c3-text').addEventListener('input',()=>{S.c3.t=$('c3-text').value;save();$('e-c3').textContent='';counter($('c3-text'),$('c3-cnt'),MIN_REASON);});
 function afterC3(){if(LV==='junior'){S.step='C4';save();route();}else{mark('C1');finish();}}
 $('c3-next').onclick=()=>{if(TEST){afterC3();return;}
-  if(LV==='junior'){const miss=STMTS.filter(s=>!S.c3.st[s.id]).length;if(miss){$('e-c3').textContent='모든 문장을 판단해 주십시오. ('+miss+'개 남음)';return;}}
+  if(LV==='junior'){const miss=STMTS.filter(s=>!S.c3.st[s.id]).length;if(miss){$('e-c3').textContent=tx('eC3','모든 문장을 판단해 주십시오. ('+miss+'개 남음)',miss);return;}}
   else{if(!S.c3.br){$('e-c3').textContent='지점을 하나 골라 주십시오.';return;}
     if((S.c3.t||'').trim().length<MIN_REASON){$('e-c3').textContent='이유를 '+MIN_REASON+'자 이상 적어 주십시오.';return;}}
   afterC3();};
@@ -826,32 +1276,32 @@ function c4Render(){$('c4-back').style.visibility=backVis()?'visible':'hidden';
   const box=$('c4-opts');box.innerHTML='';
   C4_OPTS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className=S.c4.pick.indexOf(i)>=0?'on':'';
     b.innerHTML='<span class="mk sq"></span><span></span>';b.querySelector('span:last-child').textContent=t;
-    b.onclick=()=>{const p=S.c4.pick.indexOf(i);if(p>=0)S.c4.pick.splice(p,1);else{if(S.c4.pick.length>=3){toast('3개까지 고를 수 있습니다');return;}S.c4.pick.push(i);}
+    b.onclick=()=>{const p=S.c4.pick.indexOf(i);if(p>=0)S.c4.pick.splice(p,1);else{if(S.c4.pick.length>=3){toast(tx('c4Toast','3개까지 고를 수 있습니다'));return;}S.c4.pick.push(i);}
       save();$('e-c4').textContent='';c4Render();};box.appendChild(b);});
-  $('c4-picked').textContent='현재 '+S.c4.pick.length+'개 선택 (3개를 골라 주십시오)';
+  $('c4-picked').textContent=tx('c4Picked','현재 '+S.c4.pick.length+'개 선택 (3개를 골라 주십시오)',S.c4.pick.length);
   $('c4-text').value=S.c4.text||'';counter($('c4-text'),$('c4-cnt'),MIN_BASIS);}
 $('c4-text').addEventListener('input',()=>{S.c4.text=$('c4-text').value;save();$('e-c4').textContent='';counter($('c4-text'),$('c4-cnt'),MIN_BASIS);});
-$('c4-next').onclick=()=>{if(TEST){mark('C1');finish();return;}if(S.c4.pick.length!==3){$('e-c4').textContent='분석을 3개 골라 주십시오.';return;}
-  if((S.c4.text||'').trim().length<MIN_BASIS){$('e-c4').textContent='보고 문장을 '+MIN_BASIS+'자 이상 적어 주십시오.';return;}
+$('c4-next').onclick=()=>{if(TEST){mark('C1');finish();return;}if(S.c4.pick.length!==3){$('e-c4').textContent=tx('eC4p','분석을 3개 골라 주십시오.');return;}
+  if((S.c4.text||'').trim().length<MIN_BASIS){$('e-c4').textContent=tx('eC4t','보고 문장을 '+MIN_BASIS+'자 이상 적어 주십시오.',MIN_BASIS);return;}
   mark('C1');finish();};
 $('c4-back').onclick=()=>{if(!backVis())return;S.step='C3';save();route();};
 
 /* 저장 */
 function payload(status){const t=S.tm,min=(a,b)=>t[a]&&t[b]?Math.round((t[b]-t[a])/600)/100:null;
-  return{action:'save',status:status,id:S.id,group:S.group,lv:S.lv,version:S.version,name:S.name,submittedAt:new Date().toISOString(),test:TEST,timer:TIMER,
+  return{action:'save',status:status,id:S.id,group:S.group,lv:S.lv,lang:LANG,version:S.version,name:S.name,submittedAt:new Date().toISOString(),test:TEST,timer:TIMER,
     minutes:{p1:min('A0','A1'),p2:min('B0','B1'),p3:min('C0','C1'),total:min('start','C1')},
     a:S.a,b:S.b,ord:S.ord,c1:{order:S.c1.order.map(i=>i+1),method:S.c1.order.map(i=>S.c1.m[i]||''),reason:[],basis:S.c1.basis||''},
     c2:S.c2,c3:S.c3,c4:{pick:S.c4.pick.map(i=>i+1),text:S.c4.text||''},rt:S.rt,ig:S.ig,ua:navigator.userAgent};}
 function post(status){return fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload(status))});}
 function progress(status){if(!SCRIPT_URL||!SAVE||S.sent[status])return;S.sent[status]=1;save();post(status).catch(()=>{S.sent[status]=0;save();});}
-function finish(){S.submitted=true;save();stopTimer();$('d-title').textContent=S.name+' 님, 수고하셨습니다';showSec('s-done');send();}
-async function send(){const st=$('d-status'),msg=st.querySelector('span');st.className='status';msg.textContent='응답을 저장하고 있습니다';
+function finish(){S.submitted=true;save();stopTimer();$('d-title').textContent=tx('doneTitle',S.name+' 님, 수고하셨습니다',S.name);showSec('s-done');send();}
+async function send(){const st=$('d-status'),msg=st.querySelector('span');st.className='status';msg.textContent=tx('saving','응답을 저장하고 있습니다');
   $('d-fallback').classList.add('hide');
   if(TEST&&!SAVE){msg.textContent='점검 모드: 시트에 저장하지 않았습니다';return;}
   if(!SCRIPT_URL){fail();return;}
-  try{await post('제출 완료');st.className='status ok';msg.textContent='응답이 저장되었습니다. 창을 닫으셔도 됩니다.';try{localStorage.removeItem(STORE);}catch(e){}}
+  try{await post('제출 완료');st.className='status ok';msg.textContent=tx('saved','응답이 저장되었습니다. 창을 닫으셔도 됩니다.');try{localStorage.removeItem(STORE);}catch(e){}}
   catch(e){fail();}}
-function fail(){const st=$('d-status');st.className='status bad';st.querySelector('span').textContent='응답을 저장하지 못했습니다';$('d-fallback').classList.remove('hide');}
+function fail(){const st=$('d-status');st.className='status bad';st.querySelector('span').textContent=tx('saveFail','응답을 저장하지 못했습니다');$('d-fallback').classList.remove('hide');}
 $('d-retry').onclick=send;
 $('d-dl').onclick=()=>{const blob=new Blob([JSON.stringify(payload('제출 완료'),null,1)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='설문응답_'+S.name+'_'+S.id+'.json';document.body.appendChild(a);a.click();a.remove();};
