@@ -567,7 +567,7 @@ const C1_JUNIOR={desc:'귀하는 JBFI 기획팀 담당자입니다. 화요일 �
 '다음 주 수요일 사업계획 회의에 낼 아이디어 정리']};
 const BRANCHES=['Jakarta','Surabaya','Bandung','Medan','Makassar'];
 const STMTS=[
- {id:'s1',t:'6개월 동안 신규 취급액이 매달 늘어난 상품은 중고차뿐이다.'},
+ {id:'s1',t:'5월부터 9월까지 신규 취급액이 매달 전월보다 늘어난 상품은 중고차뿐이다.'},
  {id:'s3',t:'9월 중고차 연체율은 신차 연체율의 2배를 넘는다.'},
  {id:'s4',t:'이륜차 연체율이 오른 것은 신규 취급이 줄었기 때문이다.'},
  {id:'s6',t:'9월 전체 신규 취급액에서 중고차 비중은 40%를 넘는다.'},
@@ -711,7 +711,7 @@ C1:{desc:'Anda adalah staf tim perencanaan di JBFI. Hari Selasa pukul 09.00, ada
 'Perusahaan induk di Korea meminta bahan untuk rapat video besok pukul 09.00 dikirim hari ini',
 'Divisi marketing meminta pengecekan karena tabel kinerja per dealer yang mereka terima minggu lalu sepertinya ada kesalahan. Tabel ini akan dipakai dalam rapat dealer besok',
 'Merangkum ide untuk rapat rencana bisnis hari Rabu minggu depan']},
-STMT:{s1:'Selama 6 bulan, satu-satunya produk yang nilai pembiayaan barunya naik setiap bulan adalah mobil bekas.',
+STMT:{s1:'Dari Mei sampai September, satu-satunya produk yang nilai pembiayaan barunya selalu naik dibanding bulan sebelumnya adalah mobil bekas.',
  s3:'Pada September, rasio tunggakan mobil bekas lebih dari 2 kali rasio tunggakan mobil baru.',
  s4:'Rasio tunggakan motor naik karena pembiayaan barunya menurun.',
  s6:'Pada September, porsi mobil bekas dalam total pembiayaan baru lebih dari 40%.',
@@ -720,7 +720,7 @@ STMT:{s1:'Selama 6 bulan, satu-satunya produk yang nilai pembiayaan barunya naik
  s5:'Pada September, produk dengan saldo tunggakan terbesar adalah motor.'},
 STMT_OPT:['Benar','Salah','Tidak dapat ditentukan dari data'],
 C4:['Perubahan jumlah kontrak per dealer (apakah masalahnya di sebagian dealer atau di semua dealer)','Perubahan jumlah seluruh karyawan perusahaan','Perubahan jumlah staf marketing yang menangani dealer dan frekuensi kunjungan ke dealer','Tren jumlah pengajuan dan tingkat persetujuan di kanal dealer','Ringkasan kinerja tahunan selama 3 tahun terakhir','Perubahan rata-rata nilai pembiayaan per jenis kendaraan','Perbandingan suku bunga, syarat pembiayaan, dan komisi dealer kompetitor','Hasil survei kepuasan konsumen kanal langsung'],
-total:'sekitar 36 menit',t:['sekitar 5 menit','sekitar 15 menit','sekitar 16 menit'],
+total:'sekitar 39 menit',t:['sekitar 5 menit','sekitar 18 menit','sekitar 16 menit'],
 html:{
 title:'Survei Gaya Kerja JBFI',
 h1:'Survei Gaya Kerja',
@@ -920,7 +920,7 @@ C1:{desc:'You are a staff member on the JBFI planning team. It is Tuesday, 9:00 
 'The parent company in Korea asks you to send today the materials for tomorrow\'s 9:00 a.m. video conference',
 'The sales department asks you to check the dealer performance table they received last week because it seems to contain errors. The table will be used at tomorrow\'s dealer meeting',
 'Organize ideas for next Wednesday\'s business plan meeting']},
-STMT:{s1:'Over the 6 months, used cars are the only product whose new financing increased every month.',
+STMT:{s1:'From May to September, used cars are the only product whose new financing rose every month compared with the previous month.',
  s3:'In September, the used-car delinquency rate is more than twice the new-car delinquency rate.',
  s4:'The motorcycle delinquency rate rose because new motorcycle financing decreased.',
  s6:'In September, used cars account for more than 40% of total new financing.',
@@ -929,7 +929,7 @@ STMT:{s1:'Over the 6 months, used cars are the only product whose new financing 
  s5:'In September, the product with the largest delinquent balance is motorcycles.'},
 STMT_OPT:['True','False','Cannot tell from the data'],
 C4:['Change in the number of contracts by dealer (whether the problem is with some dealers or all of them)','Change in the company\'s total headcount','Changes in the sales staff covering dealers and the number of dealer visits','Trend in the number of applications and the approval rate in the dealer channel','Summary of annual performance over the last 3 years','Change in the average loan amount by vehicle type','Comparison of competitors\' interest rates, loan terms, and dealer commissions','Customer satisfaction survey results for the direct channel'],
-total:'about 36 min',t:['about 5 min','about 15 min','about 16 min'],
+total:'about 39 min',t:['about 5 min','about 18 min','about 16 min'],
 html:{
 title:'JBFI Work Style Survey',
 h1:'Work Style Survey',
@@ -1011,7 +1011,7 @@ if(LX){A_ITEMS.splice(0,A_ITEMS.length,...LX.A);A_SCALE.splice(0,5,...LX.scale);
   document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=LX.T[el.dataset.t];});}
 
 const CFG=LV==='junior'
- ?{B:B_JUNIOR,C1:C1_JUNIOR,nc:4,total:LX?LX.total:'약 34분',t:LX?LX.t:['약 5분','약 13분','약 16분'],lim:{a:20,b:LX?90:75,c1:180,c2:180,c3:300,c4:300}}
+ ?{B:B_JUNIOR,C1:C1_JUNIOR,nc:4,total:LX?LX.total:'약 36분',t:LX?LX.t:['약 5분','약 15분','약 16분'],lim:{a:20,b:LX?120:90,c1:180,c2:180,c3:300,c4:300}}
  :{B:B_HEAD,C1:C1_HEAD,nc:3,total:'약 30분',t:['약 5분','약 10분','약 15분'],lim:{a:20,b:90,c1:300,c2:240,c3:300}};
 const NC1=CFG.C1.items.length,BI=CFG.B,NB=BI.length,NC=CFG.nc;
 const RATE_LBL={J:['전혀 효과 없음','효과 낮음','보통','효과 높음','매우 효과 높음'],E:['전혀 적절하지 않음','적절하지 않은 편','보통','적절한 편','매우 적절']};
@@ -1288,7 +1288,7 @@ $('c4-back').onclick=()=>{if(!backVis())return;S.step='C3';save();route();};
 
 /* 저장 */
 function payload(status){const t=S.tm,min=(a,b)=>t[a]&&t[b]?Math.round((t[b]-t[a])/600)/100:null;
-  return{action:'save',status:status,id:S.id,group:S.group,lv:S.lv,lang:LANG,version:S.version,name:S.name,submittedAt:new Date().toISOString(),test:TEST,timer:TIMER,
+  return{action:'save',status:status,id:S.id,group:S.group,lv:S.lv,lang:LANG,version:S.version,qv:2,name:S.name,submittedAt:new Date().toISOString(),test:TEST,timer:TIMER,
     minutes:{p1:min('A0','A1'),p2:min('B0','B1'),p3:min('C0','C1'),total:min('start','C1')},
     a:S.a,b:S.b,ord:S.ord,c1:{order:S.c1.order.map(i=>i+1),method:S.c1.order.map(i=>S.c1.m[i]||''),reason:[],basis:S.c1.basis||''},
     c2:S.c2,c3:S.c3,c4:{pick:S.c4.pick.map(i=>i+1),text:S.c4.text||''},rt:S.rt,ig:S.ig,ua:navigator.userAgent};}
