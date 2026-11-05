@@ -1,9 +1,11 @@
 /**
  * JBFI 임직원 업무환경·AI 활용 실태 설문 — 응답 저장용 Apps Script
  *
- * 설치
- * 1) 응답을 보관할 Google 스프레드시트에서 [확장 프로그램 > Apps Script]를 엽니다.
- * 2) 기본 코드를 지우고 이 코드를 그대로 붙여 넣은 뒤 저장합니다.
+ * 설치 (script.google.com 에서 새 프로젝트로 만드는 경우)
+ * 1) script.google.com > 새 프로젝트. 기본 코드를 지우고 이 코드를 붙여 넣은 뒤 저장합니다.
+ * 2) 함수 선택 목록에서 setup 을 고르고 [실행]. 권한을 승인하면 내 드라이브에
+ *    'JBFI AI 설문 응답' 스프레드시트가 만들어지고, 실행 로그에 시트 주소가 표시됩니다.
+ *    (시트 안에서 [확장 프로그램 > Apps Script]로 만든 경우에는 setup 없이 그 시트를 사용합니다)
  * 3) [배포 > 새 배포 > 유형: 웹 앱] 실행 사용자: 나, 액세스 권한: 모든 사용자 로 배포합니다.
  * 4) 발급된 웹 앱 URL(…/exec)을 설문 페이지(index.html)의 SCRIPT_URL 에 넣습니다.
  * 코드를 고친 뒤에는 [배포 > 배포 관리 > 수정(연필) > 버전: 새 버전 > 배포]로 다시 배포하면 URL이 유지됩니다.
@@ -42,8 +44,29 @@ function clean_(v) {
   return String(v).replace(/^[=+\-@]/, "'$&").slice(0, 2000);
 }
 
+// 응답 스프레드시트: setup()으로 만든 시트(ID 저장) 또는 이 스크립트가 붙어 있는 시트
+function ss_() {
+  var id = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  var act = SpreadsheetApp.getActiveSpreadsheet();
+  if (act) return act;
+  throw new Error('setup 을 먼저 실행해 주십시오');
+}
+
+// script.google.com 에서 만든 경우 최초 1회 실행
+function setup() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SHEET_ID');
+  var ss = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.create('JBFI AI 설문 응답');
+  props.setProperty('SHEET_ID', ss.getId());
+  sheet_(SHEET_RESP);
+  var first = ss.getSheets()[0];
+  if (first.getName() !== SHEET_RESP && first.getLastRow() === 0) ss.deleteSheet(first);
+  Logger.log('응답 시트 주소: ' + ss.getUrl());
+}
+
 function sheet_(name) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = ss_();
   var sh = ss.getSheetByName(name);
   if (!sh) {
     sh = ss.insertSheet(name);
@@ -66,7 +89,8 @@ function doPost(e) {
   var lock = LockService.getScriptLock();
   try { lock.waitLock(20000); } catch (err) { return out_({ ok: false, err: 'busy' }); }
   try {
-    var sh = sheet_(String(row.test) === '1' ? SHEET_TEST : SHEET_RESP);
+    var sh;
+    try { sh = sheet_(String(row.test) === '1' ? SHEET_TEST : SHEET_RESP); } catch (err) { return out_({ ok: false, err: 'sheet' }); }
     if (exists_(sh, String(row.resp_id))) return out_({ ok: true, dup: true });
     var vals = KEYS.map(function (k) { return clean_(row[k]); });
     var r = sh.getLastRow() + 1;
