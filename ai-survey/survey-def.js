@@ -16,8 +16,8 @@
   }
   // 부서별 반복 업무(Q6)용 기타: 최대 2개까지 직접 입력 (XX99 = 기타 업무 1, XX98 = 기타 업무 2)
   var OTHER_TASKS = function (pre) {
-    return [O(pre + "99", "기타 업무 1(직접 입력)", "Pekerjaan lain 1 (tuliskan)", "Other task 1 (please specify)", { other: true }),
-            O(pre + "98", "기타 업무 2(직접 입력)", "Pekerjaan lain 2 (tuliskan)", "Other task 2 (please specify)", { other: true })];
+    return [O(pre + "99", "기타 업무 1(직접 입력)", "Pekerjaan lainnya 1 (tuliskan)", "Other task 1 (please specify)", { other: true }),
+            O(pre + "98", "기타 업무 2(직접 입력)", "Pekerjaan lainnya 2 (tuliskan)", "Other task 2 (please specify)", { other: true })];
   };
   var OTHER = function (code) { return O(code || "OTH", "기타(직접 입력)", "Lainnya (tuliskan)", "Other (please specify)", { other: true }); };
 
@@ -26,12 +26,12 @@
     eyebrow: T("JB Finance Indonesia", "JB Finance Indonesia", "JB Finance Indonesia"),
     title: T("임직원 업무환경·AI 활용 실태 설문", "Survei Lingkungan Kerja dan Penggunaan AI", "Work Environment and AI Use Survey"),
     lead: T(
-      "이 설문은 임직원의 일상 업무 부담과 업무 중 AI 도구 사용 현황을 파악해 회사의 업무 지원 계획에 반영하기 위한 것입니다.",
-      "Survei ini bertujuan memahami beban kerja harian karyawan dan penggunaan alat AI dalam pekerjaan, sebagai masukan bagi perusahaan dalam merencanakan dukungan kerja.",
-      "This survey aims to understand daily workload and the use of AI tools at work, to help the company plan support for employees."),
+      "이 설문은 임직원의 일상 업무 부담과 업무 중 AI 도구 사용 현황을 파악해 회사의 업무 환경 개선 계획에 반영하기 위한 것입니다.",
+      "Survei ini bertujuan memahami beban kerja harian karyawan dan penggunaan alat AI dalam pekerjaan. Hasilnya akan menjadi masukan bagi perusahaan dalam merencanakan perbaikan lingkungan kerja.",
+      "This survey aims to understand daily workload and the use of AI tools at work, to help the company plan improvements to the work environment."),
     anon: T(
       "익명으로 진행되며 이름, 사번, 이메일은 수집하지 않고 결과는 전체 합산 형태로만 보고됩니다. 정답이나 오답은 없으며 응답 내용은 인사평가에 영향을 주지 않습니다.",
-      "Survei ini anonim: nama, nomor induk karyawan, dan email tidak dikumpulkan, dan hasilnya hanya dilaporkan dalam bentuk gabungan. Tidak ada jawaban benar atau salah, dan jawaban Anda tidak memengaruhi penilaian kinerja.",
+      "Survei ini bersifat anonim: nama, nomor induk karyawan, dan email tidak diisi, dan hasilnya hanya dilaporkan dalam bentuk gabungan. Tidak ada jawaban benar atau salah, dan jawaban Anda tidak memengaruhi penilaian kinerja.",
       "The survey is anonymous: no name, employee ID or email is collected, and results are reported only in aggregate. There are no right or wrong answers, and your answers will not affect performance evaluation."),
     // 경영진 결정 후 사용 여부 결정 (index.html 의 SHOW_JOB_NOTE)
     jobNote: T(
@@ -57,7 +57,7 @@
     maxN: T("최대 {n}개까지 고를 수 있습니다.", "Anda dapat memilih paling banyak {n}.", "You can choose up to {n}."),
     upToN: T("최대 {n}개 선택", "Pilih maksimal {n}", "Choose up to {n}"),
     multiAll: T("해당하는 것을 모두 선택", "Pilih semua yang sesuai", "Select all that apply"),
-    rankHelp: T("원하는 순서대로 3개까지 눌러 주십시오. 다시 누르면 취소됩니다.", "Ketuk paling banyak 3 pilihan sesuai urutan yang Anda inginkan. Ketuk lagi untuk membatalkan.", "Tap up to 3 options in order. Tap again to cancel."),
+    rankHelp: T("원하는 순서대로 3개까지 눌러 주십시오. 다시 누르면 취소됩니다.", "Pilih dengan klik paling banyak 3 pilihan sesuai urutan yang Anda inginkan. Klik lagi untuk membatalkan.", "Tap up to 3 options in order. Tap again to cancel."),
     rankErr: T("하나 이상 골라 주십시오.", "Pilih minimal satu jawaban.", "Please choose at least one."),
     gridErr: T("모든 항목에 답해 주십시오.", "Mohon jawab semua pertanyaan.", "Please answer every row."),
     otherErr: T("기타 내용을 적어 주십시오.", "Tuliskan isi jawaban \"Lainnya\".", "Please specify \"Other\"."),
@@ -91,15 +91,15 @@
   var DAY_TIME = [
     O("D0", "없음", "Tidak ada", "None"),
     O("D1", "1시간 미만", "Kurang dari 1 jam", "Less than 1 hr"),
-    O("D2", "1시간 이상~2시간 미만", "1 – kurang dari 2 jam", "1 – under 2 hrs"),
-    O("D3", "2시간 이상~4시간 미만", "2 – kurang dari 4 jam", "2 – under 4 hrs"),
+    O("D2", "1시간 이상~2시간 미만", "1 jam – kurang dari 2 jam", "1 – under 2 hrs"),
+    O("D3", "2시간 이상~4시간 미만", "2 jam – kurang dari 4 jam", "2 – under 4 hrs"),
     O("D4", "4시간 이상", "4 jam atau lebih", "4 hrs or more")
   ];
   var WEEK_TIME = [
     O("W1", "1시간 미만", "Kurang dari 1 jam", "Less than 1 hr"),
-    O("W2", "1시간 이상~3시간 미만", "1 – kurang dari 3 jam", "1 – under 3 hrs"),
-    O("W3", "3시간 이상~5시간 미만", "3 – kurang dari 5 jam", "3 – under 5 hrs"),
-    O("W4", "5시간 이상~10시간 미만", "5 – kurang dari 10 jam", "5 – under 10 hrs"),
+    O("W2", "1시간 이상~3시간 미만", "1 jam – kurang dari 3 jam", "1 – under 3 hrs"),
+    O("W3", "3시간 이상~5시간 미만", "3 jam – kurang dari 5 jam", "3 – under 5 hrs"),
+    O("W4", "5시간 이상~10시간 미만", "5 jam – kurang dari 10 jam", "5 – under 10 hrs"),
     O("W5", "10시간 이상", "10 jam atau lebih", "10 hrs or more")
   ];
 
@@ -156,7 +156,7 @@
       OTHER_TASKS("RT")[0], OTHER_TASKS("RT")[1]
     ],
     G2: [
-      TK("FB01", "A01", "법인 고객 자료 수집과 신청 자료(정해진 양식) 작성·송부", "Mengumpulkan data perusahaan konsumen, menyusun berkas pengajuan sesuai format, lalu mengirimkannya", "Collecting corporate customer data, preparing the application file in the set format and sending it"),
+      TK("FB01", "A01", "법인 고객 자료 수집과 신청 자료(정해진 양식) 작성·송부", "Mengumpulkan data customer korporat, menyusun berkas pengajuan sesuai format, lalu mengirimkannya", "Collecting corporate customer data, preparing the application file in the set format and sending it"),
       TK("FB02", "A06", "금융구조·상환 스케줄(체증·체감·거치) 엑셀 계산", "Menghitung struktur pembiayaan dan jadwal angsuran (step-up, step-down, grace period) di Excel", "Calculating financing structures and repayment schedules (step-up, step-down, grace period) in Excel"),
       TK("FB03", "A06", "한도·수수료 엑셀 관리", "Mengelola limit dan fee di Excel", "Managing limits and fees in Excel"),
       TK("FB04", "", "심사 진행 확인과 추가 자료 대응", "Memantau proses analisa kredit dan menanggapi permintaan data tambahan", "Following up credit review and responding to requests for more data"),
@@ -183,11 +183,11 @@
       OTHER_TASKS("CR")[0], OTHER_TASKS("CR")[1]
     ],
     G4: [
-      TK("RL01", "A06", "OJK 등 규제 보고 제출기한 관리와 부서별 제출 독촉", "Memantau tenggat waktu laporan OJK dan regulator lain serta mengingatkan divisi terkait", "Tracking OJK and other regulatory report deadlines and reminding departments"),
+      TK("RL01", "A06", "OJK 등 규제 보고 제출기한 관리와 부서별 제출 독촉", "Memantau tenggat waktu laporan OJK dan regulator lain serta mengirimkan pengingat ke divisi terkait", "Tracking OJK and other regulatory report deadlines and reminding departments"),
       TK("RL02", "A04", "규제 보고서 작성·제출(APOLO, SLIK, goAML, SIPESAT)", "Menyusun dan mengirim laporan regulator (APOLO, SLIK, goAML, SIPESAT)", "Preparing and submitting regulatory reports (APOLO, SLIK, goAML, SIPESAT)"),
       TK("RL03", "", "SLIK 데이터 검증과 영업점 정정 협의", "Memvalidasi data SLIK dan berkoordinasi dengan cabang untuk koreksi", "Validating SLIK data and coordinating corrections with branches"),
       TK("RL04", "A04,A06", "RCSA·KRI·리스크 프로파일 자료 취합과 작성", "Mengumpulkan dan menyusun data RCSA, KRI, dan profil risiko", "Collecting and preparing RCSA, KRI and risk profile data"),
-      TK("RL05", "A06", "업종·여신 한도 준수 점검 보고", "Memeriksa dan melaporkan kepatuhan batas sektor industri dan limit pembiayaan", "Checking and reporting compliance with industry and financing limits"),
+      TK("RL05", "A06", "업종·여신 한도 준수 점검 보고", "Memeriksa dan melaporkan kepatuhan atas batas sektor industri dan limit pembiayaan", "Checking and reporting compliance with industry and financing limits"),
       TK("RL06", "A07", "OJK 규정·내부 규정 검토와 해석", "Mengkaji dan menafsirkan peraturan OJK dan ketentuan internal", "Reviewing and interpreting OJK regulations and internal rules"),
       TK("RL07", "A07", "계약서(금융·제휴·NDA) 검토와 초안 작성", "Mengkaji dan menyusun draf perjanjian (pembiayaan, kerja sama, NDA)", "Reviewing and drafting agreements (financing, partnership, NDA)"),
       TK("RL08", "A06", "Fidusia 등록 확인과 공증인 제출용 차주 자료 정리", "Memeriksa pendaftaran fidusia dan menyiapkan data debitur untuk notaris", "Checking fiduciary (fidusia) registration and preparing debtor data for the notary"),
@@ -284,7 +284,7 @@
     C: T("영어 업무 여건", "Penggunaan bahasa Inggris", "English at work"),
     D: T("AI 사용 실태", "Penggunaan AI saat ini", "Current AI use"),
     E: T("AI 수요와 업무 환경", "Kebutuhan AI dan lingkungan kerja", "AI needs and work environment"),
-    F: T("의견", "Masukan", "Comments")
+    F: T("의견", "Komentar atau Masukan", "Comments")
   };
   var AI_DEF = T(
     "AI 도구란 ChatGPT, Gemini, Microsoft Copilot, Meta AI(WhatsApp), Claude, DeepSeek 같은 서비스를 말합니다.",
@@ -303,12 +303,12 @@
     { id: "Q3", sec: "A", type: "single",
       q: T("직급", "Level jabatan", "Position level"),
       opts: [O("P1", "Staff·Non Staff", "Staff atau Non Staff", "Staff or non-staff"),
-             O("P2", "SPV 이상 (SPV, Account Manager, Marketing Head, Pimpinan Grha, Manager, Kepala Divisi, GM)", "SPV ke atas (SPV, Account Manager, Marketing Head, Pimpinan Grha, Manager, Kepala Divisi, GM)", "SPV and above (SPV, Account Manager, Marketing Head, Grha Head, Manager, Division Head, GM)"),
+             O("P2", "SPV 이상 (SPV, Account Manager, Marketing Head, Pimpinan Grha, Manager, Kepala Divisi, GM)", "Mulai dari SPV ke atas (SPV, Account Manager, Marketing Head, Pimpinan Grha, Manager, Kepala Divisi, GM)", "SPV and above (SPV, Account Manager, Marketing Head, Grha Head, Manager, Division Head, GM)"),
              OTHER("P99")] },
 
     { id: "Q4", sec: "B", type: "single",
       q: T("평소 근무일에 하루 몇 시간 일합니까? 초과근무를 포함해 주십시오.",
-           "Pada hari kerja biasa, berapa jam Anda bekerja dalam sehari? Termasuk lembur.",
+           "Pada hari kerja, berapa jam biasanya Anda bekerja dalam sehari? Isi termasuk jam lembur.",
            "On a typical workday, how many hours do you work, including overtime?"),
       opts: [O("H1", "8시간 미만", "Kurang dari 8 jam", "Less than 8 hours"),
              O("H2", "8시간 이상~9시간 미만", "8 – kurang dari 9 jam", "8 – under 9 hours"),
@@ -319,7 +319,7 @@
            "Pada hari kerja biasa, berapa lama waktu yang Anda gunakan untuk setiap pekerjaan berikut?",
            "On a typical workday, how much time do you spend on each of the following?"),
       help: T("하나의 업무는 가장 가까운 항목 한 곳에만 포함해 주십시오. 목록에 없는 업무는 다음 문항(Q6)에서 기타로 적어 주십시오.",
-              "Hitung setiap kegiatan satu kali saja, pada kategori yang paling sesuai. Pekerjaan yang tidak ada di daftar dapat Anda tuliskan sebagai \"Pekerjaan lain\" pada pertanyaan berikutnya (Q6).",
+              "Hitung setiap kegiatan satu kali saja, pada kategori yang paling sesuai. Pekerjaan yang tidak ada di daftar dapat Anda tuliskan sebagai \"Pekerjaan lainnya\" pada pertanyaan berikutnya (Q6).",
               "Count each activity only once, in the category that fits best. Tasks not on this list can be entered as \"Other task\" in the next question (Q6)."),
       rows: [
         O("a", "이메일·공문·메모 작성", "Menulis email, surat, atau memo", "Writing emails, letters or memos"),
@@ -339,7 +339,7 @@
            "Choose up to 3 repetitive tasks that take up most of your time.") },
     { id: "Q6_1", sec: "B", type: "taskDetail",
       q: T("고른 업무별로 일주일에 드는 시간과 가장 큰 이유를 골라 주십시오.",
-           "Untuk setiap pekerjaan yang Anda pilih, pilih waktu per minggu dan penyebab utamanya.",
+           "Untuk setiap pekerjaan yang Anda pilih, pilih waktu per minggu dan alasan utamanya.",
            "For each task you chose, select the time per week and the main reason.") },
     { id: "Q7", sec: "B", type: "multi",
       q: T("평소 업무에서 다음과 같은 일이 있습니까?", "Apakah hal-hal berikut terjadi dalam pekerjaan Anda sehari-hari?", "Do any of the following happen in your daily work?"),
@@ -376,7 +376,7 @@
       scale: [O("S1", "혼자 할 수 있음", "Bisa sendiri", "I can do it alone"),
               O("S2", "번역기·AI 도움이 있으면 할 수 있음", "Bisa dengan bantuan aplikasi penerjemah/AI", "With help from a translation app/AI"),
               O("S3", "동료 도움이 있으면 할 수 있음", "Bisa dengan bantuan rekan kerja", "With help from a colleague"),
-              O("S4", "하기 어려움", "Sulit dilakukan", "Difficult")] },
+              O("S4", "도움을 받아도 하기 어려움", "Sulit dilakukan, meskipun dengan bantuan", "Difficult even with help")] },
     { id: "Q10", sec: "C", type: "multi", max: 2, skip: ["G9"],
       q: T("업무에서 영어를 써야 하는 일이 늘어난다면 가장 부담되는 업무는 무엇입니까?",
            "Jika pekerjaan yang membutuhkan bahasa Inggris bertambah, pekerjaan apa yang paling berat bagi Anda?",
@@ -422,11 +422,11 @@
            "Menurut perkiraan Anda, berapa jam per minggu yang Anda hemat dengan menggunakan AI?",
            "By your estimate, how many hours per week do you save by using AI?"),
       opts: [O("V0", "절약되지 않음", "Tidak menghemat waktu", "No time saved"), O("V1", "1시간 미만", "Kurang dari 1 jam", "Less than 1 hour"),
-             O("V2", "1시간 이상~3시간 미만", "1 – kurang dari 3 jam", "1 – under 3 hours"), O("V3", "3시간 이상~5시간 미만", "3 – kurang dari 5 jam", "3 – under 5 hours"),
+             O("V2", "1시간 이상~3시간 미만", "1 jam – kurang dari 3 jam", "1 – under 3 hours"), O("V3", "3시간 이상~5시간 미만", "3 jam – kurang dari 5 jam", "3 – under 5 hours"),
              O("V4", "5시간 이상", "5 jam atau lebih", "5 hours or more")] },
     { id: "Q15", sec: "E", type: "rank", n: 3,
       q: T("회사가 회사 자료를 안전하게 다룰 수 있는 공식 AI 도구를 제공한다면 어떤 업무에 가장 쓰고 싶습니까? 3개까지 골라 순서를 매겨 주십시오.",
-           "Jika perusahaan menyediakan alat AI resmi yang aman untuk data perusahaan, untuk pekerjaan apa Anda paling ingin menggunakannya? Pilih paling banyak 3 dan urutkan.",
+           "Jika perusahaan menyediakan bantuan alat AI resmi yang aman untuk data perusahaan, untuk pekerjaan apa Anda paling ingin menggunakannya? Pilih paling banyak 3 dan urutkan.",
            "If the company provided an official AI tool that is safe for company data, what would you most want to use it for? Choose up to 3 and rank them."),
       opts: AI_TASKS.concat([O("A00", "AI를 쓰고 싶은 업무 없음", "Tidak ada pekerjaan yang ingin saya kerjakan dengan AI", "No task I would use AI for", { excl: true })]) },
     { id: "Q16", sec: "E", type: "single",
