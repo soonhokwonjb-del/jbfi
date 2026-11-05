@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI 설문 문항 검토</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--bg:#F2F4F6;--paper:#FFFFFF;--ink:#14212B;--sub:#56636E;--muted:#8A96A0;--line:#DCE2E7;--navy:#1D3557;--navy-soft:#E3E9F1;--on-navy:#FFFFFF;--tag:#EEF1F4}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1720;--paper:#17212B;--ink:#E8EDF1;--sub:#A7B3BD;--muted:#71808C;--line:#2A3846;--navy:#8FB3E8;--navy-soft:#1E2E44;--on-navy:#0F1720;--tag:#22303D;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;font-size:15px;line-height:1.55;word-break:keep-all;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 6px}
+.lead{color:var(--sub);margin:0 0 14px;font-size:14px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 10px;border-bottom:1px solid var(--line);margin-bottom:14px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bar button{border:1.5px solid var(--line);background:var(--paper);border-radius:9px;padding:6px 12px;font:inherit;font-size:14px;color:inherit;cursor:pointer}
+.bar button.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy);font-weight:700}
+.bar .sp{flex:1}
+.toc{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.toc a{font-size:13px;color:var(--navy);text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.intro,.q{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 12px}
+.sec{font-size:13px;font-weight:800;color:var(--navy);margin:22px 0 8px}
+.qh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin:0 0 6px}
+.qid{font-weight:800;font-size:15px}
+.tag{font-size:12px;background:var(--tag);border-radius:6px;padding:2px 7px;color:var(--sub)}
+.tag.cond{background:#FBF1D9;color:#8A5A00}
+.qt{font-size:16px;font-weight:700;margin:0 0 4px}
+.note{font-size:14px;background:var(--navy-soft);border-radius:8px;padding:8px 10px;margin:6px 0}
+.help{font-size:14px;color:var(--sub);margin:4px 0}
+.alt{display:block;font-size:13px;color:var(--muted);font-weight:400}
+ol.opts{margin:8px 0 0;padding:0;list-style:none}
+ol.opts li{display:flex;gap:8px;padding:5px 0;border-top:1px dashed var(--line)}
+ol.opts li:first-child{border-top:0}
+.code{flex:none;min-width:46px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);padding-top:2px}
+.ot{flex:1}
+.meta{flex:none;font-size:12px;color:var(--muted);text-align:right;max-width:40%}
+.subh{font-size:14px;font-weight:700;margin:12px 0 2px}
+details{border:1px solid var(--line);border-radius:10px;margin:8px 0;padding:0 12px;background:var(--paper)}
+details summary{cursor:pointer;padding:9px 0;font-weight:700;font-size:14px}
+@media print{.bar{position:static}details{break-inside:avoid}details:not([open]){display:block}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 id="h1"></h1>
+  <p class="lead" id="lead"></p>
+  <div class="bar" id="bar"></div>
+  <nav class="toc" id="toc"></nav>
+  <div id="out"></div>
+</main>
+<script src="survey-def.js"></script>
+<script>
+"use strict";
+const D=window.SURVEY,TX=D.TEXT;
+const P=new URLSearchParams(location.search);
+let MODE=['ko','id','en','ko+id'].includes(P.get('view'))?P.get('view'):'ko';
+const UI={ko:{h1:'문항·보기 검토용 전체 보기',lead:'응답하지 않고 모든 문항과 보기를 한 화면에서 확인하는 페이지입니다. 소속에 따라 바뀌는 보기와 표시 조건도 함께 표시합니다. 코드는 응답 시트에 저장되는 값입니다.',
+  single:'단일선택',multi:'복수선택',upto:'최대 {n}개',rank:'순위선택',grid:'항목별 단일선택',text:'자유기술',opt:'선택 문항',
+  used:'Q11에서 AI 사용 경험이 있는 경우만 표시 (U1~U5)',recent:'Q11에서 최근 한 달 사용한 경우만 표시 (U2~U5)',skip:'{g} 응답자는 건너뜀 (NA 저장)',excl:'단독 선택',other:'직접 입력',ai:'연결 AI 업무',cls:'해결 분류',
+  shown:'표시 대상',all:'전체',except:'제외',intro:'시작 화면',pilot:'제출 후 화면 (선택)',expand:'모두 펼치기',collapse:'모두 접기',print:'인쇄',
+  q6note:'Q2에서 고른 소속 그룹의 목록만 표시됨. 기타 업무는 2개까지 직접 입력',q61note:'Q6에서 고른 업무마다 반복 표시',time:'주당 시간',reason:'시간이 오래 걸리는 가장 큰 이유',
+  CLS:{AI:'AI로 직접 개선',MIX:'병행',SYS:'시스템·절차 개선',FIELD:'현장 업무',VOL:'처리량',ETC:'기타'},access:'설문 접속 코드 입력 (점검 모드에서는 생략)'}};
+const L=()=>MODE==='ko+id'?'ko':MODE;
+const u=(k,v)=>{let s=UI.ko[k];if(v)for(const x in v)s=s.replace('{'+x+'}',v[x]);return s;};
+const tt=o=>o?(o[L()]||o.id):'';
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function txtNode(o,cls){const e=el('span',cls);e.appendChild(document.createTextNode(tt(o)));
+  if(MODE==='ko+id'&&o&&o.id&&o.id!==o.ko)e.appendChild(el('span','alt',o.id));return e;}
+const GL={};(D.Q.find(q=>q.id==='Q2').opts).forEach(o=>GL[o.code]=o);
+function grpNames(a){return a.map(g=>g+(GL[g]?'':'')).join('·');}
+function optList(opts,metaFn){const ol=el('ol','opts');opts.forEach(o=>{const li=el('li');li.appendChild(el('span','code',o.code));
+  const t=txtNode(o.t,'ot');li.appendChild(t);
+  const m=[];if(o.excl)m.push(u('excl'));if(o.other)m.push(u('other'));if(metaFn){const x=metaFn(o);if(x)m.push(x);}
+  if(m.length)li.appendChild(el('span','meta',m.join(' · ')));ol.appendChild(li);});return ol;}
+function qBox(id,tags,q){const b=el('div','q');b.id='q-'+id;const h=el('div','qh');h.appendChild(el('span','qid',id));
+  tags.forEach(([t,c])=>h.appendChild(el('span','tag'+(c?' '+c:''),t)));b.appendChild(h);
+  if(q.note){const n=el('div','note');n.appendChild(txtNode(q.note));b.appendChild(n);}
+  if(q.q){b.appendChild(txtNode(q.q,'qt'));}
+  if(q.help){const p=el('p','help');p.appendChild(txtNode(q.help));b.appendChild(p);}
+  return b;}
+function render(){document.documentElement.lang=L();
+  document.getElementById('h1').textContent=u('h1');document.getElementById('lead').textContent=u('lead');
+  const bar=document.getElementById('bar');bar.innerHTML='';
+  [['ko','한국어'],['id','Bahasa Indonesia'],['en','English'],['ko+id','한국어+인니어']].forEach(([m,n])=>{const b=el('button',m===MODE?'on':'',n);b.onclick=()=>{MODE=m;render();};bar.appendChild(b);});
+  bar.appendChild(el('span','sp'));
+  const ex=el('button','',u('expand'));ex.onclick=()=>document.querySelectorAll('details').forEach(d=>d.open=true);bar.appendChild(ex);
+  const co=el('button','',u('collapse'));co.onclick=()=>document.querySelectorAll('details').forEach(d=>d.open=false);bar.appendChild(co);
+  const pr=el('button','',u('print'));pr.onclick=()=>{document.querySelectorAll('details').forEach(d=>d.open=true);window.print();};bar.appendChild(pr);
+  const toc=document.getElementById('toc');toc.innerHTML='';
+  const out=document.getElementById('out');out.innerHTML='';
+  // 시작 화면
+  out.appendChild(el('p','sec',u('intro')));
+  const ib=el('div','intro');ib.appendChild(txtNode(TX.title,'qt'));['lead','anon'].forEach(k=>{const p=el('p','help');p.appendChild(txtNode(TX[k]));ib.appendChild(p);});
+  out.appendChild(ib);
+  let curSec='';
+  D.Q.forEach(q=>{
+    if(q.sec!==curSec){curSec=q.sec;const s=el('p','sec');s.id='sec-'+q.sec;s.textContent=q.sec+'. '+tt(D.SEC[q.sec]);out.appendChild(s);
+      const a=el('a',null,q.sec+'. '+tt(D.SEC[q.sec]));a.href='#sec-'+q.sec;toc.appendChild(a);}
+    const tags=[];const cond=[];if(q.when==='used')cond.push([u('used'),'cond']);if(q.when==='recent')cond.push([u('recent'),'cond']);if(q.skip)cond.push([u('skip',{g:q.skip.join('·')}),'cond']);
+    if(q.type==='single')tags.push([u('single')]);
+    if(q.type==='multi')tags.push([u('multi')+(q.max?' · '+u('upto',{n:q.max}):'')]);
+    if(q.type==='rank')tags.push([u('rank',{n:q.n})+' (1~'+q.n+'개)']);
+    if(q.type==='grid')tags.push([u('grid')]);
+    if(q.type==='text')tags.push([u('text')]);
+    if(q.optional)tags.push([u('opt')]);
+    if(q.type==='tasks'){const b=qBox('Q6',[[u('multi')+' · '+u('upto',{n:q.max})],[u('q6note'),'cond']],q);
+      Object.keys(D.DEPT_TASKS).forEach(g=>{const d=el('details');const s=el('summary');s.appendChild(el('span',null,g+' · '));s.appendChild(txtNode(GL[g]?GL[g].t:{ko:'기타',id:'Lainnya',en:'Other'}));
+        s.appendChild(el('span','tag',' '+D.DEPT_TASKS[g].length+'개'));d.appendChild(s);
+        d.appendChild(optList(D.DEPT_TASKS[g],o=>o.other?'':(o.ai?u('ai')+' '+o.ai:'AI 연결 없음')));b.appendChild(d);});
+      out.appendChild(b);return;}
+    if(q.type==='taskDetail'){const b=qBox('Q6-1',[[u('q61note'),'cond']],q);
+      b.appendChild(el('p','subh','(1) '+u('time')+' · '+u('single')));b.appendChild(optList(D.WEEK_TIME));
+      b.appendChild(el('p','subh','(2) '+u('reason')+' · '+u('single')));b.appendChild(optList(D.REASONS,o=>o.cls?u('cls')+': '+UI.ko.CLS[o.cls]:''));
+      out.appendChild(b);return;}
+    const b=qBox(q.id,tags.concat(cond),q);
+    if(q.type==='grid'){b.appendChild(el('p','subh','항목'));
+      b.appendChild(optList(q.rows,o=>o.only?u('shown')+': '+o.only.concat(['G99']).join('·'):o.except?u('except')+': '+o.except.join('·'):(q.id==='Q5'?u('shown')+': '+u('all'):'')));
+      b.appendChild(el('p','subh','척도'));b.appendChild(optList(q.scale));}
+    else if(q.type==='combo'){q.parts.forEach(p=>{const s=el('p','subh');s.appendChild(txtNode(p.label));s.appendChild(document.createTextNode(' · '+(p.type==='multi'?u('multi'):u('single'))));b.appendChild(s);b.appendChild(optList(p.opts));});}
+    else if(q.opts){b.appendChild(optList(q.opts));}
+    out.appendChild(b);});
+}
+render();
+</script>
+</body>
+</html>
